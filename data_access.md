@@ -183,7 +183,29 @@ diagnostic, not the calibration step.
 
 ---
 
-## 9. Useful links
+## 9. Finding all UV SNe (the discovery query)
+
+The project needs every SN with HST UV spectroscopy, without leaning on paper/abstract
+searches or the proposer's target name (which is inconsistent: SN2020fqv is logged as
+`TESS-SN`, others as host names or field offsets).
+
+The lever is the HST obs table's `target_classification` field (the proposer Phase II
+classification), which carries values like `EXT-STAR;SUPERNOVA TYPE IA`. So:
+
+```python
+Observations.query_criteria(obs_collection='HST', dataproduct_type='spectrum',
+    target_classification='*upernova*',
+    instrument_name=['STIS/CCD','STIS/NUV-MAMA','STIS/FUV-MAMA','COS/FUV','COS/NUV'])
+```
+
+This catches SNe regardless of their target name (it finds the `TESS-SN` = SN2020fqv that
+name-matching misses). Then dedup by coordinates (one SN gets logged under SN2023IXF /
+SN-2023IXF / SN2023IXF-COS). See `uv_sn_query.ipynb` -> `uv_sn_catalog.csv` (140 unique
+SNe as of now). Caveats: classification is proposer-set so a SN under a non-SN program can
+slip through (a SIMBAD/TNS coordinate cross-match would back this up), and `SNR` entries
+are old remnants, not transients.
+
+## 10. Useful links
 - HST Notebooks index: https://spacetelescope.github.io/hst_notebooks/index.html
 - HASP: https://archive.stsci.edu/missions-and-data/hst/hasp
 - HSLA: https://archive.stsci.edu/missions-and-data/hst/hsla

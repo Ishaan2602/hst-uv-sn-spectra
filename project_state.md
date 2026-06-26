@@ -36,7 +36,7 @@
 - [ ] **COS: visualize the extraction** (2D, if COS allows it).
 - [ ] **Defringing** step for the G750L grating.
 - [ ] **Full 2023ixf reduction in one go** (COS NUV + COS FUV).
-- [ ] **General UV-SN query**: extend the COS `SN*` trick to STIS, and ideally a real query for UV supernovae so we avoid paper title/abstract searches. This is the whole point of the project.
+- [x] **General UV-SN query** (the whole point): built `uv_sn_query.ipynb`. Instead of name-matching (misses SN2020fqv=`TESS-SN`) or paper searches, filter the HST obs table on `target_classification='*upernova*'` (the proposer Phase II class) across STIS+COS spectroscopy, then dedup by coordinates (5 arcsec). Result: 1591 SN-classified spectra -> 140 unique SNe (139 transients, 1 remnant, 102 with a UV grating), written to `uv_sn_catalog.csv`. Validated: SN2020fqv (TESS-SN), 2024iss, 2023ixf, 2010jl all caught. Caveat: classification is proposer-set so a SN observed under a non-SN program could slip through; a SIMBAD/TNS coordinate cross-match would be the belt-and-suspenders next step.
 - [ ] **First automated pipeline pass** (where helper .py / OOP starts to make sense).
 
 ---
