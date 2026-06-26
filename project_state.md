@@ -52,3 +52,9 @@ combined_clean_mask = dq16_mask & dq512_mask
 
 clean_wavelength = wvl_array[combined_clean_mask]
 clean_flux = flux_array[combined_clean_mask]
+### 6/26 — full 2023ixf reduction (DONE)
+- One STIS epoch of SN2023ixf (prop 17205, oezt01 visit): G230LB (oezt01040), G430L (oezt010h0), G750L (oezt010e0) + contemporaneous CCDFLAT (oezt010d0).
+- These are single CRSPLIT=1 exposures, so NO ocrreject - extract straight from the FLT. `run_full_2023ixf.py` (WSL) syncs CRDS refs, x1d on the blue gratings, normspflat->mkfringeflat->defringe->x1d for G750L.
+- Coadd in full_2023ixf.ipynb: load the 3 STIS x1d + COS NUV cspec, np.interp onto a common axis, nanmedian. Caveat: COS NUV is faint + fully overlapped by G230LB, so a naive median drags it down; combine the 3 STIS gratings (they tile 1670-10250) and keep COS NUV as overlay.
+- Caveat: mkfringeflat scale hit the edge of its range (1.2); shift converged fine. Minor for the demo.
+- Result: clean full HST UV-optical SED of SN2023ixf, our own extraction throughout.

@@ -6,7 +6,9 @@ import stistools.defringe, stistools.x1d
 # normspflat (normalize the contemporaneous fringe flat) -> mkfringeflat (match it to the science)
 # -> defringe (divide out) -> x1d on both the fringed (crj) and defringed (drj).
 base, work = sys.argv[1], sys.argv[2]
-sci, flat = 'of8b02040', 'of8b02050'
+# sci/flat rootnames default to the 2024iss pair, override for other targets
+sci  = sys.argv[3] if len(sys.argv) > 3 else 'of8b02040'
+flat = sys.argv[4] if len(sys.argv) > 4 else 'of8b02050'
 
 os.makedirs(work, exist_ok=True)
 shutil.copy(f"{base}/{sci}/{sci}_crj.fits", f"{work}/{sci}_crj.fits")
