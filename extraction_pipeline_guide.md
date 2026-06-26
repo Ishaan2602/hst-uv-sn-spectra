@@ -228,6 +228,9 @@ PI's `combine_spectra_reference.ipynb` approach: resample each onto a common axi
   COS NUV fully overlaps STIS G230LB but is much noisier; a naive median dragged the combined NUV
   down to half the G230LB flux. Fix: combine the gratings that have good SNR (the 3 STIS gratings
   tile 1670-10250A) and keep the faint COS NUV as an overlay. A proper fix is SNR weighting.
+  NOTE: this is likely the approach described formally in the HST CCD Spectra Reduction paper
+  (Jacobson-Galan et al. 2024, IOPscience 10.3847/2041-8213/ad7855) in the context of grating
+  coaddition -- TO CHECK when reviewing Section 2 of that paper.
 - Grating flux offsets: the gratings don't always agree perfectly in their overlaps, so the median
   shows small steps at splices (~3000A). HASP/HSLA fix this with scaling; we don't yet.
 - Our COS NUV coadd of the 6 SN2023ixf exposures matches the HASP coadd well except a ~2150-2350A
@@ -327,6 +330,8 @@ Not tracked in git (see `.gitignore`): `Data/` (downloads), `crds_cache/` (refs)
   be off-screen in a tight zoom.
 - COS FUV defaults to TWOZONE; set XTRCTALG=BOXCAR to use custom XTRACTAB boxes.
 - COS XTRACTAB B_SPEC is in YFULL, not RAWY.
+- specutils: newer versions rename `Spectrum1D` -> `Spectrum`. Use a try/except import alias
+  (`try: from specutils import Spectrum as Spec1D; except: from specutils import Spectrum1D as Spec1D`).
 - specutils resampler rejects non-monotonic axes (splice duplicates); sort+dedupe or use np.interp.
 - Coadds: don't equally median high-SNR and near-noise spectra; watch inter-grating flux offsets.
 - Defringe: widen the mkfringeflat shift range; the scale can still hit its edge.
