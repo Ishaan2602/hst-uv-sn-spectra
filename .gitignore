@@ -1,0 +1,23 @@
+# downloaded data -- large binary, re-fetchable from MAST
+Data/
+data/
+
+# crds reference files -- synced on demand, hundreds of MB
+crds_cache/
+
+# calcos/reduction working dirs
+*/cos_out_*/
+*/cos_work/
+
+# python
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints/
+
+# jupyter
+.jupyter/
+
+# OS junk
+.DS_Store
+Thumbs.db
