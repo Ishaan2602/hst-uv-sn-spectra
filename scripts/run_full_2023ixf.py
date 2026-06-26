@@ -8,7 +8,7 @@ os.environ['oref'] = '/mnt/c/Users/eluru/CALTECH_SURF_2026/WORK/crds_cache/refer
 import crds
 import stistools.x1d, stistools.defringe
 
-base = '/mnt/c/Users/eluru/CALTECH_SURF_2026/WORK/Data/2023ixf/mastDownload/HST'
+base = '/mnt/c/Users/eluru/CALTECH_SURF_2026/WORK/data/2023ixf/mastDownload/HST'
 sci = {'g230lb': 'oezt01040', 'g430l': 'oezt010h0', 'g750l': 'oezt010e0'}
 flat = 'oezt010d0'
 

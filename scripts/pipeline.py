@@ -61,14 +61,14 @@ def fetch(ids, target):
     roots = list(ids.values())
     pl = Observations.get_product_list(Observations.query_criteria(obs_id=roots))
     keep = [f.endswith(('_flt.fits', '_raw.fits', '_wav.fits')) for f in pl['productFilename']]
-    Observations.download_products(pl[keep], download_dir=f'./Data/{target}', mrp_only=False)
+    Observations.download_products(pl[keep], download_dir=f'../data/{target}', mrp_only=False)
 
 
 def reduce(ids, target):
-    base = f'{WSL_BASE}/Data/{target}/mastDownload/HST'
+    base = f'{WSL_BASE}/data/{target}/mastDownload/HST'
     args = ' '.join(f'{k}={v}' for k, v in ids.items())
     cmd = (f"source ~/miniforge3/etc/profile.d/conda.sh && conda activate surf_uv && "
-           f"python {WSL_BASE}/reduce_epoch.py {base} {args}")
+           f"python {WSL_BASE}/scripts/reduce_epoch.py {base} {args}")
     subprocess.run(['wsl.exe', '-d', 'Debian', '--', 'bash', '-lc', cmd], check=True)
 
 
@@ -79,7 +79,7 @@ def _clean(w, f):
 
 
 def coadd(ids, target, save=True):
-    hst = f'./Data/{target}/mastDownload/HST'
+    hst = f'../data/{target}/mastDownload/HST'
     newax = np.concatenate([np.arange(1650, 3050, 1.4), np.arange(3050, 5600, 2.7), np.arange(5600, 10260, 4.9)])
     stack, fig_ax = [], plt.subplots(figsize=(13, 5))
     fig, ax = fig_ax
@@ -98,11 +98,11 @@ def coadd(ids, target, save=True):
     ax.set_title(f'{target}  STIS UV-optical coadd (pipeline)'); ax.legend(ncol=4, fontsize=8)
     plt.tight_layout()
     if save:
-        os.makedirs('./output', exist_ok=True)
-        np.savetxt(f'./output/{target}_coadd.csv', np.column_stack([newax, comb]),
+        os.makedirs('../output', exist_ok=True)
+        np.savetxt(f'../output/{target}_coadd.csv', np.column_stack([newax, comb]),
                    delimiter=',', header='wavelength_A,flux', comments='')
-        fig.savefig(f'./output/{target}_coadd.png', dpi=120)
-        print(f'saved ./output/{target}_coadd.csv + .png')
+        fig.savefig(f'../output/{target}_coadd.png', dpi=120)
+        print(f'saved ../output/{target}_coadd.csv + .png')
     return newax, comb
 
 
