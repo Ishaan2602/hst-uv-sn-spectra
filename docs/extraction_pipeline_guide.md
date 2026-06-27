@@ -119,7 +119,7 @@ flt (flat-fielded) -> crj (CR-rejected, if multiple subexposures) -> x1d (1D ext
 **Helpers:** `reduce_stis.py` (single parametrized extraction), `reduce_stis_sweep.py` (loops
 a set of params in Python and writes one x1d per setting).
 
-**The extraction-region visualization** (the green-lines picture the PI shared): plot the 2D
+**The extraction-region visualization** (the red-and-orange-lines picture the PI shared): plot the 2D
 flt with the extraction aperture (from `EXTRLOCY`/`EXTRSIZE`) and the two background regions
 (from `BK1OFFST`/`BK2OFFST` + sizes). Helper `show_extraction_regions` in `stis_sandbox.ipynb`
 and `1dspectrumreference.ipynb`.
@@ -228,11 +228,14 @@ PI's `combine_spectra_reference.ipynb` approach: resample each onto a common axi
   COS NUV fully overlaps STIS G230LB but is much noisier; a naive median dragged the combined NUV
   down to half the G230LB flux. Fix: combine the gratings that have good SNR (the 3 STIS gratings
   tile 1670-10250A) and keep the faint COS NUV as an overlay. A proper fix is SNR weighting.
-  NOTE: this is likely the approach described formally in the HST CCD Spectra Reduction paper
-  (Jacobson-Galan et al. 2024, IOPscience 10.3847/2041-8213/ad7855) in the context of grating
-  coaddition -- TO CHECK when reviewing Section 2 of that paper.
+  Reviewed: Bostroem et al. 2024 (the 2023ixf UV paper, see docs/2023ixf_paper_review.md, Sec 2.5)
+  does the grating-to-grating match -- aligns G430L + G750L to G230LB by a constant percentage, then
+  median-combines excluding bad pixels. We demonstrate that as a comparison in full_2023ixf (anchor
+  G230LB), but keep the naive median primary pending the PI (our G430L factor came out large and
+  edge-measured).
 - Grating flux offsets: the gratings don't always agree perfectly in their overlaps, so the median
-  shows small steps at splices (~3000A). HASP/HSLA fix this with scaling; we don't yet.
+  shows small steps at splices (~3000A). HASP/HSLA fix this with scaling. We now show the paper's
+  constant-% inter-grating scaling as a comparison (section 8); the naive median is still the default.
 - Our COS NUV coadd of the 6 SN2023ixf exposures matches the HASP coadd well except a ~2150-2350A
   region where a contaminated NUVA stripe leaks in. HASP's flux-checking rejects it; we don't yet.
   That discrepancy is a good illustration of what HASP's extra filtering buys.
@@ -254,6 +257,19 @@ visit): G230LB (oezt01040), G430L (oezt010h0), G750L (oezt010e0), and the contem
 - These are single CRSPLIT=1 exposures, so NO ocrreject; we extract straight off the flt.
 - Result: a clean full HST UV-optical SED from 1670 to 10250A, our own extraction throughout, with
   the COS NUV overlaid (faint at this epoch, excluded from the median per section 7).
+
+**Paper-driven checks (Bostroem et al. 2024, Sec 2), run on this epoch:**
+- Fringe-flat aperture: the flat (oezt010d0) is 52X0.1, the science G750L (oezt010e0) is 52X0.2 --
+  the flat is the narrower slit, the same principle as the paper's small-aperture flat. Defringe
+  input validated.
+- Saturation: DQ bit 256 flags G430L saturated across 3178-5022A (668 px), matching the paper's
+  stated 3200-5000A visit-1 saturation. This epoch is the early GO-17205 visit, so the G430L
+  mid-band is unreliable for absolute flux -- shaded on the comparison plot, kept only for feature ID.
+- Inter-grating scaling: anchor G230LB, G430L x0.595, G750L x0.913 (the 0.595 is large and edge-
+  measured, so partly an edge artifact). Saved as output/2023ixf_coadd_scaled.png; naive median
+  stays primary pending the PI.
+- Note: the notebook data paths had been mangled to .../data (three dots) by the reorg find/replace;
+  fixed back to ../data so the cells run again.
 
 ---
 
@@ -292,8 +308,7 @@ Notebooks:
 - `stis_sandbox.ipynb` - STIS extraction, param sweeps, STIS coadd, G750L defringe comparison.
 - `cos_sandbox.ipynb` - COS NUV + FUV custom extraction, height sweeps, extraction viz, COS coadd.
 - `full_2023ixf.ipynb` - the end-to-end full reduction of one 2023ixf epoch.
-- `1dspectrumreference.ipynb`, `combine_spectra_reference.ipynb` - the PI's reference notebooks.
-- `spectra_sandbox.ipynb` - the original combined sandbox (superseded by the split ones; deletable).
+- `1dspectrumreference.ipynb`, `combine_spectra_reference.ipynb` - the PI's reference notebooks (in `notebooks/reference/`, untouched).
 
 Scripts (all the `reduce_*` and the pipeline run in WSL surf_uv, except pipeline.py which is the
 Windows orchestrator):

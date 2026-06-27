@@ -1,49 +1,112 @@
 # Project State & Daily Log
 
-## Current Status: Week 3 (June 25, 2026)
-* **Core Goal:** STIS extraction working end to end. Now: vary STIS extraction params on purpose (PI says we kept everything default), do the full COS custom extraction, start our own coadds, and crack a general UV-supernova query. Slow, careful, interactive.
+Log is reverse-chronological: most recent session at the top.
+
+## Current Status: Week 3 (June 26, 2026)
+* **Core Goal:** a uniformly reduced repository of all HST UV supernova spectra (STIS + COS), our own reduction throughout (trace, background, CR, defringe, coadd), not MAST defaults.
+* **Latest:** full 2023ixf reduction + first automated pipeline done; workspace reorganized into `notebooks/ scripts/ docs/ output/`; reviewed the Bostroem et al. 2024 SN2023ixf paper to validate and refine our defringe + coadd.
+* Style: slow, careful, interactive.
 
 ---
 
-## Active Task List
+## Open items / next steps (decisions to be made with PI / Wynn)
 
-### 1. Data Access & Environment Configuration
-- [x] Install light packages on native Windows (`astroquery`, `astropy`, `specutils`, `numpy`, `scipy`, `matplotlib`). No conda on Windows, packages live on the machine (Python 3.14 kernel).
-- [x] Map out the data access landscape (MAST vs Portal vs HST Search Form vs astroquery, and HASP vs HSLA). Written up in `data_access.md`.
-- [x] Found hstcal blocker: `stistools`/`ocrreject`/`x1d`/`calcos` wrap compiled HSTCAL binaries with no native Windows build. Set up WSL Debian + Miniforge + `surf_uv` conda env (hstcal + stistools + crds). Details in `logistics_notes.md`.
-- [x] Query + download a test target through `astroquery.mast` (working in `spectra_sandbox.ipynb`): SN2020fqv (Thursday, default x1d only) and SN2024iss (proper test).
-- [x] Confirmed the SN query convention: use `objectname=` resolver + `radius`, not `target_name`.
-
-### 2. Analytical Pipeline Logic (Bitmasking & Re-extraction)
-- [x] DQ bitmask filtering in the notebook (bit 16 + bit 512): `(dq & 16 != 16) & (dq & 512 != 512)`.
-- [x] Full STIS re-extraction on SN2024iss G230LB (of8b02010): our own `ocrreject` (flt -> crj) + `x1d` run in WSL via `reduce_stis.py`, output read back on Windows. Our extraction matches the pipeline sx1 (sanity check passed) and we visualized the 2D trace + extraction/background regions.
-- [ ] Vary custom extraction params (`extrsize`, `bk1offst`, `bk2offst`, manual center, `maxsrch`) now that the toolchain works, to see effect on faint/contaminated traces.
-- [x] COS test target + default products: SN2023ixf (M101, Type II, prop 17497, COS/NUV G230L). Pulled the x1dsum + HASP coadd; science-window plot shows a faint NUV continuum + Mg II 2800 emission. calcos inputs (corrtag/rawtag/flt) already downloaded under `./Data/2023ixf`.
-- [x] COS full custom extraction (NUV + FUV done): installed `calcos` in the WSL env, synced COS refs (lref), ran the full custom extraction on SN2023ixf NUV G230L (lf8803d5q). `reduce_cos.py` = default, `reduce_cos_custom.py` copies the XTRACTAB, narrows the source box HEIGHT (57 -> 15), points a copy of the corrtag at it, re-runs calcos. Visualized in `cos_sandbox`. Finding: the narrow box roughly halves the flux scatter (NUVC std 4.84e-15 -> 2.49e-15) while preserving the continuum + Mg II 2800 emission. Interactive height sweep (5,9,15,25,41,57 via `reduce_cos_sweep.py`): on the NUVB science stripe, median flux rises with box height but per-pixel SNR PEAKS at h~9 (3.14) and falls to 2.50 at the default h=57, so the optimal box is ~9px (~25% better SNR than default). FUV done on SN2010jl G130M (2023ixf has no direct FUV) via `reduce_cos_fuv_sweep.py`: same XTRACTAB-edit workflow (already BOXCAR), two segments FUVA/FUVB. KEY CONTRAST: for this BRIGHT source SNR rises with box height and plateaus by h~35-45 (source-limited, want the full profile), whereas the FAINT NUV source peaked at h~9 (background-limited). So optimal box = source-brightness dependent.
-
-### 3. Review & Theoretical Context
-- [ ] Review Section 2 of the [HST CCD Spectra Reduction Paper](https://iopscience.iop.org/article/10.3847/2041-8213/ad7855/pdf) for realistic pipeline workflows.
-- [x] Browse the interactive line velocity/shape models on the [LBL Supernova Spectra Page](https://supernova.lbl.gov/~dnkasen/tutorial/).
-
-### 4. TODO from 6/22 meeting (active log)
-- [x] **cell 9 viz**: orange bg lines were off-screen because the default bg sits at offset -300/-320 (both ~300px below the trace, since A2CENTER=894 is near the top edge). Fixed by re-extracting with close bg (a2center=894, extrsize=5, bk1offst=-8, bk2offst=+8, sizes 10) via `reduce_stis.py --out 230_x1d_closebg.fits`. Now in `stis_sandbox` the orange straddles the trace.
-- [x] **STIS param play** (interactive, done this round): `reduce_stis.py` parametrized + `reduce_stis_sweep.py` driver. Findings on SN2024iss G230LB (of8b02010), logged for the PI:
-    * **bg placement** barely changes the spectrum here (default offset -300/-320 vs close +/-14). This trace is isolated on a low uniform background, so sky region choice is minor. Expect it to matter for traces on a structured/contaminated background (host-galaxy gradient, nearby source).
-    * **extrsize** (aperture height): extrsize=1 loses ~half the flux (only the trace peak). extrsize=3 already recovers nearly all of it (trace is ~7px tall). Beyond ~7 just adds sky/noise without flux. Sweet spot ext3-5.
-    * **a2center** (centering): with maxsrch=0, miscentering by 4px drops the flux ~60-70% because the aperture barely overlaps the real trace. Getting the center right (or letting maxsrch find it) matters a lot.
-- [x] **COS full custom extraction**: NUV G230L (SN2023ixf) + FUV G130M (SN2010jl) both done (see section 2). calcos in WSL + XTRACTAB box editing + interactive height sweeps. Key finding: optimal box height is source-brightness dependent (faint NUV peaks narrow ~h9; bright FUV keeps improving to ~h35-45).
-- [x] **Our own coadds** for STIS and COS (instead of just using HASP). STIS done in `stis_sandbox`: SN2024iss G230LB(our extraction)+G430L+G750L resampled onto a common axis (specutils FluxConservingResampler, native dispersions per the PI reference) and median-combined into one 1670-10250 A spectrum. Gratings agree in the overlaps. Visible G750L fringing past ~8500 A (motivates the defringing todo). COS done in `cos_sandbox`: 6 SN2023ixf NUV G230L exposures x 3 stripes (18 spectra) resampled + median-combined, matches the HASP coadd well (continuum + Mg II 2800) except ~2150-2350 A where our naive median keeps a contaminated NUVA stripe that HASP's flux-checking rejects (motivates adding a sigma-clip / flux filter to our combiner).
-- [x] **COS: visualize the extraction** (done during the COS extraction work): cross-dispersion count profiles with the default vs custom boxes overlaid, for both NUV (3 stripes) and FUV (FUVA/FUVB, in the geo-corrected YFULL frame). In `cos_sandbox`.
-- [x] **Defringing** step for the G750L grating: done in `stis_sandbox` via `reduce_defringe.py` (WSL). SN2024iss G750L science of8b02040 + its contemporaneous fringe flat of8b02050 (50s CCDFLAT in the same visit). Chain: `stistools.defringe.normspflat` -> `mkfringeflat` (best shift -0.46px, scale 1.08 after widening the shift range off the edge) -> `defringe` -> `x1d`. Fringe oscillations past ~9000 A are clearly reduced (residuals remain, normal for G750L).
-- [x] **Full 2023ixf reduction in one go**: done in `full_2023ixf.ipynb` + `run_full_2023ixf.py`. One STIS epoch (oezt01, prop 17205): G230LB + G430L + G750L (defringed), COS NUV overlaid. CRSPLIT=1 so no ocrreject; extract from flt directly. See 6/26 log below.
-- [x] **General UV-SN query** (the whole point): built `uv_sn_query.ipynb`. Instead of name-matching (misses SN2020fqv=`TESS-SN`) or paper searches, filter the HST obs table on `target_classification='*upernova*'` (the proposer Phase II class) across STIS+COS spectroscopy, then dedup by coordinates (5 arcsec). Result: 1591 SN-classified spectra -> 140 unique SNe (139 transients, 1 remnant, 102 with a UV grating), written to `uv_sn_catalog.csv`. Validated: SN2020fqv (TESS-SN), 2024iss, 2023ixf, 2010jl all caught. Caveat: classification is proposer-set so a SN observed under a non-SN program could slip through; a SIMBAD/TNS coordinate cross-match would be the belt-and-suspenders next step.
-- [x] **First automated pipeline pass**: done in `pipeline.py` + `reduce_epoch.py`. Auto-picks STIS epoch, downloads, reduces (WSL), coadds, saves `output/<sn>_coadd.{csv,png}`. Demo on SN2023ixf validated end to end.
+1. **Inter-grating flux scaling in the coadd.** The Bostroem 2024 paper (Sec 2) aligns G430L and G750L to the G230LB flux by a constant percentage, and scales exposures within a visit to the highest-flux (best-centered) one via a first-degree polynomial, then median-combines. Our coadd is a naive median with no scaling, which leaves small steps at the splices. Now demonstrated as a comparison in `full_2023ixf.ipynb` (G430L x0.595, G750L x0.913, anchor G230LB); naive median kept as primary pending the PI's call on the absolute-flux anchoring (the G430L factor is large and edge-measured, so possibly partly an edge artifact).
+2. **SNR weighting / faint-leg handling in the coadd.** Tied to (1): a proper inverse-variance weighted combine would let the faint COS NUV leg contribute instead of being excluded.
+3. **Sigma-clip / flux filter in the COS coadd.** Our 6-exposure NUV median diverges from HASP in ~2150-2350 A (a contaminated NUVA stripe). HASP drops exposures deviating >5% from the coadd median; adding that filter would match HASP.
+4. **COS leg in the automated pipeline.** `pipeline.py` only handles STIS today; add a COS branch.
+5. **SIMBAD/TNS cross-match for the UV-SN catalog.** Classification is proposer-set, so a SN under a non-SN program could be missed and a misclassified object included. A coordinate cross-match cleans both up.
+6. **Systematic reduction of the full catalog.** Loop the pipeline over the 140 SNe in `output/uv_sn_catalog.csv`.
+7. **CMFGEN model comparison.** The science goal: compare our reduced spectra to CMFGEN models for mass-loss rate / CSM radius. Not built yet.
 
 ---
 
-## Technical Reference & Code Snippets
+## Daily Log (most recent first)
 
-### Standard Bitmasking Filter Template
+### 6/26 (PM) — Bostroem et al. 2024 paper review; defringe + coadd validation
+Reviewed `docs/2023ixf_paper_review.md` (Circumstellar Interaction in the UV Spectra of SN 2023ixf, Bostroem et al. 2024), focus on Section 2 (Observations and Data Reduction). What it means for our pipeline:
+- **Validates our DQ bitmask.** The paper masks bad pixels with DQ flags 16 (high dark rate) and 512 (bad reference pixel) -- exactly our `(dq & 16 != 16) & (dq & 512 != 512)`.
+- **Validates our defringe approach.** They correct G750L fringing with a contemporaneous fringe flat via `stistools.defringe`, then extract with `stistools.x1d` -- our exact chain (normspflat -> mkfringeflat -> defringe -> x1d). Nuance: their fringe flat is taken through the smaller 0.3"x0.09" aperture (standard at the E1 slit position); ours is the visit's CCDFLAT exposure. Confirmed below: our flat (oezt010d0) is 52X0.1 while the science G750L (oezt010e0) is 52X0.2, so the flat IS the narrower slit -- same principle as the paper. (This epoch sits at the standard 52X0.2 position, not E1, consistent with it being the early visit.)
+- **Refines our coadd.** They do inter-grating flux scaling (align G430L + G750L to G230LB by a constant percentage) and intra-visit exposure scaling (to the highest-flux exposure, first-degree poly), then median-combine excluding bad pixels. Our coadd is the first-order version (naive median, no scaling). This is the recipe for next-step #1.
+- **Saturation caveat on our 2023ixf epoch.** Our full reduction used the GO-17205 (oezt01) early visit -- which the paper explicitly flags as the supplementary early data with pointing/acquisition/CCD-saturation problems (e.g. ~3200-5000 A saturated in visit 1). Those data are usable for feature ID, NOT absolute flux. So our pretty full-SED plot has flux-unreliable regions; label them. Confirmed below: our G430L is saturated across 3178-5022 A (668 px), matching the paper's stated 3200-5000 A visit-1 saturation.
+- **Dark-rate artifact caveat.** The paper found several narrow "emission" features were localized high-dark-rate artifacts (verified against the 2D darks), not real. Relevant when we interpret narrow features.
+- **CR strategy.** Main epochs took >=4 exposures per grating for auto CR rejection; our oezt01 epoch was single CRSPLIT=1 (consistent with it being the problematic early data, hence no ocrreject for us).
+- Checked off the Section-2 paper-review task.
+
+**Test results (ran the 3 checks on our oezt01 epoch, in `full_2023ixf.ipynb`):**
+- **Fringe-flat aperture confirmed.** Science G750L (oezt010e0) APERTURE=52X0.2, fringe flat (oezt010d0) APERTURE=52X0.1 -- the flat is the narrower slit, same principle as the paper's small-aperture flat. Our defringe input is valid.
+- **Saturation matches the paper on our own data.** DQ bit 256: G230LB 3 px and G750L 3 px (both minor), G430L **668 px spanning 3178-5022 A** -- essentially the paper's 3200-5000 A visit-1 saturation. So our G430L optical mid-band IS the saturated visit; flagged unreliable for absolute flux and shaded on the comparison plot.
+- **Inter-grating scaling tried, kept as comparison.** Anchor G230LB: G430L x0.595, G750L x0.913. The 0.595 is a big (~40%) pull-down measured right at the grating edges (2950-3050 A, where G230LB throughput droops), so it is partly an edge artifact, not necessarily a true cal offset. Decision: naive median stays the primary coadd, scaled version shown as a comparison only, pending the PI's call on the absolute-flux anchoring. Overlap windows kept as-is with the caveat noted.
+- Added three cells to `notebooks/full_2023ixf.ipynb` (paper-checks markdown, data-quality cell, naive-vs-scaled comparison) and saved `output/2023ixf_coadd_scaled.png`.
+- **Bug fix:** the reorg find/replace had mangled the notebook's `../data` paths into `.../data` (three dots), which is why those cells had not re-run since the reorg. Fixed the download_dir + hst paths back to `../data`.
+
+### 6/26 (AM) — full 2023ixf reduction, automated pipeline, workspace reorganization
+- **Full 2023ixf reduction** (`notebooks/full_2023ixf.ipynb` + `scripts/run_full_2023ixf.py`): one STIS epoch (oezt01, prop 17205): G230LB (oezt01040), G430L (oezt010h0), G750L (oezt010e0) defringed with the contemporaneous CCDFLAT (oezt010d0). Single CRSPLIT=1 exposures so NO ocrreject -- extract straight off the FLT. Coadd loads the 3 STIS x1d + COS NUV cspec, np.interp onto a common axis, nanmedian. Clean full HST UV-optical SED, 1670-10250 A. COS NUV is faint + fully overlapped by G230LB so a naive median drags it down ~50%; combine the 3 STIS gratings and keep COS NUV as overlay.
+- **First automated pipeline** (`scripts/pipeline.py` + `scripts/reduce_epoch.py`): discover (classification query) -> auto-pick a STIS CCD epoch -> download -> reduce in WSL -> coadd -> save `output/<sn>_coadd.{csv,png}`. Auto-picker validated (independently found a 3-grating visit for 2023ixf). Demo runs end to end.
+- **Workspace reorganization**: flat root -> `notebooks/` (+ `notebooks/reference/`), `scripts/`, `docs/`, `output/`. Updated all internal paths (`../data/`, `../output/`, `../crds_cache/` in notebooks; `scripts/reduce_epoch.py` in pipeline). Deleted superseded `spectra_sandbox.ipynb`. PI reference notebooks left untouched.
+- **Session fixes / issues**:
+    * `.venv` kernel conflict: VS Code auto-selected a stray empty `.venv` for the new notebook, stalling kernel start. Deleted it; all notebooks use the global Python 3.14.2. No virtualenvs.
+    * Specutils renamed `Spectrum1D` -> `Spectrum`; added a try/except import alias.
+    * `FluxConservingResampler` rejects non-monotonic axes (splice duplicates); switched to `np.interp` after a `clean()` sort+dedupe. Flux-conserving rebinning is a later refinement.
+    * mkfringeflat best-scale hit the top of its range (1.2) on the 2023ixf flat; shift converged fine (-0.46px). Minor.
+
+### 6/25 — STIS param play, COS extraction, coadds, defringing, UV-SN query, first pipeline (the 6/22 meeting todos)
+- **STIS param play** (`reduce_stis.py` parametrized + `reduce_stis_sweep.py`), SN2024iss G230LB (of8b02010):
+    * **bg placement** barely changes the spectrum here (default offset -300/-320 vs close +/-14): isolated trace on low uniform background, so sky region choice is minor. Matters for structured/contaminated backgrounds.
+    * **extrsize**: extrsize=1 loses ~half the flux (trace peak only); extrsize=3 recovers nearly all (trace ~7px tall); beyond ~7 just adds sky/noise. Sweet spot 3-5.
+    * **a2center**: with maxsrch=0, miscentering by 4px drops the flux ~60-70%.
+    * Earlier, fixed the cell-9 viz (default bg was off-screen at offset -300/-320 since A2CENTER=894 is near the top edge); re-extracting with close bg makes the orange straddle the trace.
+- **COS custom extraction** (NUV SN2023ixf G230L + FUV SN2010jl G130M): `calcos` in WSL, XTRACTAB box editing, interactive height sweeps (`reduce_cos_custom.py`, `reduce_cos_sweep.py`, `reduce_cos_fuv_sweep.py`). KEY FINDING: optimal box height is source-brightness dependent. Faint NUV: SNR peaks at h~9 then falls (default 57 way too wide; ~25% SNR gain). Bright FUV: SNR keeps rising and plateaus by h~35-45 (default 41 near-optimal). FUV gotchas: old data needs `--update-bestrefs`; XTRACTAB B_SPEC lives in the geo-corrected YFULL frame, not RAWY; FUV defaults to TWOZONE (set XTRCTALG=BOXCAR for custom boxes).
+- **Coadds** (STIS + COS): STIS SN2024iss G230LB(ours)+G430L+G750L resampled + median-combined into one 1670-10250 A spectrum; gratings agree in overlaps; visible G750L fringing past ~8500 A. COS 6 SN2023ixf NUV exposures x 3 stripes median-combined, matches HASP except ~2150-2350 A where our naive median keeps a contaminated NUVA stripe HASP rejects.
+- **COS extraction viz**: cross-dispersion count profiles with default vs custom boxes, NUV (3 stripes) + FUV (FUVA/FUVB in YFULL).
+- **Defringing** (`reduce_defringe.py`): SN2024iss G750L of8b02040 + contemporaneous fringe flat of8b02050. normspflat -> mkfringeflat (best shift -0.46px, scale 1.08 after widening the shift range) -> defringe -> x1d. Fringes past ~9000 A clearly reduced.
+- **UV-SN query** (`uv_sn_query.ipynb`): filter HST obs on `target_classification='*upernova*'` across STIS+COS, dedup by coords (5 arcsec) -> 1591 spectra -> 140 unique SNe (139 transients, 1 remnant, 102 with a UV grating) -> `output/uv_sn_catalog.csv`. Catches SN2020fqv (logged `TESS-SN`) that name-matching misses.
+
+### 6/22 — meeting: todo list set
+- Out of the meeting: do the COS full custom extraction, do our own coadds (STIS + COS), visualize the COS extraction, defringe G750L, do the full 2023ixf in one go, build the general UV-SN query, and a first automated pipeline pass. Also vary STIS extraction params on purpose (PI: we had been keeping everything default).
+
+### ~6/21 — STIS reduction toolchain on WSL
+- Found the hstcal blocker: `stistools`/`ocrreject`/`x1d`/`calcos` wrap compiled HSTCAL binaries with no native Windows build. Set up WSL Debian + Miniforge + `surf_uv` conda env (hstcal + stistools + crds). Details in `logistics_notes.md`.
+- First full STIS re-extraction on SN2024iss G230LB (of8b02010): our own `ocrreject` (flt -> crj) + `x1d` in WSL via `reduce_stis.py`; output matches the pipeline sx1 (sanity check passed). Visualized the 2D trace + extraction/background regions.
+- WSL gotcha: shell vars/loops expand to empty crossing Git Bash -> wsl.exe; all scripts use literal paths and loop in Python.
+
+### ~6/18 — environment + data access foundation
+- Installed light packages on native Windows (astroquery, astropy, specutils, numpy, scipy, matplotlib); global Python 3.14, no conda on Windows.
+- Mapped the data access landscape (MAST vs Portal vs HST Search Form vs astroquery; HASP vs HSLA) -> `data_access.md`.
+- Query convention: use `objectname=` resolver + `radius`, not `target_name`. DQ bitmask bit 16 + bit 512.
+
+---
+
+## Task checklist (status)
+
+### 1. Data access & environment
+- [x] Light packages on native Windows; WSL `surf_uv` for hstcal/calcos.
+- [x] Data access landscape mapped (`data_access.md`).
+- [x] Query convention confirmed (`objectname=` + radius).
+
+### 2. Extraction (STIS + COS)
+- [x] DQ bitmask (16 + 512).
+- [x] STIS re-extraction (SN2024iss G230LB) matches pipeline.
+- [x] Vary STIS extraction params on purpose (extrsize / centering / bg) -- findings logged 6/25.
+- [x] COS full custom extraction, NUV + FUV, with interactive height sweeps.
+
+### 3. Review & theoretical context
+- [x] Review Section 2 of the [HST CCD Spectra Reduction Paper](https://iopscience.iop.org/article/10.3847/2041-8213/ad7855/pdf) (Bostroem et al. 2024). Review in `docs/2023ixf_paper_review.md`; analysis logged 6/26.
+- [x] Browse the [LBL Supernova Spectra Page](https://supernova.lbl.gov/~dnkasen/tutorial/).
+
+### 4. Workflows
+- [x] Coadds (STIS + COS).
+- [x] COS extraction visualization.
+- [x] G750L defringing.
+- [x] Full 2023ixf reduction in one go.
+- [x] General UV-SN query.
+- [x] First automated pipeline pass.
+
+---
+
+## Technical Reference
+
+### Standard bitmask filter template
 ```python
 # Extracting array masks for data cleansing
 dq512_mask = (x1d_data['DQ'] & 512 != 512)[0]
@@ -53,37 +116,3 @@ combined_clean_mask = dq16_mask & dq512_mask
 clean_wavelength = wvl_array[combined_clean_mask]
 clean_flux = flux_array[combined_clean_mask]
 ```
-
-### 6/26 — full 2023ixf reduction (DONE)
-- One STIS epoch of SN2023ixf (prop 17205, oezt01 visit): G230LB (oezt01040), G430L (oezt010h0), G750L (oezt010e0) + contemporaneous CCDFLAT (oezt010d0).
-- These are single CRSPLIT=1 exposures, so NO ocrreject - extract straight from the FLT. `run_full_2023ixf.py` (WSL) syncs CRDS refs, x1d on the blue gratings, normspflat->mkfringeflat->defringe->x1d for G750L.
-- Coadd in full_2023ixf.ipynb: load the 3 STIS x1d + COS NUV cspec, np.interp onto a common axis, nanmedian. Caveat: COS NUV is faint + fully overlapped by G230LB, so a naive median drags it down; combine the 3 STIS gratings (they tile 1670-10250) and keep COS NUV as overlay.
-- Caveat: mkfringeflat scale hit the edge of its range (1.2); shift converged fine. Minor for the demo.
-- Result: clean full HST UV-optical SED of SN2023ixf, our own extraction throughout.
-
-### 6/26 session fixes / issues encountered (for reference)
-- **`.venv` kernel conflict**: VS Code auto-selected a stray empty `.venv` for `full_2023ixf.ipynb`, causing an indefinite kernel-start stall. Deleted `.venv`; all notebooks use the global Python 3.14.2 kernel. No virtualenvs.
-- **CRSPLIT=1 exposures**: the 2023ixf STIS epoch is single-imset. `ocrreject` errors ("needs more than one input image"). Extraction goes straight off the FLT.
-- **Specutils `Spectrum1D` vs `Spectrum`**: newer specutils renamed `Spectrum1D` -> `Spectrum`. Added try/except import alias.
-- **Specutils resampler non-monotonic axis**: `FluxConservingResampler` raises ValueError if the spectral axis has duplicate/non-monotonic wavelengths at grating splice points. Switched to `np.interp` after `clean()` sort+dedupe. Equivalent for a display coadd; flux-conserving rebinning is a future refinement.
-- **COS NUV median drag**: including the faint COS NUV G230L in the `nanmedian` alongside STIS G230LB dragged the combined NUV down to ~50% of the STIS value, because both fully overlap and the faint COS spectrum is essentially noise there. Fix: exclude from median, keep as overlay. TO CHECK: whether this rationale (preferring the higher-SNR instrument in the overlap) is explicitly discussed in the HST CCD Spectra Reduction paper (Jacobson-Galan et al. 2024, IOPscience).
-- **WSL shell-variable expansion**: shell vars/loops expand to empty crossing Git Bash -> wsl.exe. All scripts use literal paths and loop in Python.
-- **Defringe scale at edge**: mkfringeflat best-scale 1.2 hit the top of its search range on the 2023ixf flat. Shift (-0.46px) was fine. Minor; revisit if the red end needs to be pristine.
-
----
-
-## Suggested next steps (decisions to be made with PI / Wynn)
-
-1. **SNR-weighted coadd + inter-grating flux scaling.** The current naive median gives equal weight to all gratings regardless of SNR and does not correct for flux offsets at splices (~3000 A, ~5600 A). A proper inverse-variance weighted mean with per-grating scaling (the approach in the PI's reference notebook) is the right thing to do, and would let the faint COS NUV leg contribute properly instead of being excluded.
-
-2. **Sigma-clip / flux filter in the COS coadd.** Our 6-exposure NUV median diverges from the HASP coadd in ~2150-2350 A due to a contaminated NUVA stripe. HASP applies a per-exposure flux-consistency check (exposures deviating >5% from the coadd median are dropped). Adding this filter to `cos_sandbox` would validate us cleanly against HASP.
-
-3. **COS leg in the automated pipeline.** `pipeline.py` only handles STIS today. Adding a COS branch (query for COS visits per target, fetch corrtag+asn, run `reduce_cos.py`/custom in WSL, coadd stripes) makes the pipeline instrument-agnostic, which is the real goal.
-
-4. **SIMBAD/TNS cross-match for the UV-SN catalog.** `uv_sn_catalog.csv` relies on the proposer's `target_classification`. A SN observed under a non-SN program label (e.g. inside a host-galaxy program) would be missed, and a mis-classified object (e.g. an SNR logged as SUPERNOVA) could be included. A coordinate cross-match against SIMBAD (type `SN*`) and/or the Transient Name Server would clean both issues up.
-
-5. **Systematic reduction of the full catalog.** Once the pipeline is production-quality: loop over the 140 unique SNe in `uv_sn_catalog.csv`, auto-pick the best epoch, reduce + coadd, and save to a unified output directory. This is the actual science deliverable.
-
-6. **CMFGEN model comparison.** The science goal is comparing our reduced spectra against CMFGEN synthetic spectra to extract physical parameters (mass-loss rate, CSM radius). That comparison workflow has not been built yet.
-
-7. **COS FUV data audit per target.** We found SN2023ixf's dedicated COS visit was NUV-only; SN2010jl has FUV G130M/G160M. For each catalog SN, determine which COS modes (FUV vs NUV, which grating) are available and science-quality (not a background or calibration field observation).
