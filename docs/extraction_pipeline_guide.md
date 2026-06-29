@@ -369,3 +369,188 @@ python -c "import pipeline; pipeline.run('SN2023ixf')"
 # the bundled demo
 python pipeline.py    # -> output/SN2023ixf_coadd.csv + .png
 ```
+
+---
+
+## 13. Plain-language meeting prep (for 6/29 PI meeting)
+
+This section is a non-technical explainer of the current state of the project, what the code
+actually does, and what Wynn's email responses mean in context. Written for reviewing before
+the meeting, not for future reference.
+
+---
+
+### What we actually built (the big picture)
+
+Think of the project as a three-layer stack:
+
+**Layer 1: Find every SN that HST ever took a UV spectrum of.**
+The `uv_sn_query.ipynb` notebook queries the MAST archive and searches by proposer classification
+(`target_classification='*upernova*'`), then deduplicates by sky coordinates to get unique objects.
+Result: 140 unique supernovae, saved to `output/uv_sn_catalog.csv`. This is the master list the
+whole project will loop over.
+
+**Layer 2: Reduce the data ourselves.**
+For each SN, we download the raw 2D image files from MAST and run our own extraction (not just
+taking what MAST's default pipeline gives us). The key tools:
+- STIS (the UV/optical spectrograph): we run `ocrreject` (removes cosmic ray hits by comparing
+  multiple sub-exposures) then `x1d` (collapses the 2D image to a 1D spectrum by summing along
+  the spatial direction, placing an extraction aperture on the star and background apertures to
+  the sides). These run in WSL (a Linux environment inside Windows) because the binaries only
+  work on Linux.
+- COS (the UV-only spectrograph): similar idea but the data format is completely different
+  (photon event lists, not 2D images), and the extraction tool is `calcos`. We customize the
+  extraction box heights in a reference table called the XTRACTAB.
+- G750L defringing: the red grating (G750L, ~5600-10250 Å) has a fixed interference pattern
+  (fringes) baked in at the detector level. We correct it by dividing the science exposure by
+  a "fringe flat" (a tungsten lamp exposure taken immediately before/after at the same pointing).
+  The tool chain is `normspflat` -> `mkfringeflat` -> `defringe`.
+
+**Layer 3: Combine and automate.**
+We coadd (merge) the multiple gratings (G230LB + G430L + G750L for STIS, or multiple exposures
+for COS) into one continuous spectrum. Then `pipeline.py` ties it all together: given a target
+name, it queries for it, picks a suitable epoch, downloads, reduces, coadds, and saves a plot.
+
+---
+
+### Do we defringe the same way as the paper (Bostroem et al. 2024)?
+
+**Yes, essentially the same chain.** The paper (Section 2) says:
+> "G750L observations were corrected for fringing using a contemporaneous fringe flat observed
+> through a smaller 0.3"x0.09" aperture, processed with `stistools.defringe`."
+
+We do exactly that: contemporaneous fringe flat (taken in the same visit, within minutes of the
+science exposure) -> `normspflat` -> `mkfringeflat` -> `defringe` -> `x1d`.
+
+The one nuance: the paper's main epochs use the E1 slit position with a 0.3"x0.09" flat. Our
+oezt01 early epoch uses a 52X0.2 science slit with a 52X0.1 fringe flat. The 52X0.1 is still
+narrower than the science slit, which is the key physical requirement (the flat must be the
+narrower one so it fully samples the fringe pattern). We confirmed this by reading the APERTURE
+header keyword from both files -- flat = 52X0.1, science = 52X0.2. So the principle holds.
+
+One minor caveat that came up: `mkfringeflat` solves for the best shift and scale of the fringe
+flat to match the science fringes. On the oezt01 epoch the scale solver hit the top of its search
+range (1.2), which means it found the best answer right at the boundary. The shift converged fine
+(-0.46 px). For the main science epochs this is worth checking again.
+
+---
+
+### What is the coadding situation?
+
+Coadding means combining multiple spectra (either different gratings, or the same grating observed
+multiple times) into one. Here is where we are:
+
+**STIS grating coadd (G230LB + G430L + G750L):**
+We resample each grating onto a common wavelength axis (using `np.interp`), then take a `nanmedian`
+across them. Where two gratings overlap in wavelength, the median averages them; where only one
+covers, it just uses that one. Result: a single continuous spectrum from ~1670 to ~10250 Å.
+
+The issue Wynn asked about: the paper scales G430L and G750L to match G230LB (the UV anchor) by
+a constant multiplier before combining, to remove systematic flux offsets between gratings. We
+tried it and got G430L x0.595 (a ~40% scale-down) and G750L x0.913. The G430L factor is
+suspiciously large and was measured right at the grating edge (2950-3050 Å), where G230LB's
+own sensitivity is falling off, so the measurement is noisy and possibly partly an artifact.
+
+Current state: the naive median is the primary product. The scaled version is saved as a
+comparison plot at `output/2023ixf_coadd_scaled.png`. We have not committed to a default
+until the PI call.
+
+Wynn's response clarified: the big offset is likely specific to the early saturated epoch
+(oezt01). Once we switch to the main science epochs (days 14-66), the gratings should agree
+more closely and the scaling factors should be near 1.
+
+**COS NUV coadd:**
+COS data for SN2023ixf was 6 separate 1700s exposures through the same NUV grating (G230L).
+We coadd them by taking a `nanmedian` across all 6, per stripe (COS NUV has 3 spatial stripes
+called NUVA, NUVB, NUVC). The result matches the HASP coadd (MAST's automated product) well
+except for a noisy chunk at ~2150-2350 Å where a contaminated NUVA stripe leaks in; HASP
+rejects that with a flux-deviation filter and we don't yet.
+
+**The COS+STIS combined spectrum:**
+For the full 2023ixf SED, the STIS G230LB grating fully covers the NUV range (1670-3100 Å)
+with better SNR than the COS NUV at this epoch. If you just average them equally the noisy COS
+signal drags the cleaner STIS signal down by ~50%. So the COS NUV is kept as an overlay (shown
+separately) rather than included in the median coadd. Wynn's question about whether the plot
+says SN2010jl: the full SED plot is SN2023ixf; SN2010jl was used separately for the FUV
+extraction test (a different, brighter SN observed with the FUV grating). Those are two different
+parts of the notebook.
+
+---
+
+### Where is the result of the full pipeline pass?
+
+Two things:
+
+**1. The full 2023ixf reduction** (`notebooks/full_2023ixf.ipynb`):
+This is a single notebook that does everything for one SN and one epoch end to end. You run the
+download cell (fetches the raw files from MAST), then run a single WSL command via subprocess,
+then the coadd and plot cells. The result is a plot showing the full UV-to-optical spectrum
+of SN2023ixf from our own reduction. The notebook also has three paper-driven check cells at the
+bottom that verify the fringe-flat aperture, flag the saturated G430L wavelength range, and
+compare the naive vs scaled coadd.
+
+**2. The automated pipeline** (`scripts/pipeline.py`):
+This is the "run it on any SN with one command" driver. Running `python scripts/pipeline.py`
+from the WORK directory does:
+1. Finds all HST UV SNe (the 140 list)
+2. Picks a STIS CCD epoch for SN2023ixf (the demo target)
+3. Downloads the raw files
+4. Runs the WSL reduction
+5. Coadds the gratings
+6. Saves `output/SN2023ixf_coadd.csv` (the spectrum as a table) and
+   `output/SN2023ixf_coadd.png` (a plot)
+
+The PNG is saved to `output/SN2023ixf_coadd.png` and can be opened directly.
+
+This pipeline is a first pass: it handles STIS only (COS is not wired in yet), uses the naive
+median coadd, and the epoch auto-picker is simple (first visit with all 3 gratings). Those
+are exactly the next-steps items on the list.
+
+---
+
+### Wynn's email -- what he said and what it means for us
+
+**On the inter-grating scaling offset:**
+> "Is this offset present for just the earliest epochs? Might just be the issue with saturated
+> images and the scaling should be ~similar for later epochs."
+
+He is right. Our oezt01 epoch is the early visit from GO-17205, which the paper flags for
+CCD saturation (G430L is saturated across 3178-5022 Å in this visit). The measured G430L
+scaling factor (x0.595) is unreliable because the flux we are anchoring to is partly saturated.
+Once we switch to the main science epochs (days 14-66), the G430L saturation is gone and
+the scaling factors should be close to 1. Action: switch to the day 14/19/24/66 epochs.
+
+**On the COS NUV plot label:**
+> "I'll need to look at this specific observation with you to understand the issue. This is
+> for another SN right? The plot says SN 2010jl."
+
+The confusion is that two different things got mixed together in the email. The COS NUV
+discussion in the email was about SN2023ixf (the COS NUV G230L visit). The SN2010jl mention
+in the plot is from the FUV box-height sweep test, which was done on a completely separate
+bright SN to demonstrate that bright sources behave oppositely to faint ones (bright = wider
+box, faint = narrower). These are two different experiments. In the meeting: clarify that the
+COS NUV coadd discussion is about SN2023ixf; SN2010jl was just the test case for FUV.
+
+**On which 2023ixf epochs to use:**
+> "I would avoid the epochs before 14d and do the complete reduction for all epochs onwards --
+> there should be public data out to as recently as last month for SN 2023ixf. The first epochs
+> had saturation issues and I can send you the 1D files that we can use in the repo instead of
+> re-doing the reduction."
+
+This is a significant scope update. Instead of re-reducing the early (pre-14d) data ourselves,
+Wynn will provide the 1D files for those epochs (they already did the manual extraction to work
+around the saturation). For days 14 onward we should do our own full reduction. This means:
+- Drop oezt01 as the primary science epoch.
+- Ask Wynn for the early-epoch 1D files (days 3-11 from GO-17205).
+- Identify and download the main epochs (days 14, 19, 24, 66) from the MAST archive.
+  These are from the primary program (prop 17315 or similar) at the E1 slit position.
+- Re-run the full reduction on each, stacking them as a time series.
+
+**On the 2D aperture visualization:**
+> "Can we be sure to output visualization plots of the 2-D image with aperture and backgrounds
+> shown? Will help us identify any issues with the extractions."
+
+This already exists in `stis_sandbox.ipynb` as the `show_extraction_regions` function (the
+red extraction aperture + orange background regions overlaid on the 2D raw image). It needs to
+be wired into the automated pipeline so it saves a PNG for every extraction, not just the
+sandbox demo. This is a concrete deliverable to add.

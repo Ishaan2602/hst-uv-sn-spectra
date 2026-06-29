@@ -2,26 +2,36 @@
 
 Log is reverse-chronological: most recent session at the top.
 
-## Current Status: Week 3 (June 26, 2026)
+## Current Status: Week 3 (June 29, 2026)
 * **Core Goal:** a uniformly reduced repository of all HST UV supernova spectra (STIS + COS), our own reduction throughout (trace, background, CR, defringe, coadd), not MAST defaults.
-* **Latest:** full 2023ixf reduction + first automated pipeline done; workspace reorganized into `notebooks/ scripts/ docs/ output/`; reviewed the Bostroem et al. 2024 SN2023ixf paper to validate and refine our defringe + coadd.
+* **Latest:** full 2023ixf reduction + first automated pipeline done; workspace reorganized into `notebooks/ scripts/ docs/ output/`; reviewed the Bostroem et al. 2024 SN2023ixf paper to validate and refine our defringe + coadd; 6/29 PI meeting response received -- scope updated (see open items).
 * Style: slow, careful, interactive.
 
 ---
 
 ## Open items / next steps (decisions to be made with PI / Wynn)
 
-1. **Inter-grating flux scaling in the coadd.** The Bostroem 2024 paper (Sec 2) aligns G430L and G750L to the G230LB flux by a constant percentage, and scales exposures within a visit to the highest-flux (best-centered) one via a first-degree polynomial, then median-combines. Our coadd is a naive median with no scaling, which leaves small steps at the splices. Now demonstrated as a comparison in `full_2023ixf.ipynb` (G430L x0.595, G750L x0.913, anchor G230LB); naive median kept as primary pending the PI's call on the absolute-flux anchoring (the G430L factor is large and edge-measured, so possibly partly an edge artifact).
-2. **SNR weighting / faint-leg handling in the coadd.** Tied to (1): a proper inverse-variance weighted combine would let the faint COS NUV leg contribute instead of being excluded.
-3. **Sigma-clip / flux filter in the COS coadd.** Our 6-exposure NUV median diverges from HASP in ~2150-2350 A (a contaminated NUVA stripe). HASP drops exposures deviating >5% from the coadd median; adding that filter would match HASP.
-4. **COS leg in the automated pipeline.** `pipeline.py` only handles STIS today; add a COS branch.
-5. **SIMBAD/TNS cross-match for the UV-SN catalog.** Classification is proposer-set, so a SN under a non-SN program could be missed and a misclassified object included. A coordinate cross-match cleans both up.
-6. **Systematic reduction of the full catalog.** Loop the pipeline over the 140 SNe in `output/uv_sn_catalog.csv`.
-7. **CMFGEN model comparison.** The science goal: compare our reduced spectra to CMFGEN models for mass-loss rate / CSM radius. Not built yet.
+1. **Switch 2023ixf to main science epochs (days 14-66).** Wynn confirmed: the oezt01 early visit has saturation issues and should NOT be used as the primary product. We should do the full reduction for all epochs from day 14 onward. Wynn will send the early-epoch 1D files (days 3-11) separately to include in the repo without re-reducing. Action: identify the main-program obs IDs (prop likely 17315, E1 slit position, days 14/19/24/66), download, and run the full pipeline on each as a time series.
+2. **2D aperture/background visualization saved per extraction.** Wynn explicitly asked for this: "output visualization plots of the 2-D image with aperture and backgrounds shown -- will help us identify any issues with the extractions." The `show_extraction_regions` function exists in `stis_sandbox.ipynb`; needs to be wired into `pipeline.py` / `reduce_epoch.py` so it saves a PNG for every extraction automatically.
+3. **Inter-grating flux scaling in the coadd.** The Bostroem 2024 paper (Sec 2) aligns G430L and G750L to the G230LB flux by a constant percentage. Our coadd is a naive median. Tried it: G430L x0.595, G750L x0.913 (anchor G230LB). Wynn says the large G430L offset is likely a saturation artifact of the early epoch -- expect factors near 1 for the main science epochs. Revisit after switching to days 14-66.
+4. **SNR weighting / faint-leg handling in the coadd.** A proper inverse-variance weighted combine would let the faint COS NUV leg contribute instead of being excluded.
+5. **Sigma-clip / flux filter in the COS coadd.** Our 6-exposure NUV median diverges from HASP in ~2150-2350 A (a contaminated NUVA stripe). HASP drops exposures deviating >5% from the coadd median; adding that filter would match HASP.
+6. **COS leg in the automated pipeline.** `pipeline.py` only handles STIS today; add a COS branch.
+7. **SIMBAD/TNS cross-match for the UV-SN catalog.** Classification is proposer-set, so a SN under a non-SN program could be missed and a misclassified object included. A coordinate cross-match cleans both up.
+8. **Systematic reduction of the full catalog.** Loop the pipeline over the 140 SNe in `output/uv_sn_catalog.csv`.
+9. **CMFGEN model comparison.** The science goal: compare our reduced spectra to CMFGEN models for mass-loss rate / CSM radius. Not built yet.
 
 ---
 
 ## Daily Log (most recent first)
+
+### 6/29 — PI meeting; Wynn's email response
+Sent Wynn a summary email after the 6/26 session. His response (paraphrased; full text in `extraction_pipeline_guide.md` section 13):
+- **Scaling offset is likely saturation artifact.** The G430L x0.595 factor is probably specific to the saturated oezt01 early epoch, not a real calibration issue. Expect near-1 factors for the main science epochs.
+- **Clarification on COS NUV / SN2010jl:** to clarify in meeting -- the COS NUV discussion is about SN2023ixf; SN2010jl was a separate FUV test case.
+- **Epoch scope update:** do NOT re-reduce the pre-14d data. Wynn will send the early-epoch 1D files directly. For us: do the full reduction on the main epochs (days 14, 19, 24, 66) from the primary program, at the E1 slit position.
+- **2D aperture visualization:** Wynn explicitly asked for PNG outputs of the 2D image with aperture and background regions shown for every extraction. The helper exists (`show_extraction_regions`); needs to be wired into the pipeline.
+- **Agreed next steps:** settle coadd scaling (revisit after switching epochs), add COS to the pipeline, robustify the discovery catalog, loop over all 140 SNe.
 
 ### 6/26 (PM) — Bostroem et al. 2024 paper review; defringe + coadd validation
 Reviewed `docs/2023ixf_paper_review.md` (Circumstellar Interaction in the UV Spectra of SN 2023ixf, Bostroem et al. 2024), focus on Section 2 (Observations and Data Reduction). What it means for our pipeline:
