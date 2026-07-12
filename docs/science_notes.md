@@ -55,3 +55,11 @@
 
 ### Iron (Fe II)
 *(Note: Fe II features heavily in SN spectra across the optical/UV, exact transitions to be appended as needed based on spectral range).*
+
+---
+
+## Instruments: COS vs STIS resolution
+
+* **COS generally has slightly higher spectral resolution than STIS** (in the UV, comparing like-for-like modes). COS was built for faint UV point sources at high throughput/resolution.
+* This higher resolution is why COS is the go-to for resolving the narrow lines of **hot stars** (e.g. hot subdwarfs / OB stars in the Milky Way) and narrow ISM / intergalactic absorption. STIS trades some UV resolution for its much wider wavelength grasp and spatial (long-slit) coverage.
+* Practical takeaway for us: for a compact/point-like SN where we care about narrow features, COS resolves them better; for broad SN features + full NUV-NIR SED coverage, STIS is the workhorse.

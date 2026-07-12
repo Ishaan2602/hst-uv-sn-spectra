@@ -99,6 +99,11 @@ SIMBAD/TNS coordinate cross-match.
 **Product naming quirk:** STIS CCD data taken with CRSPLIT>1 gives `crj` (CR-rejected) and
 `sx1` (1D); MAMA data gives `x1d`. Single CRSPLIT=1 exposures have no `crj` (see 5.).
 
+**New to the obs-ID names and what an "epoch" is?** See `docs/pipeline_phase2.md` (section P2.1)
+for a full plain-language explainer (the rootname anatomy, the three gratings, the CCDFLAT fringe
+flat, and how a "day X" phase maps to an HST visit/program), all worked through our actual 2023ixf
+files. Start there if names like `oezt01040` or the word "epoch" feel arbitrary.
+
 ---
 
 ## 4. STIS reduction
