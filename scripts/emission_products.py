@@ -17,6 +17,7 @@ from scipy.optimize import curve_fit
 from scipy.signal import savgol_filter
 from scipy.special import erf
 import astropy.units as u
+from astropy.io import fits
 from dust_extinction.parameter_averages import F19
 try:
     from specutils import Spectrum
@@ -79,6 +80,63 @@ def load_spec(path, z):
     return w / (1.0 + z), f, e
 
 
+AIR_HALF = 3000.0     # km/s, local fit window half-width around geocoronal Lya (v=-cz)
+AIR_DEG = 2           # local smooth-SN poly degree in the airglow decomposition (deg2==deg3, deg1 under-fits)
+
+def _airglow_bg(native_path, wrest, z):
+    # coadd the sibling per-exposure x1d BACKGROUND onto the native REST grid. geocoronal Lya fills the slit so
+    # it lands in the calstis background array regardless of z - a z-independent airglow locator (bostroem note 1).
+    # the reduction keeps the x1d next to each native; write_1d just drops the column. None if no sibling x1d.
+    xs = sorted(glob.glob(os.path.join(os.path.dirname(native_path), "*_x1d.fits")))
+    if not xs:
+        return None
+    S = []
+    for x in xs:
+        t = fits.getdata(x, 1)
+        wx = np.asarray(t["WAVELENGTH"][0], float) / (1 + z)      # x1d is observed-frame -> rest
+        S.append(np.interp(wrest, wx, np.asarray(t["BACKGROUND"][0], float), left=0.0, right=0.0))
+    return np.median(S, 0)
+
+def _airglow_subtract(w, f, z, bg, half=AIR_HALF, deg=AIR_DEG):
+    # remove geocoronal Lya. two regimes:
+    #  (1) STIS low-res MAMA (G140L/G230L): the airglow shows as a spike in the sibling x1d BACKGROUND -> additive
+    #      decomposition, model = smooth SN (local poly) + alpha*airglow(bg-shaped), subtract ONLY alpha*bg so the
+    #      real SN emission UNDER the airglow survives (a straight bridge inflates the 2023ixf shell / eats 2005ip).
+    #  (2) echelle / COS / flat-bg: the airglow is NOT in the background -> fall back to a narrow velocity notch at
+    #      v=-cz (the pre-bg behavior), only when the airglow is separated from the SN Lya core (|vgeo|>800).
+    v = (w - LYA) / LYA * C_KMS
+    vgeo = -C_KMS * z / (1 + z)
+    if bg is not None:
+        reg = (v > vgeo - half) & (v < vgeo + half) & np.isfinite(bg) & np.isfinite(f)
+        if reg.sum() >= 8 and np.nanmax(bg[reg]) > 0:
+            base = np.nanmedian(bg[reg]); mad = np.nanmedian(np.abs(bg[reg] - base)) + 1e-30
+            if (np.nanmax(bg[reg]) - base) > 5 * mad:            # a real airglow spike is present in the bg
+                bn = np.clip(bg, 0.0, None) / (np.nanmax(bg[reg]) + 1e-30)
+                x = (v - vgeo) / 1000.0
+                A = np.column_stack([np.ones(reg.sum())] + [x[reg] ** p for p in range(1, deg + 1)] + [bn[reg]])
+                coef, *_ = np.linalg.lstsq(A, f[reg], rcond=None)
+                cleaned = f[reg] - coef[-1] * bn[reg]
+                # the bg template is slightly broader/shifted vs the real net airglow residual, so a free alpha
+                # mis-subtracts the core: a positive airglow leaves a negative over-sub spike, a negative airglow
+                # (over-subtracted dip) gets OVER-filled into a spurious positive peak at v=-cz (fake detection).
+                # in the airglow core (bn>0.1) hold the cleaned flux to the smooth SN model +-2*noise: real Lya is
+                # BROAD and lives in `smooth`, only the narrow at-vcz artifact is capped.
+                smooth = (A @ coef) - coef[-1] * bn[reg]
+                sig = float(np.nanstd(f[reg] - (A @ coef)))
+                cc = bn[reg] > 0.1
+                cleaned[cc] = np.clip(cleaned[cc], smooth[cc] - 2.0 * sig, smooth[cc] + 2.0 * sig)
+                out = f.copy(); out[reg] = cleaned
+                return out
+    if abs(vgeo) > 800:                                          # fallback velocity notch (echelle / COS / flat bg)
+        emisw = (v > -8000) & (v < 5000)
+        notch = emisw & (np.abs(v - vgeo) < 350)
+        if notch.any() and (emisw & ~notch).sum() > 2:
+            out = f.copy()
+            out[notch] = np.interp(w[notch], w[emisw & ~notch], f[emisw & ~notch])
+            return out
+    return f
+
+
 def phase_of(p):
     m = re.search(r"day([0-9.]+)", p)
     return float(m.group(1)) if m else np.nan
@@ -90,7 +148,7 @@ def _central_notch(v, fc, emis, lam0, sigma=None, z=0.0):
     # +-650 floor, which over-masked narrow-line IIn and invented flux over a photospheric P-Cygni trough.
     # gate: both flanks must be in emission (>2 sigma) so we never repair a photospheric absorption; a real
     # dip = the central min sits below the outer-flank emission envelope by >2 sigma. detection is local-min
-    # based (a straight-floor over-masked). plus an explicit geocoronal-Lya airglow mask at v=-cz in the FUV.
+    # based (a straight-floor over-masked). geocoronal-Lya airglow is handled upstream now (see _airglow_subtract).
     notch = np.zeros_like(v, bool)
     if sigma is None:
         sigma = float(np.nanstd(fc[emis])) or (0.05 * np.nanmax(fc[emis]))
@@ -113,12 +171,6 @@ def _central_notch(v, fc, emis, lam0, sigma=None, z=0.0):
                 j = ci + 1
                 while j < len(v) and emis[j] and fc[j] < env[j] - 0.5 * sigma and abs(v[j] - v[ci]) < 1400:
                     notch[j] = True; j += 1
-    if lam0 == LYA and z > 0:                           # geocoronal Lya: observed 1215.67 lands at v=-cz (rest)
-        vgeo = -C_KMS * z / (1 + z)
-        if abs(vgeo) > 800:                            # only when airglow is separated from the SN Lya core
-            geo = emis & (np.abs(v - vgeo) < 350); loc = emis & (np.abs(v - vgeo) > 500) & (np.abs(v - vgeo) < 1300)
-            if geo.any() and loc.any() and np.nanmax(np.abs(fc[geo] - np.nanmedian(fc[loc]))) > 3 * sigma:
-                notch |= geo                            # a narrow airglow spike/dip (use the extremum, not the median)
     return notch
 
 
@@ -264,8 +316,9 @@ def _fit_profiles(bf):
                 "coherence": round(coh, 1), "_fits": {}}
     sigma = float(np.nanstd(bf["fc"][bf["contfit"]])) or (0.05 * np.nanmax(ff))
     fits = _fit_models(vv, ff)
+    coh = round(_profile_coherence(vv, ff), 1)      # honest confidence for EVERY epoch (amp/scatter), for the detection gate
     if not fits:
-        return {"models": None, "best_model": None, "pcygni": False, "_fits": {}}
+        return {"models": None, "best_model": None, "pcygni": False, "coherence": coh, "_fits": {}}
     models = {}
     for name, (fn, p) in fits.items():
         ic = _model_ic(vv, ff, fn, p, sigma)
@@ -273,7 +326,7 @@ def _fit_profiles(bf):
             ic["inner_v"] = round(float(p[1] + p[3] - p[4]))    # mu+vc-vin = shell blue edge
         models[name] = ic
     return {"models": models, "best_model": min(models, key=lambda n: models[n]["bic"]),
-            "pcygni": False, "_fits": fits}
+            "pcygni": False, "coherence": coh, "_fits": fits}
 
 
 def _edge_flux_frac(bf, ew=2000.0):
@@ -482,10 +535,11 @@ def compute_emission(sn):
                 mg2_prof.append((ph, bf["v"][bf["emis"]], bf["fc"][bf["emis"]]))
         if w.min() < 1185 and w.max() > 1270 and ("ly", round(ph)) not in seen:
             seen.add(("ly", round(ph)))
-            bf = bostroem_flux(w, f, e=e, lam0=LYA, vline=(-8000, 5000), deg=0, vabs=800, vcont=(-13000, 13000), z=z)
+            fly = _airglow_subtract(w, f, z, _airglow_bg(pth, w, z))    # remove geocoronal Lya via the x1d background
+            bf = bostroem_flux(w, fly, e=e, lam0=LYA, vline=(-8000, 5000), deg=0, vabs=800, vcont=(-13000, 13000), z=z)
             prof = _fit_profiles(bf)       # same 4-model selection on Lya (kwok validated there too)
-            vphot = _vphot_normalized(w, f, LYA) if (prof and prof.get("pcygni")) else None
-            syst = _flux_syst(w, f, LYA, (-8000, 5000), (-13000, 13000), 0, bf["F"])
+            vphot = _vphot_normalized(w, fly, LYA) if (prof and prof.get("pcygni")) else None
+            syst = _flux_syst(w, fly, LYA, (-8000, 5000), (-13000, 13000), 0, bf["F"])
             rec = _emis_rec(bf, ph, instr, prof, vphot, syst)
             if rec:
                 lya.append(rec)

@@ -1,7 +1,7 @@
 {
   "sn": "SN2026AYT",
   "sn_type": "SN II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.0036,
@@ -29,7 +29,7 @@
         "edge_flux_frac": 0.31,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 25.4,
         "v_phot_kms": null,
         "best_model": "kwok",
         "models": {
@@ -93,7 +93,7 @@
         "edge_flux_frac": 0.44,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 25.7,
         "v_phot_kms": null,
         "best_model": "kwok",
         "models": {
@@ -157,7 +157,7 @@
         "edge_flux_frac": 0.29,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 16.8,
         "v_phot_kms": null,
         "best_model": "kwok",
         "models": {
@@ -212,22 +212,6 @@
         }
       }
     ],
-    "lya": [
-      {
-        "phase": 14.0,
-        "flux": 3.2,
-        "flux_err": 0.9,
-        "flux_err_photon": 0.9,
-        "instr": "G140L",
-        "flux_reliable": false,
-        "edge_flux_frac": 0.11,
-        "pcygni": true,
-        "pcygni_reason": "low_snr",
-        "coherence": 3.1,
-        "v_phot_kms": null,
-        "best_model": null,
-        "models": null
-      }
-    ]
+    "lya": []
   }
 }

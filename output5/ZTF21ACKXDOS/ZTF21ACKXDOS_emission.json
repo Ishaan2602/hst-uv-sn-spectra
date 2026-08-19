@@ -1,7 +1,7 @@
 {
   "sn": "ZTF21ACKXDOS",
   "sn_type": "SLSN-II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.018,
@@ -29,7 +29,7 @@
         "edge_flux_frac": 0.09,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 8.8,
         "v_phot_kms": null,
         "best_model": "skew",
         "models": {

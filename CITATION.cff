@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use these data or this pipeline, please cite as:"
 title: "HST UV Supernova Spectra"
-version: "0.1.0"
-date-released: "2026-08-18"
+version: "0.2.0"
+date-released: "2026-08-19"
 repository-code: "https://github.com/Ishaan2602/hst-uv-sn-spectra"
 license: BSD-3-Clause
 abstract: >

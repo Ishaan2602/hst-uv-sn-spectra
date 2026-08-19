@@ -1,7 +1,7 @@
 {
   "sn": "SN1999EM",
   "sn_type": "SN II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.002,
@@ -44,7 +44,7 @@
         "edge_flux_frac": 0.33,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 6.3,
         "v_phot_kms": null,
         "best_model": "lorentzian",
         "models": {
@@ -110,7 +110,7 @@
         "edge_flux_frac": 0.01,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 1.9,
         "v_phot_kms": null,
         "best_model": "lorentzian",
         "models": {
@@ -174,7 +174,7 @@
         "edge_flux_frac": 0.01,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 1.8,
         "v_phot_kms": null,
         "best_model": "lorentzian",
         "models": {

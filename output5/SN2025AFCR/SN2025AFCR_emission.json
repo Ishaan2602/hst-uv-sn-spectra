@@ -1,7 +1,7 @@
 {
   "sn": "SN2025AFCR",
   "sn_type": "SLSN-I",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.1335,
@@ -61,7 +61,7 @@
         "edge_flux_frac": 0.14,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 5.9,
         "v_phot_kms": null,
         "best_model": "gaussian",
         "models": {
@@ -125,7 +125,7 @@
         "edge_flux_frac": 0.02,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 13.4,
         "v_phot_kms": null,
         "best_model": "lorentzian",
         "models": {

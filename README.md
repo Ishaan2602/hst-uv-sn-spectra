@@ -58,6 +58,10 @@ output5/
   absorption_summary.csv                       # catalog-level ISM fit results
 ```
 
+Each epoch coadd also ships as a `.fits` alongside the `.txt`, and per-SN
+diagnostic plots (`.png`: extraction traces, coadds, time series, line fits) sit
+in the same tree.
+
 ---
 
 ## Catalog

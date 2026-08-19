@@ -1,7 +1,7 @@
 {
   "sn": "SN2024GGI",
   "sn_type": "SN II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.002196,
@@ -44,7 +44,7 @@
         "edge_flux_frac": 0.79,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 16.8,
         "v_phot_kms": null,
         "best_model": "lorentzian",
         "models": {
@@ -102,15 +102,15 @@
     "lya": [
       {
         "phase": 232.0,
-        "flux": 32.6,
+        "flux": 20.7,
         "flux_err": 4.0,
         "flux_err_photon": 3.3,
         "instr": "G140L",
         "flux_reliable": false,
-        "edge_flux_frac": 0.08,
+        "edge_flux_frac": 0.18,
         "pcygni": true,
         "pcygni_reason": "low_snr",
-        "coherence": 4.5,
+        "coherence": 5.2,
         "v_phot_kms": null,
         "best_model": null,
         "models": null

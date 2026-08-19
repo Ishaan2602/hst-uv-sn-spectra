@@ -1,7 +1,7 @@
 {
   "sn": "SN1993J-STIS",
   "sn_type": "SN IIb",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.000113,
@@ -29,7 +29,7 @@
         "edge_flux_frac": 0.6,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 31.6,
         "v_phot_kms": null,
         "best_model": "kwok",
         "models": {
@@ -93,7 +93,7 @@
         "edge_flux_frac": 0.55,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 21.2,
         "v_phot_kms": null,
         "best_model": "kwok",
         "models": {
@@ -151,33 +151,131 @@
     "lya": [
       {
         "phase": 1846.0,
-        "flux": 191.2,
+        "flux": 198.8,
         "flux_err": 84.4,
         "flux_err_photon": 1.7,
         "instr": "G140L",
-        "flux_reliable": false,
+        "flux_reliable": true,
         "edge_flux_frac": 1.01,
-        "pcygni": true,
-        "pcygni_reason": "photospheric",
-        "coherence": 23.7,
-        "v_phot_kms": -15299,
-        "best_model": null,
-        "models": null
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": 20.5,
+        "v_phot_kms": null,
+        "best_model": "lorentzian",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              -9000.0,
+              11055.78
+            ],
+            "k": 3,
+            "bic": -6038.2,
+            "aicc": -6045.4,
+            "redchi2": 2.05
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              -9000.0,
+              8846.91
+            ],
+            "k": 3,
+            "bic": -6043.2,
+            "aicc": -6050.5,
+            "redchi2": 1.94
+          },
+          "skew": {
+            "params": [
+              0.0,
+              -9000.0,
+              12000.0,
+              -0.44
+            ],
+            "k": 4,
+            "bic": -6036.1,
+            "aicc": -6045.6,
+            "redchi2": 2.02
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              -2432.57,
+              8066.42,
+              1007.23,
+              6386.95
+            ],
+            "k": 5,
+            "bic": -6037.8,
+            "aicc": -6049.6,
+            "redchi2": 1.91,
+            "inner_v": -7812
+          }
+        }
       },
       {
         "phase": 2578.0,
-        "flux": 88.5,
+        "flux": 93.4,
         "flux_err": 28.8,
         "flux_err_photon": 1.5,
         "instr": "G140L",
-        "flux_reliable": false,
+        "flux_reliable": true,
         "edge_flux_frac": 0.6,
-        "pcygni": true,
-        "pcygni_reason": "photospheric",
-        "coherence": 19.2,
-        "v_phot_kms": -15304,
-        "best_model": null,
-        "models": null
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": 18.3,
+        "v_phot_kms": null,
+        "best_model": "gaussian",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              -1041.73,
+              12000.0
+            ],
+            "k": 3,
+            "bic": -6252.9,
+            "aicc": -6260.1,
+            "redchi2": 2.27
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              -850.09,
+              12000.0
+            ],
+            "k": 3,
+            "bic": -6248.0,
+            "aicc": -6255.3,
+            "redchi2": 2.39
+          },
+          "skew": {
+            "params": [
+              0.0,
+              -1039.51,
+              12000.0,
+              -0.0
+            ],
+            "k": 4,
+            "bic": -6248.4,
+            "aicc": -6257.9,
+            "redchi2": 2.3
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              -1550.27,
+              8432.84,
+              -42.4,
+              6418.46
+            ],
+            "k": 5,
+            "bic": -6249.4,
+            "aicc": -6261.3,
+            "redchi2": 2.19,
+            "inner_v": -8011
+          }
+        }
       },
       {
         "phase": 6943.0,
@@ -189,7 +287,7 @@
         "edge_flux_frac": 0.21,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 5.3,
         "v_phot_kms": null,
         "best_model": "skew",
         "models": {

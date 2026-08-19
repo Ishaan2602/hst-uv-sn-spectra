@@ -1,7 +1,7 @@
 {
   "sn": "SN2001EP",
   "sn_type": "SN Ia",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.013,
@@ -19,71 +19,6 @@
   },
   "emission": {
     "mg2": [],
-    "lya": [
-      {
-        "phase": 31.0,
-        "flux": 2.3,
-        "flux_err": 0.9,
-        "flux_err_photon": 0.5,
-        "instr": "G140L",
-        "flux_reliable": true,
-        "edge_flux_frac": 0.08,
-        "pcygni": false,
-        "pcygni_reason": null,
-        "coherence": null,
-        "v_phot_kms": null,
-        "best_model": "skew",
-        "models": {
-          "gaussian": {
-            "params": [
-              0.0,
-              -5062.46,
-              1430.85
-            ],
-            "k": 3,
-            "bic": -6479.1,
-            "aicc": -6486.2,
-            "redchi2": 12.39
-          },
-          "lorentzian": {
-            "params": [
-              0.0,
-              -4145.11,
-              300.0
-            ],
-            "k": 3,
-            "bic": -6533.4,
-            "aicc": -6540.5,
-            "redchi2": 6.64
-          },
-          "skew": {
-            "params": [
-              0.0,
-              -3460.65,
-              500.0,
-              -20.0
-            ],
-            "k": 4,
-            "bic": -6545.0,
-            "aicc": -6554.4,
-            "redchi2": 5.59
-          },
-          "kwok": {
-            "params": [
-              0.0,
-              -1789.16,
-              6693.18,
-              2705.21,
-              6759.55
-            ],
-            "k": 5,
-            "bic": -6468.7,
-            "aicc": -6480.3,
-            "redchi2": 12.91,
-            "inner_v": -5843
-          }
-        }
-      }
-    ]
+    "lya": []
   }
 }

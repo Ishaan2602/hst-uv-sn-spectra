@@ -21,6 +21,7 @@ __pycache__/
 # OS junk
 .DS_Store
 Thumbs.db
+nul
 
 # secrets (TNS bot credentials etc.) -- never commit
 .env
@@ -40,6 +41,9 @@ spectra_validations/
 memory/
 output_redesign_test/
 
+# proposal / mentor-facing figures -- not part of the release
+proposal_figure1.png
+
 # IDE and local tooling
 .vscode/
 .venv*/
@@ -56,6 +60,8 @@ output4/
 .github/copilot-instructions.md
 .claudeignore
 
-# binary outputs in canonical tree -- txt spectra are released instead
-output5/**/*.fits
-output5/**/*.png
+# investigation / one-off / mentor scripts -- kept locally, not released
+scripts/archive/
+
+# run logs in the canonical tree -- console dumps, not data products
+output5/**/*.log

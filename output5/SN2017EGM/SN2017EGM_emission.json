@@ -1,7 +1,7 @@
 {
   "sn": "SN2017EGM",
   "sn_type": "SLSN-I",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.031,
@@ -29,7 +29,7 @@
         "edge_flux_frac": 0.21,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 19.5,
         "v_phot_kms": null,
         "best_model": "skew",
         "models": {

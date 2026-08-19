@@ -1,7 +1,7 @@
 {
   "sn": "ZTF21AAABWZX",
   "sn_type": "SN Ia-CSM",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.046,
@@ -76,7 +76,7 @@
         "edge_flux_frac": 0.18,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 4.0,
         "v_phot_kms": null,
         "best_model": "gaussian",
         "models": {

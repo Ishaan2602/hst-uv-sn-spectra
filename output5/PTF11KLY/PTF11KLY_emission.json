@@ -1,7 +1,7 @@
 {
   "sn": "PTF11KLY",
   "sn_type": "SN Ia",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.000804,
@@ -89,7 +89,7 @@
         "edge_flux_frac": 0.19,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 5.9,
         "v_phot_kms": null,
         "best_model": "gaussian",
         "models": {
@@ -144,22 +144,6 @@
         }
       }
     ],
-    "lya": [
-      {
-        "phase": 21.0,
-        "flux": 1.8,
-        "flux_err": 0.5,
-        "flux_err_photon": 0.6,
-        "instr": "G140L",
-        "flux_reliable": false,
-        "edge_flux_frac": 0.12,
-        "pcygni": true,
-        "pcygni_reason": "low_snr",
-        "coherence": 3.4,
-        "v_phot_kms": null,
-        "best_model": null,
-        "models": null
-      }
-    ]
+    "lya": []
   }
 }

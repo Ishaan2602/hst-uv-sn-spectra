@@ -1,7 +1,7 @@
 {
   "sn": "AT2022ACKO",
   "sn_type": "SN II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-19",
   "flags": [],
   "provenance": {
     "z": 0.0053,
@@ -68,39 +68,39 @@
     "lya": [
       {
         "phase": 18.0,
-        "flux": 2.6,
-        "flux_err": 2.2,
+        "flux": 2.8,
+        "flux_err": 0.9,
         "flux_err_photon": 0.5,
         "instr": "G140L",
         "flux_reliable": true,
         "edge_flux_frac": 0.02,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": null,
+        "coherence": 4.3,
         "v_phot_kms": null,
         "best_model": "skew",
         "models": {
           "gaussian": {
             "params": [
               0.0,
-              -5589.57,
+              -5589.24,
               500.0
             ],
             "k": 3,
-            "bic": -6202.2,
-            "aicc": -6209.2,
-            "redchi2": 1.75
+            "bic": -6556.6,
+            "aicc": -6563.9,
+            "redchi2": 1.88
           },
           "lorentzian": {
             "params": [
               0.0,
-              -5420.19,
+              -5420.07,
               300.0
             ],
             "k": 3,
-            "bic": -6216.2,
-            "aicc": -6223.3,
-            "redchi2": 1.49
+            "bic": -6569.7,
+            "aicc": -6577.0,
+            "redchi2": 1.63
           },
           "skew": {
             "params": [
@@ -110,22 +110,22 @@
               -20.0
             ],
             "k": 4,
-            "bic": -6224.6,
-            "aicc": -6233.9,
-            "redchi2": 1.3
+            "bic": -6576.5,
+            "aicc": -6586.1,
+            "redchi2": 1.46
           },
           "kwok": {
             "params": [
               0.0,
-              -2466.5,
-              3667.32,
-              3508.63,
-              6501.14
+              -2306.42,
+              3751.8,
+              3316.45,
+              6469.04
             ],
             "k": 5,
-            "bic": -6194.0,
-            "aicc": -6205.5,
-            "redchi2": 1.78,
+            "bic": -6546.8,
+            "aicc": -6558.6,
+            "redchi2": 1.94,
             "inner_v": -5459
           }
         }
