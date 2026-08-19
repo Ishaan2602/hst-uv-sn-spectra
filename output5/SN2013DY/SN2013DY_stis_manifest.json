@@ -1,0 +1,158 @@
+{
+ "sn": "SN2013DY",
+ "z": 0.004,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2013-07-21_day11": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-07-21_day12": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-07-25_day16": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-07-25_day16": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-07-27_day17": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-07-27_day17": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-07-29_day19": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-07-29_day19": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-01_day23": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-01_day23": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-05_day26": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-05_day27": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-09_day30": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-09_day30": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-11_day32": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-11_day32": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-14_day36": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-15_day36": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-08-17_day39": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-08-17_day39": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

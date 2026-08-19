@@ -1,0 +1,17 @@
+{
+ "sn": "AT2025SCW",
+ "z": 0.01,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-07-31_day7": {
+   "gratings": [
+    "G430L",
+    "G750L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,28 @@
+{
+ "sn": "2022MOX",
+ "z": 0.0236798112422114,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2022-07-08_day26": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "oeax07030",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "oeax07040",
+   "grating": "G750L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

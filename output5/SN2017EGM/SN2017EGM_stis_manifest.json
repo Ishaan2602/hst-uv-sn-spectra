@@ -1,0 +1,22 @@
+{
+ "sn": "SN2017EGM",
+ "z": 0.031,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2017-06-23_day30": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2017-06-23_day30": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

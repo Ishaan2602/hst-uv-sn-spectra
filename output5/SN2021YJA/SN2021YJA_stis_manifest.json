@@ -1,0 +1,35 @@
+{
+ "sn": "SN2021YJA",
+ "z": 0.005307,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2021-09-16_day8": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2021-09-21_day13": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2021-09-28_day20": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

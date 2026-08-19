@@ -1,0 +1,22 @@
+{
+ "sn": "SN-UG8189",
+ "z": 0.025068,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2012-04-09_day13": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2012-04-13_day18": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

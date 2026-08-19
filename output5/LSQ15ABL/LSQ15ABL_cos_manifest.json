@@ -1,0 +1,22 @@
+{
+ "sn": "LSQ15ABL",
+ "z": 0.087,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2015-04-27": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2015-04-28": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

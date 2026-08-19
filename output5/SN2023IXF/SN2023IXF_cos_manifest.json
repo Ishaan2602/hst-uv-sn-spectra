@@ -1,0 +1,15 @@
+{
+ "sn": "SN2023IXF",
+ "z": 0.00087,
+ "instrument": "COS",
+ "epochs": {
+  "NUV/2023-12-18_day214": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

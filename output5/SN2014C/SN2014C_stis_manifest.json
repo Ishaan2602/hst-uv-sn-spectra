@@ -1,0 +1,16 @@
+{
+ "sn": "SN2014C",
+ "z": 0.003,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2015-08-22_day595": {
+   "gratings": [
+    "G430L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

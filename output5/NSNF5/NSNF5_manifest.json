@@ -1,0 +1,25 @@
+{
+ "sn": "NSNF5",
+ "instruments": {
+  "STIS": {
+   "z": 0.0202828790186173
+  }
+ },
+ "epochs": {
+  "CCD/2003-03-24_day13": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2003-03-24_day13": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

@@ -1,0 +1,33 @@
+{
+ "sn": "SN2024XRX",
+ "z": 0.037376,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2024-10-17_day7": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  },
+  "CCD/2024-10-18_day8": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "of8b06020",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 2.3
+  }
+ ]
+}

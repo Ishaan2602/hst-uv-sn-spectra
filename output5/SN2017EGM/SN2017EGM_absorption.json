@@ -1,0 +1,50 @@
+{
+  "sn": "SN2017EGM",
+  "sn_type": "SLSN-I",
+  "generated": "2026-08-18",
+  "provenance": {
+    "z": 0.031,
+    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+    "b_kms": 65.8,
+    "columns": {
+      "Fe II": {
+        "logN": 14.84,
+        "err": 0.04,
+        "method": "CoG",
+        "note": "day30 anchored 6 lines"
+      },
+      "Mn II": {
+        "logN": 13.47,
+        "err": 0.07,
+        "method": "CoG",
+        "note": "day30"
+      }
+    },
+    "N_HI": {
+      "logN": 19.7,
+      "err": 0.3,
+      "method": "damped Lya continuum-backlight fit",
+      "note": "day30 FUV continuum; narrow trough (weaker damping) -> larger N uncertainty; vabs=-225"
+    },
+    "metallicity": {
+      "[Fe/H]": {
+        "value": -0.36,
+        "err": 0.3,
+        "method": "N(Fe)-N(HI)-solar",
+        "note": "iron + dust depletion (lower limit on true Z)"
+      },
+      "[Mn/H]": {
+        "value": 0.34,
+        "err": 0.3,
+        "method": "N(Mn)-N(HI)-solar",
+        "note": ""
+      }
+    },
+    "depletion": null
+  }
+}

@@ -1,0 +1,28 @@
+{
+ "sn": "AT2024WPP",
+ "instruments": {
+  "STIS": {
+   "z": 0.08678
+  },
+  "COS": {
+   "z": 0.08678
+  }
+ },
+ "epochs": {
+  "MAMA/2024-10-17_day21": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2024-10-16_day20": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

@@ -1,0 +1,19 @@
+{
+ "sn": "SN2012ET",
+ "instruments": {
+  "STIS": {
+   "z": 0.025
+  }
+ },
+ "epochs": {
+  "CCD/2012-10-01_day20": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

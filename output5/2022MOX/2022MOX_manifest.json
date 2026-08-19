@@ -1,0 +1,18 @@
+{
+ "sn": "2022MOX",
+ "instruments": {
+  "STIS": {
+   "z": 0.0236798112422114
+  }
+ },
+ "epochs": {
+  "MAMA/2022-07-08_day26": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

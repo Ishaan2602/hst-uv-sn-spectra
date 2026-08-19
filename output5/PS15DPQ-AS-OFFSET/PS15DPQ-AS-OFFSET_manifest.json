@@ -1,0 +1,18 @@
+{
+ "sn": "PS15DPQ-AS-OFFSET",
+ "instruments": {
+  "STIS": {
+   "z": 0.038
+  }
+ },
+ "epochs": {
+  "MAMA/2017-11-25_day698": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 0
+}

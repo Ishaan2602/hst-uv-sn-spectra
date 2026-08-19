@@ -1,0 +1,22 @@
+{
+ "sn": "ZTF21AAKILYD",
+ "z": 0.084,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2021-02-18_day7": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2021-02-22_day11": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

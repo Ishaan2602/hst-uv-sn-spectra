@@ -1,0 +1,15 @@
+{
+ "sn": "ZTF21ACKXDOS",
+ "z": 0.018,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2022-04-11_day159": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

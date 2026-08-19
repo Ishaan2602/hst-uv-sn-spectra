@@ -1,0 +1,28 @@
+{
+ "sn": "SN2025BCO",
+ "z": 0.036,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-02-13_day5": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "ofhg03010",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "ofhg03020",
+   "grating": "G750L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

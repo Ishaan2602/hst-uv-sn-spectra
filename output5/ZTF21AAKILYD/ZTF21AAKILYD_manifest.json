@@ -1,0 +1,42 @@
+{
+ "sn": "ZTF21AAKILYD",
+ "instruments": {
+  "STIS": {
+   "z": 0.084
+  },
+  "COS": {
+   "z": 0.084
+  }
+ },
+ "epochs": {
+  "MAMA/2021-02-18_day7": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2021-02-22_day11": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2021-02-18_day7": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2021-02-24_day13": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 3
+}

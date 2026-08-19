@@ -1,0 +1,38 @@
+[
+ {
+  "epoch": "2010-10-15_day4",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2010-10-20_day9",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2010-10-20_day9",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2010-10-26_day14",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2010-10-26_day14",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2010-10-31_day20",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ }
+]

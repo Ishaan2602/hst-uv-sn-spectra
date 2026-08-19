@@ -1,0 +1,40 @@
+{
+ "sn": "SN2010AL",
+ "z": 0.017,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2010-03-28_day16": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2010-04-07_day26": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2010-04-07_day26": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2010-05-10_day58": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

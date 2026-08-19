@@ -1,0 +1,22 @@
+{
+ "sn": "SN2025AFCR",
+ "z": 0.1335,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2025-12-19_day25": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2026-01-02_day39": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,35 @@
+{
+ "sn": "SN2017EGM",
+ "instruments": {
+  "STIS": {
+   "z": 0.031
+  },
+  "COS": {
+   "z": 0.031
+  }
+ },
+ "epochs": {
+  "MAMA/2017-06-23_day30": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2017-06-23_day30": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "FUV/2017-06-23_day30": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

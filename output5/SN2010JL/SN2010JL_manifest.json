@@ -1,0 +1,92 @@
+{
+ "sn": "SN2010JL",
+ "instruments": {
+  "STIS": {
+   "z": 0.011
+  },
+  "COS": {
+   "z": 0.011
+  }
+ },
+ "epochs": {
+  "CCD/2010-11-11_day9": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2010-11-22_day19": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2011-01-23_day82": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2012-05-03_day548": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2012-05-03_day548": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2014-03-11_day1225": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2015-04-09_day1618": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  },
+  "FUV/2010-11-22_day19": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2011-01-23_day82": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2012-06-20_day595": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 7
+}

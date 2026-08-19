@@ -1,0 +1,29 @@
+{
+ "sn": "SN2014C",
+ "instruments": {
+  "STIS": {
+   "z": 0.003
+  },
+  "COS": {
+   "z": 0.003
+  }
+ },
+ "epochs": {
+  "CCD/2015-08-22_day595": {
+   "gratings": [
+    "G430L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "FUV/2015-10-22_day655": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": true
+  }
+ },
+ "n_epochs": 2
+}

@@ -1,0 +1,19 @@
+{
+ "sn": "SN2024BCH",
+ "instruments": {
+  "STIS": {
+   "z": 0.003839
+  }
+ },
+ "epochs": {
+  "CCD/2024-02-08_day10": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

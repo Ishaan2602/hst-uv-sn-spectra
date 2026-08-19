@@ -1,0 +1,16 @@
+{
+ "sn": "ZTF21ACKXDOS",
+ "z": 0.018,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2022-04-11_day159": {
+   "gratings": [
+    "G160M",
+    "G130M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

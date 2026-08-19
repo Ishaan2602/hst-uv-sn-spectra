@@ -1,0 +1,20 @@
+{
+ "sn": "SN2025ADJ",
+ "instruments": {
+  "STIS": {
+   "z": 0.011389
+  }
+ },
+ "epochs": {
+  "CCD/2025-01-30_day6": {
+   "gratings": [
+    "G430L",
+    "G750L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

@@ -1,0 +1,15 @@
+{
+ "sn": "SN2017EGM",
+ "z": 0.031,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2017-06-23_day30": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

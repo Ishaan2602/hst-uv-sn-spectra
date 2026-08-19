@@ -1,0 +1,56 @@
+{
+ "sn": "PTF12GZK",
+ "instruments": {
+  "STIS": {
+   "z": 0.014
+  }
+ },
+ "epochs": {
+  "MAMA/2012-08-06": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2012-08-07": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2012-08-10": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2012-08-11": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2012-08-15": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2012-08-15": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 5
+}

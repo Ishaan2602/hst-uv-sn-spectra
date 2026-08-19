@@ -1,0 +1,22 @@
+{
+ "sn": "PTF12ENA",
+ "z": 0.0166,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2012-06-04_day13": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2012-06-17_day26": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

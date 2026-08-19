@@ -1,0 +1,15 @@
+{
+ "sn": "ASASSN-15LH",
+ "z": 0.2326,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2015-12-29_day199": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

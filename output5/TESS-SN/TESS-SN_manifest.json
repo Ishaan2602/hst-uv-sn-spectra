@@ -1,0 +1,73 @@
+{
+ "sn": "TESS-SN",
+ "instruments": {
+  "STIS": {
+   "z": 0.007522
+  },
+  "COS": {
+   "z": 0.007522
+  }
+ },
+ "epochs": {
+  "CCD/2020-04-03_day3": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2020-04-04_day4": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2020-04-04_day5": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2020-04-11_day11": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2020-04-11_day11": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2020-04-17_day17": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2020-04-17_day17": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "FUV/2020-04-04_day5": {
+   "gratings": [
+    "G160M",
+    "G130M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": true
+  }
+ },
+ "n_epochs": 4
+}

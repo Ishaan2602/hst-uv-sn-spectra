@@ -1,0 +1,33 @@
+{
+ "sn": "SNAT2018AGK",
+ "instruments": {
+  "STIS": {
+   "z": 0.026128
+  }
+ },
+ "epochs": {
+  "MAMA/2018-03-19_day9": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2018-03-24_day14": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2018-03-24_day14": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

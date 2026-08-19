@@ -1,0 +1,32 @@
+[
+ {
+  "epoch": "2001-04-18_day-7198",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-04-18_day-7198",
+  "detector": "CCD",
+  "grating": "G750M",
+  "scale": "none"
+ },
+ {
+  "epoch": "2021-01-20_day19",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2021-01-20_day19",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2021-01-20_day19",
+  "detector": "CCD",
+  "grating": "G750L",
+  "scale": "none"
+ }
+]

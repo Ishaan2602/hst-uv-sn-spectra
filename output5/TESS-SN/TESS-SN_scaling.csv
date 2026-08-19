@@ -1,0 +1,10 @@
+epoch,detector,grating,scale,slope,intercept,factor
+2020-04-03_day3,CCD,G230LB,none,None,None,None
+2020-04-03_day3,CCD,G430L,none,None,None,None
+2020-04-04_day4,CCD,G230LB,none,None,None,None
+2020-04-04_day4,CCD,G430L,none,None,None,None
+2020-04-04_day5,MAMA,G230L,none,None,None,None
+2020-04-11_day11,MAMA,G230L,none,None,None,None
+2020-04-11_day11,CCD,G430L,none,None,None,None
+2020-04-17_day17,MAMA,G230L,none,None,None,None
+2020-04-17_day17,CCD,G430L,none,None,None,None

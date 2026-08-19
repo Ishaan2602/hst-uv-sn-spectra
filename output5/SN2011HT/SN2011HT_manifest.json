@@ -1,0 +1,20 @@
+{
+ "sn": "SN2011HT",
+ "instruments": {
+  "STIS": {
+   "z": 0.004
+  }
+ },
+ "epochs": {
+  "MAMA/2011-12-26_day88": {
+   "gratings": [
+    "G230L",
+    "G230M",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

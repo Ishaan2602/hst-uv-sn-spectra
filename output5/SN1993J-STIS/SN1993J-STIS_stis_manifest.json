@@ -1,0 +1,36 @@
+{
+ "sn": "SN1993J-STIS",
+ "z": 0.000113,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/1998-04-17_day1846": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/1998-02-21_day1792": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2000-04-18_day2578": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2000-04-24_day2584": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

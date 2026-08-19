@@ -1,0 +1,17 @@
+{
+ "sn": "ZTF24ABYMEET",
+ "z": 0.0263,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-05-09_day152": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

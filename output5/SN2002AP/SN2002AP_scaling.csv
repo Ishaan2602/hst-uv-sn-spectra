@@ -1,0 +1,13 @@
+epoch,detector,grating,scale,slope,intercept,factor
+2002-02-01_day4,CCD,G430L,none,None,None,None
+2002-02-01_day4,CCD,G230LB,none,None,None,None
+2002-02-01_day4,MAMA,G140L,none,None,None,None
+2002-02-11_day14,CCD,G430L,none,None,None,None
+2002-02-11_day14,MAMA,G140L,none,None,None,None
+2002-02-13_day16,CCD,G230LB,none,None,None,None
+2002-08-25_day209,CCD,G430L,none,None,None,None
+2002-08-25_day209,MAMA,G140L,none,None,None,None
+2002-08-28_day211,MAMA,G230L,none,None,None,None
+2003-01-06_day343,CCD,G430L,none,None,None,None
+2003-01-06_day343,MAMA,G140L,none,None,None,None
+2003-01-09_day346,MAMA,G230L,none,None,None,None

@@ -1,0 +1,38 @@
+[
+ {
+  "epoch": "2001-10-27_day25",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-10-27_day25",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-10-27_day25",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-11-02_day31",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-11-02_day31",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2001-11-03_day32",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ }
+]

@@ -1,0 +1,39 @@
+{
+ "sn": "SN2017CBV",
+ "instruments": {
+  "STIS": {
+   "z": 0.004
+  }
+ },
+ "epochs": {
+  "MAMA/2017-03-30_day20": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2017-03-22_day13": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2017-03-24_day15": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2017-03-26_day17": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 4
+}

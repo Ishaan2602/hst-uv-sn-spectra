@@ -1,0 +1,15 @@
+{
+ "sn": "SN2018BSZ",
+ "z": 0.027,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2018-06-25_day40": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

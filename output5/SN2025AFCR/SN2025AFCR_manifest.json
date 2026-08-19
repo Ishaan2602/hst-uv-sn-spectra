@@ -1,0 +1,56 @@
+{
+ "sn": "SN2025AFCR",
+ "instruments": {
+  "STIS": {
+   "z": 0.1335
+  },
+  "COS": {
+   "z": 0.1335
+  }
+ },
+ "epochs": {
+  "CCD/2025-12-20_day26": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2025-12-20_day26": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2026-01-01_day38": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2026-01-01_day38": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2025-12-19_day25": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2026-01-02_day39": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 4
+}

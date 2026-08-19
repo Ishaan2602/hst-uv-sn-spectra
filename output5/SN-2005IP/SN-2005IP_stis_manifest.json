@@ -1,0 +1,24 @@
+{
+ "sn": "SN-2005IP",
+ "z": 0.007,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2014-03-28_day3065": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2017-10-21_day4369": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": []
+}

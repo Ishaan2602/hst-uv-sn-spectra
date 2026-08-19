@@ -1,0 +1,23 @@
+{
+ "sn": "SN2021HIZ",
+ "z": 0.003,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2021-04-19_day21": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2021-04-19_day21": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

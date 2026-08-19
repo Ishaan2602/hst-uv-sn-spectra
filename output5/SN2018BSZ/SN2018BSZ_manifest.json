@@ -1,0 +1,35 @@
+{
+ "sn": "SN2018BSZ",
+ "instruments": {
+  "STIS": {
+   "z": 0.027
+  },
+  "COS": {
+   "z": 0.027
+  }
+ },
+ "epochs": {
+  "MAMA/2018-06-25_day40": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2018-06-25_day40": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2018-07-20_day64": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

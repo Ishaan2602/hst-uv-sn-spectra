@@ -1,0 +1,25 @@
+{
+ "sn": "SN2009IP",
+ "z": 0.006,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2012-10-29_day1160": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2014-10-02_day1863": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": []
+}

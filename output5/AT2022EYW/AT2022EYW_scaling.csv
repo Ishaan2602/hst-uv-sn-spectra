@@ -1,0 +1,4 @@
+epoch,detector,grating,scale,slope,intercept,factor
+2022-04-12_day21,MAMA,G230L,none,None,None,None
+2022-04-12_day21,CCD,G430L,none,None,None,None
+2022-04-12_day21,CCD,G750L,none,None,None,None

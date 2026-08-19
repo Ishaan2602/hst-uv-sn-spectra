@@ -1,0 +1,22 @@
+# CSM / flash-ionization line list (TENTATIVE - not yet finalized).
+# These are the narrow high-ionization EMISSION features seen in the first days of interacting
+# Type II SNe (flash spectroscopy), from SN 2023ixf work (Bostroem et al. 2024, Zimmerman et al.
+# 2024, Jacobson-Galan et al. 2023) plus the standard CSM-interaction UV lines. Kept SEPARATE from
+# the ISM absorption list because these are emission, phase-dependent (fade within days-weeks), and
+# the exact set/wavelengths still need to be pinned per-species before we use them quantitatively.
+# Treat everything here as provisional; verify rest wavelengths + which are real vs blends before
+# any measurement. type: emission unless noted.
+species,wavelength_A,frame,type,phase,status,notes
+N IV,1486.5,vac,emission,early flash,tentative,N IV] intercombination
+N IV,1718.6,vac,emission,early flash,tentative,strong early flash feature
+C IV,1548.2,vac,emission,early flash,tentative,resonance doublet
+C IV,1550.8,vac,emission,early flash,tentative,resonance doublet
+He II,1640.4,vac,emission,early flash,tentative,
+N III,1750.0,vac,emission,early flash,tentative,N III] multiplet ~1750
+C III,1908.7,vac,emission,early flash,tentative,C III] intercombination
+C III,2297.0,vac,emission,early flash,tentative,seen early in 2023ixf
+He II,4685.7,air,emission,early flash,tentative,optical flash line
+Mg II,2795.5,vac,emission,CSM interaction,tentative,late-time CSM emission (also an ISM absorber)
+H alpha,6562.8,air,emission,CSM interaction,tentative,broad+narrow CSM component
+He I,5875.6,air,emission,CSM interaction,tentative,
+Ca II,8542.0,air,emission,CSM interaction,tentative,NIR triplet region

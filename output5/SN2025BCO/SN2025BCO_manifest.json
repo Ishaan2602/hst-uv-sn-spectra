@@ -1,0 +1,18 @@
+{
+ "sn": "SN2025BCO",
+ "instruments": {
+  "STIS": {
+   "z": 0.036
+  }
+ },
+ "epochs": {
+  "CCD/2025-02-13_day5": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

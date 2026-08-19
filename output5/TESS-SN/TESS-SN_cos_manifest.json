@@ -1,0 +1,29 @@
+{
+ "sn": "TESS-SN",
+ "z": 0.007522,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2020-04-04_day5": {
+   "gratings": [
+    "G160M",
+    "G130M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "le2ba5010",
+   "grating": "G160M",
+   "detector": "FUV",
+   "exptime": 0.0
+  },
+  {
+   "root": "le2ba5020",
+   "grating": "G130M",
+   "detector": "FUV",
+   "exptime": 0.0
+  }
+ ]
+}

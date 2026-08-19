@@ -1,0 +1,15 @@
+{
+ "sn": "PTF11DIJ",
+ "z": 0.1429,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2011-05-30_day35": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

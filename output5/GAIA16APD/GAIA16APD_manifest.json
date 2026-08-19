@@ -1,0 +1,42 @@
+{
+ "sn": "GAIA16APD",
+ "instruments": {
+  "STIS": {
+   "z": 0.1013
+  },
+  "COS": {
+   "z": 0.1013
+  }
+ },
+ "epochs": {
+  "MAMA/2016-06-02_day17": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2016-06-14_day28": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2016-06-30_day44": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2016-06-02_day16": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 3
+}

@@ -1,0 +1,67 @@
+{
+ "sn": "SN2026AYT",
+ "z": 0.0036,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2026-01-26_day6": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2026-01-26_day6": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2026-01-27_day7": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2026-01-27_day7": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2026-01-28_day8": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2026-01-28_day8": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2026-02-03_day14": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "ofqud3030",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

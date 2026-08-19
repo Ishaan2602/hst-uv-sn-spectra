@@ -1,0 +1,15 @@
+{
+ "sn": "GAIA16APD",
+ "z": 0.1013,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2016-06-02_day16": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,29 @@
+{
+ "sn": "SN1993J-STIS",
+ "z": 0.000113,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2012-03-31_day6943": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "NUV/2012-04-06_day6950": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  },
+  "NUV/2012-04-11_day6955": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,17 @@
+{
+ "sn": "2025RYZ",
+ "z": 0.016201,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-07-31_day9": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

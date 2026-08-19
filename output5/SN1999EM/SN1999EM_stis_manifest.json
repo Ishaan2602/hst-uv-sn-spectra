@@ -1,0 +1,53 @@
+{
+ "sn": "SN1999EM",
+ "z": 0.002,
+ "instrument": "STIS",
+ "epochs": {
+  "ECHELLE/1999-11-07_day10": {
+   "gratings": [
+    "E140M"
+   ],
+   "detector": "ECHELLE",
+   "neg_continuum": true
+  },
+  "ECHELLE/1999-11-12_day15": {
+   "gratings": [
+    "E230M",
+    "E140M"
+   ],
+   "detector": "ECHELLE",
+   "neg_continuum": true
+  },
+  "CCD/1999-11-05_day8": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/1999-11-05_day8": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2000-01-24_day87": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2000-01-24_day87": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

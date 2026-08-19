@@ -1,0 +1,37 @@
+# curated ISM absorption / metallicity measurements per SN, from the investigation notebooks
+# (ism_ew_cog_sandbox phase-1 columns + ism_investigation2 phase-3 N(HI)/[X/H]). manually maintained.
+# scripts/ism_products.py joins this with the emission products it computes -> per-SN JSON sidecars.
+# long format so it extends cleanly. quantity = b_kms | logN(<ion>) | logN(HI) | [X/H] | [Fe/Zn].
+# NOTE: foreground screen is MW+host blended at low-res (do not over-claim host-only).
+sn,quantity,value,err,method,note
+SN2023IXF,b_kms,63,,CoG Fe II anchor,day14 instrumental-dominated at STIS NUV low-res
+SN2023IXF,logN(Fe II),15.16,0.10,CoG,day14 anchor 7 lines (stable d14/20/25)
+SN2023IXF,logN(Cr II),13.9,0.2,CoG,day14
+SN2023IXF,logN(Zn II),13.3,0.3,CoG,day14 single weak line
+SN2023IXF,logN(Mn II),13.1,0.2,CoG,day14
+SN2023IXF,logN(HI),20.83,0.15,damped Lya joint fit,median d183/311/619/1094 vabs=host frame
+SN2023IXF,[Zn/H],-0.09,0.3,N(Zn)-N(HI)-solar,gas-phase metallicity (Zn undepleted ~ true Z)
+SN2023IXF,[Fe/H],-1.17,0.3,N(Fe)-N(HI)-solar,iron plus depletion onto dust
+SN2023IXF,[Cr/H],-0.57,0.3,N(Cr)-N(HI)-solar,
+SN2023IXF,[Mn/H],-1.16,0.3,N(Mn)-N(HI)-solar,
+SN2023IXF,[Fe/Zn],-1.08,,depletion,phase-1 relative [Zn/Fe]=+1.1; Zimmerman proxy Z~0.95 solar
+# --- phase-3.5 (aug 18): absolute-metallicity extension to anchored SNe with FUV G140L Lya coverage.
+# N(HI) from the damped Lya fit against the early photospheric CONTINUUM backlight (cont*exp(-tau_Lya),
+# b-independent damping wings; vabs = MW-host blend so N carries a ~0.2-0.3 dex velocity systematic).
+SN1998S,b_kms,67.1,,CoG Fe II anchor,day29 anchored G230L
+SN1998S,logN(Fe II),15.47,0.11,CoG,day29 anchored 7 lines
+SN1998S,logN(Mn II),13.85,0.12,CoG,day29
+SN1998S,logN(Zn II),14.0,1.6,CoG,day29 2 marginal lines - UNRELIABLE (large err)
+SN1998S,logN(HI),20.33,0.2,damped Lya continuum-backlight fit,day14 bright photospheric continuum; b-independent; vabs blend 20.1(host)-20.5(MW)
+SN1998S,[Fe/H],-0.36,0.3,N(Fe)-N(HI)-solar,iron + dust depletion (lower limit on true Z)
+SN1998S,[Mn/H],0.10,0.3,N(Mn)-N(HI)-solar,
+# SN1998S [Zn/H] intentionally NOT derived: Zn column too marginal (err 1.6) to quote an absolute metallicity
+SN2017EGM,b_kms,65.8,,CoG Fe II anchor,day30 anchored G230L
+SN2017EGM,logN(Fe II),14.84,0.04,CoG,day30 anchored 6 lines
+SN2017EGM,logN(Mn II),13.47,0.07,CoG,day30
+SN2017EGM,logN(HI),19.70,0.3,damped Lya continuum-backlight fit,day30 FUV continuum; narrow trough (weaker damping) -> larger N uncertainty; vabs=-225
+SN2017EGM,[Fe/H],-0.36,0.3,N(Fe)-N(HI)-solar,iron + dust depletion (lower limit on true Z)
+SN2017EGM,[Mn/H],0.34,0.3,N(Mn)-N(HI)-solar,
+AT2022ACKO,b_kms,57.3,,CoG Fe II anchor,day6 anchored G230L
+AT2022ACKO,logN(Fe II),14.6,2.0,CoG,day6 3 lines - UNRELIABLE (large err); no reliable [X/H]
+AT2022ACKO,logN(HI),21.26,0.3,damped Lya continuum-backlight fit,day4 FUV; clean damped trough but vabs hit MW bound

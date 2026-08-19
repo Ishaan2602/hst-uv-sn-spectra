@@ -1,0 +1,44 @@
+{
+ "sn": "SN2001EP",
+ "z": 0.013,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2001-10-27_day25": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2001-10-27_day25": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2001-11-02_day31": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2001-11-02_day31": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  },
+  "MAMA/2001-11-03_day32": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,26 @@
+[
+ {
+  "epoch": "2012-06-04_day18",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2012-06-04_day18",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2012-06-18_day32",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2012-06-18_day32",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ }
+]

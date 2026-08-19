@@ -1,0 +1,14 @@
+[
+ {
+  "epoch": "2024-02-08_day10",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2024-02-08_day10",
+  "detector": "CCD",
+  "grating": "G750L",
+  "scale": "none"
+ }
+]

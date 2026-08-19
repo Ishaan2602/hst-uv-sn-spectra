@@ -1,0 +1,17 @@
+{
+ "sn": "2024TVI",
+ "z": 0.03,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2024-09-06_day12": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

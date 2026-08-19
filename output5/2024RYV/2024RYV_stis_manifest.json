@@ -1,0 +1,17 @@
+{
+ "sn": "2024RYV",
+ "z": 0.015,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2024-08-15_day4": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

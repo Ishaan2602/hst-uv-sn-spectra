@@ -1,0 +1,15 @@
+{
+ "sn": "AT2024WPP",
+ "z": 0.08678,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2024-10-16_day20": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

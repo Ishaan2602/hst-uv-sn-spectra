@@ -1,0 +1,159 @@
+{
+ "sn": "SN2023IXF",
+ "z": 0.00087,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2023-06-02_day14": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-06-07_day20": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-06-12_day25": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-07-24_day66": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2023-11-17_day183": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-21_day308": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-24_day311": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-25_day312": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-27_day314": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-05-10_day723": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-05-11_day724": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-01-26_day619": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2026-05-16_day1094": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2025-11-17_day913": {
+   "gratings": [
+    "G750M"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2025-11-17_day913": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2025-11-27_day924": {
+   "gratings": [
+    "G750M"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2025-11-28_day924": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "of4304010",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 3.1
+  },
+  {
+   "root": "of4304020",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "of4304030",
+   "grating": "G750L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

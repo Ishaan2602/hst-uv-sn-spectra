@@ -1,0 +1,20 @@
+[
+ {
+  "epoch": "2021-10-11_day19",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2021-10-11_day19",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2021-10-11_day19",
+  "detector": "CCD",
+  "grating": "G750L",
+  "scale": "none"
+ }
+]

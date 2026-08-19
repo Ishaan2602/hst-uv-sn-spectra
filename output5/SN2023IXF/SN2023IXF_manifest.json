@@ -1,0 +1,153 @@
+{
+ "sn": "SN2023IXF",
+ "instruments": {
+  "STIS": {
+   "z": 0.00087
+  },
+  "COS": {
+   "z": 0.00087
+  }
+ },
+ "epochs": {
+  "CCD/2023-06-02_day14": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-06-07_day20": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-06-12_day25": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2023-07-24_day66": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2023-11-17_day183": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-21_day308": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-24_day311": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-25_day312": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-03-27_day314": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-05-10_day723": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-05-11_day724": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-01-26_day619": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2026-05-16_day1094": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2025-11-17_day913": {
+   "gratings": [
+    "G750M"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2025-11-17_day913": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2025-11-27_day924": {
+   "gratings": [
+    "G750M"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2025-11-28_day924": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "NUV/2023-12-18_day214": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 22
+}

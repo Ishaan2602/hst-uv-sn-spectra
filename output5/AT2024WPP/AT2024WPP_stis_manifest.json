@@ -1,0 +1,15 @@
+{
+ "sn": "AT2024WPP",
+ "z": 0.08678,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2024-10-17_day21": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

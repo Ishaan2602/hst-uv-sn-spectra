@@ -1,0 +1,39 @@
+{
+ "sn": "SN2009IP",
+ "instruments": {
+  "STIS": {
+   "z": 0.006
+  },
+  "COS": {
+   "z": 0.006
+  }
+ },
+ "epochs": {
+  "CCD/2012-10-29_day1160": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2014-10-02_day1863": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  },
+  "FUV/2012-11-05_day1167": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 3
+}

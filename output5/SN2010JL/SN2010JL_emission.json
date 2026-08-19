@@ -1,0 +1,327 @@
+{
+  "sn": "SN2010JL",
+  "sn_type": "SN IIn",
+  "generated": "2026-08-18",
+  "flags": [],
+  "provenance": {
+    "z": 0.011,
+    "ebv_mw": 0.0272,
+    "host_ebv": 0.031,
+    "host_ebv_src": "Fransson+2014 ApJ 797 118 (total 0.058 - MW 0.027)",
+    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "flux_units": "1e-15 erg s-1 cm-2",
+    "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
+    "emission_content": "Mg II 2800 + Lya 1216 emission-line flux for any epoch where the line is detected; NOT restricted to CSM - includes CSM-interaction shells (broad, strengthen at late phase, best_model kwok/skew) AND photospheric P-Cygni peaks (near max, pcygni=true). use sn_type + phase + best_model + pcygni to interpret.",
+    "emission_epochs": "epochs kept when F > 3 sigma_photon (detection significance). flux_err is the SYSTEMATIC error (bostroem+2026 / sembach&savage 1992 method: vary the integration limits, the continuum window, and smoothing, take the LARGEST deviation) - the dominant continuum-placement uncertainty. flux_err_photon is the pixel-noise MC, which understates the real error ~10-25x and is kept only for reference. early photospheric/absorption epochs fall below the detection cut.",
+    "emission_quality": "flux_reliable=false marks an epoch with a deep central absorption vs the peak (pcygni=true, min/max<-0.3): its continuum-subtracted flux is dominated by continuum placement over the SN photosphere, so it is kept but is NOT a reliable emission-line flux. those epochs get no clean shape model. pcygni_reason grades what it actually is, from the profile COHERENCE (smoothed-amplitude / pixel residual scatter, reported as `coherence`): 'photospheric' (coherence>=12, a genuine coherent P-Cygni), 'marginal' (6-12, a low-SNR gray-zone feature), 'low_snr' (<6, noise / no clean line). this replaces an overclaiming pcygni bool that labeled noise as photospheric. v_phot_kms carries an APPROXIMATE photospheric velocity (absorption minimum of the continuum-normalized spectrum, UV is a forest so rough) ONLY for a confident 'photospheric' epoch. edge_flux_frac (|cont-sub flux at window edges|/peak) is a reported diagnostic. judge each epoch with pcygni_reason + coherence + best_model + sn_type + phase.",
+    "csm_benchmark": "our MW-only Mg II 2800 and Lya 1216 fluxes reproduce bostroem+2026 table 4 to ~5-10% (NUV+FUV flux-cal validated); the product applies MW+host de-reddening, so tabulated flux sits above bostroem by the host factor (x1.36 at Lya, x1.13-1.20 at Mg II for SN2023IXF host 0.031; larger at higher host E(B-V)). set host_ebv=0 to compare MW-only.",
+    "shell_model": "clean-emission epochs are fit with 4 models (gaussian, lorentzian, skew-normal, kwok off-center-hole shell), each fit on O(1)-normalized flux (fixes a prior freeze that pinned the lorentzian at its guess); models{} lists every fit's params + BIC/AICc/redchi2 and best_model is the BIC winner. kwok carries inner_v = mu+vc-vin (shell blue edge). the flux is model-independent (direct integral); the models only describe the shape. best model varies by regime: broad CSM shell -> kwok/skew, narrow-line IIn -> gaussian or lorentzian (electron-scattering wings). photospheric P-Cygni epochs get no shape model (see emission_quality)."
+  },
+  "emission": {
+    "mg2": [
+      {
+        "phase": 9.0,
+        "flux": 432.3,
+        "flux_err": 13.3,
+        "flux_err_photon": 3.0,
+        "instr": "G230LB",
+        "flux_reliable": false,
+        "edge_flux_frac": 0.07,
+        "pcygni": true,
+        "pcygni_reason": "photospheric",
+        "coherence": 16.0,
+        "v_phot_kms": -3537,
+        "best_model": null,
+        "models": null
+      },
+      {
+        "phase": 19.0,
+        "flux": 520.0,
+        "flux_err": 22.1,
+        "flux_err_photon": 3.0,
+        "instr": "G230LB",
+        "flux_reliable": false,
+        "edge_flux_frac": 0.09,
+        "pcygni": true,
+        "pcygni_reason": "photospheric",
+        "coherence": 14.4,
+        "v_phot_kms": -3564,
+        "best_model": null,
+        "models": null
+      },
+      {
+        "phase": 82.0,
+        "flux": 672.4,
+        "flux_err": 23.1,
+        "flux_err_photon": 2.2,
+        "instr": "G230LB",
+        "flux_reliable": true,
+        "edge_flux_frac": 0.06,
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": null,
+        "v_phot_kms": null,
+        "best_model": "lorentzian",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              -781.27,
+              1868.59
+            ],
+            "k": 3,
+            "bic": -7141.8,
+            "aicc": -7149.6,
+            "redchi2": 36.17
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              -881.01,
+              1635.39
+            ],
+            "k": 3,
+            "bic": -7178.0,
+            "aicc": -7185.7,
+            "redchi2": 25.72
+          },
+          "skew": {
+            "params": [
+              0.0,
+              865.63,
+              2785.49,
+              -1.65
+            ],
+            "k": 4,
+            "bic": -7139.6,
+            "aicc": -7149.9,
+            "redchi2": 35.68
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              -2056.49,
+              5820.14,
+              -3000.0,
+              3873.77
+            ],
+            "k": 5,
+            "bic": -7169.6,
+            "aicc": -7182.3,
+            "redchi2": 25.99,
+            "inner_v": -8930
+          }
+        }
+      },
+      {
+        "phase": 548.0,
+        "flux": 244.1,
+        "flux_err": 10.6,
+        "flux_err_photon": 0.9,
+        "instr": "G230L",
+        "flux_reliable": true,
+        "edge_flux_frac": 0.05,
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": null,
+        "v_phot_kms": null,
+        "best_model": "kwok",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              -1061.09,
+              1272.18
+            ],
+            "k": 3,
+            "bic": -6645.5,
+            "aicc": -6652.9,
+            "redchi2": 63.84
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              -1228.14,
+              1057.25
+            ],
+            "k": 3,
+            "bic": -6678.2,
+            "aicc": -6685.6,
+            "redchi2": 45.24
+          },
+          "skew": {
+            "params": [
+              0.0,
+              -2278.71,
+              1921.82,
+              2.58
+            ],
+            "k": 4,
+            "bic": -6665.0,
+            "aicc": -6674.8,
+            "redchi2": 50.08
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              -2079.07,
+              4246.91,
+              -3000.0,
+              3591.07
+            ],
+            "k": 5,
+            "bic": -6688.8,
+            "aicc": -6700.9,
+            "redchi2": 37.58,
+            "inner_v": -8670
+          }
+        }
+      }
+    ],
+    "lya": [
+      {
+        "phase": 19.0,
+        "flux": 200.7,
+        "flux_err": 78.5,
+        "flux_err_photon": 7.2,
+        "instr": "?",
+        "flux_reliable": true,
+        "edge_flux_frac": 0.06,
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": null,
+        "v_phot_kms": null,
+        "best_model": "skew",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              331.18,
+              1315.65
+            ],
+            "k": 3,
+            "bic": -289667.5,
+            "aicc": -289686.7,
+            "redchi2": 1.06
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              531.0,
+              1251.09
+            ],
+            "k": 3,
+            "bic": -288795.0,
+            "aicc": -288814.1,
+            "redchi2": 1.29
+          },
+          "skew": {
+            "params": [
+              0.0,
+              -937.09,
+              1942.8,
+              1.86
+            ],
+            "k": 4,
+            "bic": -289720.7,
+            "aicc": -289746.2,
+            "redchi2": 1.05
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              -2387.87,
+              5068.84,
+              -3000.0,
+              6147.28
+            ],
+            "k": 5,
+            "bic": -289094.9,
+            "aicc": -289126.8,
+            "redchi2": 1.2,
+            "inner_v": -11535
+          }
+        }
+      },
+      {
+        "phase": 82.0,
+        "flux": 45.2,
+        "flux_err": 103.9,
+        "flux_err_photon": 4.7,
+        "instr": "?",
+        "flux_reliable": false,
+        "edge_flux_frac": 0.08,
+        "pcygni": true,
+        "pcygni_reason": "marginal",
+        "coherence": 7.8,
+        "v_phot_kms": null,
+        "best_model": null,
+        "models": null
+      },
+      {
+        "phase": 595.0,
+        "flux": 92.8,
+        "flux_err": 71.5,
+        "flux_err_photon": 5.9,
+        "instr": "?",
+        "flux_reliable": true,
+        "edge_flux_frac": 0.02,
+        "pcygni": false,
+        "pcygni_reason": null,
+        "coherence": null,
+        "v_phot_kms": null,
+        "best_model": "skew",
+        "models": {
+          "gaussian": {
+            "params": [
+              0.0,
+              -1389.18,
+              500.0
+            ],
+            "k": 3,
+            "bic": -329927.7,
+            "aicc": -329947.2,
+            "redchi2": 1.87
+          },
+          "lorentzian": {
+            "params": [
+              0.0,
+              -1348.94,
+              479.03
+            ],
+            "k": 3,
+            "bic": -329668.2,
+            "aicc": -329687.7,
+            "redchi2": 1.97
+          },
+          "skew": {
+            "params": [
+              0.0,
+              -1559.81,
+              500.0,
+              0.5
+            ],
+            "k": 4,
+            "bic": -329980.7,
+            "aicc": -330006.6,
+            "redchi2": 1.84
+          },
+          "kwok": {
+            "params": [
+              0.0,
+              300.35,
+              3000.0,
+              6000.0,
+              7384.03
+            ],
+            "k": 5,
+            "bic": -329616.6,
+            "aicc": -329649.1,
+            "redchi2": 1.98,
+            "inner_v": -1084
+          }
+        }
+      }
+    ]
+  }
+}

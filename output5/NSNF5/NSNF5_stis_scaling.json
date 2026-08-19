@@ -1,0 +1,14 @@
+[
+ {
+  "epoch": "2003-03-24_day13",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2003-03-24_day13",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ }
+]

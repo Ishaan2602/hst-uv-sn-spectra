@@ -1,0 +1,29 @@
+{
+ "sn": "ZTF21ACKXDOS",
+ "instruments": {
+  "STIS": {
+   "z": 0.018
+  },
+  "COS": {
+   "z": 0.018
+  }
+ },
+ "epochs": {
+  "CCD/2022-04-11_day159": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "FUV/2022-04-11_day159": {
+   "gratings": [
+    "G160M",
+    "G130M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

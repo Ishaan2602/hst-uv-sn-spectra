@@ -1,0 +1,43 @@
+{
+ "sn": "SN2013DH",
+ "z": 0.013,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2013-06-27_day15": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-06-27_day15": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-06-26_day14": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "oc0101030",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "oc0101040",
+   "grating": "G750L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

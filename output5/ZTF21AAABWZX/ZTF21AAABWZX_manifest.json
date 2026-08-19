@@ -1,0 +1,51 @@
+{
+ "sn": "ZTF21AAABWZX",
+ "instruments": {
+  "STIS": {
+   "z": 0.046
+  }
+ },
+ "epochs": {
+  "MAMA/2021-09-14_day261": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2022-04-05_day464": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2021-07-26_day211": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2023-04-14_day838": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true
+  },
+  "MAMA/2023-07-16_day931": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 5
+}

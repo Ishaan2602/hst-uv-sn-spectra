@@ -1,0 +1,22 @@
+{
+ "sn": "SN2018BSZ",
+ "z": 0.027,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2018-06-25_day40": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2018-07-20_day64": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

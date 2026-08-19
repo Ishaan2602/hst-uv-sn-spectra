@@ -1,0 +1,23 @@
+{
+ "sn": "AT2020YVU",
+ "z": 0.01,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2020-11-29_day25": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2020-11-29_day25": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

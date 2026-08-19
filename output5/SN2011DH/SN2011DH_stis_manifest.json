@@ -1,0 +1,31 @@
+{
+ "sn": "SN2011DH",
+ "z": 0.002,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2011-06-24_day23": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2012-03-29_day303": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  },
+  "MAMA/2012-03-29_day303": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,33 @@
+{
+ "sn": "SN2013DH",
+ "instruments": {
+  "STIS": {
+   "z": 0.013
+  }
+ },
+ "epochs": {
+  "MAMA/2013-06-27_day15": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2013-06-27_day15": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2013-06-26_day14": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

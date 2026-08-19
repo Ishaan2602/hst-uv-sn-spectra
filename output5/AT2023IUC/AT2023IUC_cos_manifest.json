@@ -1,0 +1,22 @@
+{
+ "sn": "AT2023IUC",
+ "z": 0.07676,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2023-05-27_day9": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2023-05-30_day12": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,26 @@
+[
+ {
+  "epoch": "2017-03-30_day20",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2017-03-22_day13",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2017-03-24_day15",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ },
+ {
+  "epoch": "2017-03-26_day17",
+  "detector": "CCD",
+  "grating": "G230LB",
+  "scale": "none"
+ }
+]

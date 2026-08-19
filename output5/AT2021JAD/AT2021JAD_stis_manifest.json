@@ -1,0 +1,23 @@
+{
+ "sn": "AT2021JAD",
+ "z": 0.0061,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2021-04-28_day17": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2021-04-28_day17": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

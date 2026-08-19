@@ -1,0 +1,24 @@
+{
+ "sn": "SN2012CG",
+ "z": 0.001,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2012-06-04_day18": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2012-06-18_day32": {
+   "gratings": [
+    "G230LB",
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

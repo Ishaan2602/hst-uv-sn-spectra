@@ -1,0 +1,23 @@
+{
+ "sn": "AT2020UXZ",
+ "z": 0.008246,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2020-10-23_day18": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2020-10-23_day18": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

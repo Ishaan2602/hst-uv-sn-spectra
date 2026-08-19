@@ -1,0 +1,78 @@
+{
+  "sn": "SN2023IXF",
+  "sn_type": "SN II",
+  "generated": "2026-08-18",
+  "provenance": {
+    "z": 0.00087,
+    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+    "b_kms": 63.0,
+    "columns": {
+      "Fe II": {
+        "logN": 15.16,
+        "err": 0.1,
+        "method": "CoG",
+        "note": "day14 anchor 7 lines (stable d14/20/25)"
+      },
+      "Cr II": {
+        "logN": 13.9,
+        "err": 0.2,
+        "method": "CoG",
+        "note": "day14"
+      },
+      "Zn II": {
+        "logN": 13.3,
+        "err": 0.3,
+        "method": "CoG",
+        "note": "day14 single weak line"
+      },
+      "Mn II": {
+        "logN": 13.1,
+        "err": 0.2,
+        "method": "CoG",
+        "note": "day14"
+      }
+    },
+    "N_HI": {
+      "logN": 20.83,
+      "err": 0.15,
+      "method": "damped Lya joint fit",
+      "note": "median d183/311/619/1094 vabs=host frame"
+    },
+    "metallicity": {
+      "[Zn/H]": {
+        "value": -0.09,
+        "err": 0.3,
+        "method": "N(Zn)-N(HI)-solar",
+        "note": "gas-phase metallicity (Zn undepleted ~ true Z)"
+      },
+      "[Fe/H]": {
+        "value": -1.17,
+        "err": 0.3,
+        "method": "N(Fe)-N(HI)-solar",
+        "note": "iron plus depletion onto dust"
+      },
+      "[Cr/H]": {
+        "value": -0.57,
+        "err": 0.3,
+        "method": "N(Cr)-N(HI)-solar",
+        "note": ""
+      },
+      "[Mn/H]": {
+        "value": -1.16,
+        "err": 0.3,
+        "method": "N(Mn)-N(HI)-solar",
+        "note": ""
+      }
+    },
+    "depletion": {
+      "value": -1.08,
+      "method": "depletion",
+      "note": "phase-1 relative [Zn/Fe]=+1.1; Zimmerman proxy Z~0.95 solar"
+    }
+  }
+}

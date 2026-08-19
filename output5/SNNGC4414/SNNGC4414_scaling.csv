@@ -1,0 +1,13 @@
+epoch,detector,grating,scale,slope,intercept,factor
+2013-06-17_day10,MAMA,G230L,none,None,None,None
+2013-06-17_day10,CCD,G430L,none,None,None,None
+2013-06-17_day10,CCD,G750L,none,None,None,None
+2013-06-22_day15,MAMA,G230L,none,None,None,None
+2013-06-22_day15,CCD,G430L,none,None,None,None
+2013-06-22_day15,CCD,G750L,none,None,None,None
+2013-06-26_day19,MAMA,G230L,none,None,None,None
+2013-06-26_day19,CCD,G430L,none,None,None,None
+2013-06-26_day19,CCD,G750L,none,None,None,None
+2013-06-30_day23,MAMA,G230L,none,None,None,None
+2013-06-30_day23,CCD,G430L,none,None,None,None
+2013-06-30_day23,CCD,G750L,none,None,None,None

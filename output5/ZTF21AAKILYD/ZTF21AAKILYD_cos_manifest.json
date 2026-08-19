@@ -1,0 +1,22 @@
+{
+ "sn": "ZTF21AAKILYD",
+ "z": 0.084,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2021-02-18_day7": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2021-02-24_day13": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

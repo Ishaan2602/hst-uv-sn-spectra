@@ -1,0 +1,23 @@
+{
+ "sn": "AT2021DOV",
+ "z": 0.012,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2021-03-13_day20": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2021-03-13_day20": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

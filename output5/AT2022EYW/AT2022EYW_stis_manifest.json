@@ -1,0 +1,23 @@
+{
+ "sn": "AT2022EYW",
+ "z": 0.009,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2022-04-12_day21": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2022-04-12_day21": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

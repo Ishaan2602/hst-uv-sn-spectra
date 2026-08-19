@@ -1,0 +1,26 @@
+{
+ "sn": "AT2020NXT",
+ "instruments": {
+  "STIS": {
+   "z": 0.029
+  }
+ },
+ "epochs": {
+  "MAMA/2020-07-19_day16": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2020-07-28_day25": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

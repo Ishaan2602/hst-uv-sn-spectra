@@ -1,0 +1,16 @@
+{
+ "sn": "SN2009IP",
+ "z": 0.006,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2012-11-05_day1167": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

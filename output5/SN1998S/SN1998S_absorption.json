@@ -1,0 +1,56 @@
+{
+  "sn": "SN1998S",
+  "sn_type": "SN IIn",
+  "generated": "2026-08-18",
+  "provenance": {
+    "z": 0.002729,
+    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+    "b_kms": 67.1,
+    "columns": {
+      "Fe II": {
+        "logN": 15.47,
+        "err": 0.11,
+        "method": "CoG",
+        "note": "day29 anchored 7 lines"
+      },
+      "Mn II": {
+        "logN": 13.85,
+        "err": 0.12,
+        "method": "CoG",
+        "note": "day29"
+      },
+      "Zn II": {
+        "logN": 14.0,
+        "err": 1.6,
+        "method": "CoG",
+        "note": "day29 2 marginal lines - UNRELIABLE (large err)"
+      }
+    },
+    "N_HI": {
+      "logN": 20.33,
+      "err": 0.2,
+      "method": "damped Lya continuum-backlight fit",
+      "note": "day14 bright photospheric continuum; b-independent; vabs blend 20.1(host)-20.5(MW)"
+    },
+    "metallicity": {
+      "[Fe/H]": {
+        "value": -0.36,
+        "err": 0.3,
+        "method": "N(Fe)-N(HI)-solar",
+        "note": "iron + dust depletion (lower limit on true Z)"
+      },
+      "[Mn/H]": {
+        "value": 0.1,
+        "err": 0.3,
+        "method": "N(Mn)-N(HI)-solar",
+        "note": ""
+      }
+    },
+    "depletion": null
+  }
+}

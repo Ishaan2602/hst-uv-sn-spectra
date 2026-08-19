@@ -1,0 +1,29 @@
+{
+ "sn": "SN2024BCH",
+ "z": 0.003839,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2024-02-08_day10": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "of8b01010",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 2.3
+  },
+  {
+   "root": "of8b01020",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 2.3
+  }
+ ]
+}

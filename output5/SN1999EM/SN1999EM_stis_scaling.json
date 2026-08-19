@@ -1,0 +1,56 @@
+[
+ {
+  "epoch": "1999-11-07_day10",
+  "detector": "ECHELLE",
+  "grating": "E140M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-11-12_day15",
+  "detector": "ECHELLE",
+  "grating": "E230M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-11-12_day15",
+  "detector": "ECHELLE",
+  "grating": "E140M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-11-05_day8",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-11-05_day8",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-11-05_day8",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2000-01-24_day87",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2000-01-24_day87",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2000-01-24_day87",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ }
+]

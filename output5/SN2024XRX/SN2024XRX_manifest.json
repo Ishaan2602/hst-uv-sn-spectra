@@ -1,0 +1,29 @@
+{
+ "sn": "SN2024XRX",
+ "instruments": {
+  "STIS": {
+   "z": 0.037376
+  }
+ },
+ "epochs": {
+  "CCD/2024-10-17_day7": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  },
+  "CCD/2024-10-18_day8": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  }
+ },
+ "n_epochs": 2
+}

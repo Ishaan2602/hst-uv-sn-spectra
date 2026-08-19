@@ -1,0 +1,29 @@
+{
+ "sn": "2025NGI",
+ "z": 0.01116,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-06-19_day8": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "ofgd02010",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 2.3
+  },
+  {
+   "root": "ofgd02020",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 2.3
+  }
+ ]
+}

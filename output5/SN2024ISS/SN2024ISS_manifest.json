@@ -1,0 +1,20 @@
+{
+ "sn": "SN2024ISS",
+ "instruments": {
+  "STIS": {
+   "z": 0.003334
+  }
+ },
+ "epochs": {
+  "CCD/2024-05-19_day6": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

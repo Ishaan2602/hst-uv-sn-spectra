@@ -1,0 +1,20 @@
+[
+ {
+  "epoch": "2024-05-22_day41",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2024-11-28_day232",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "2024-11-28_day232",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ }
+]

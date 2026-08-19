@@ -1,0 +1,23 @@
+{
+ "sn": "SN-2025SHI",
+ "z": 0.031952,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2025-08-14_day19": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2025-08-22_day27": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,33 @@
+# curated host-galaxy E(B-V) per SN (manually maintained, NOT generated - do not delete).
+# catalog_clean.py joins this into the catalog as host_ebv/host_ebv_err/host_ebv_src.
+# catalog `ebv` is Milky-Way foreground only; this is the separate HOST screen (needs the SN's paper).
+# name matches the catalog `name` (case-insensitive). blank err = paper states no explicit uncertainty.
+# where a SN is absent here, catalog_clean.py defaults host_ebv=0 with host_ebv_src="none (MW-only)".
+# literature-checked MW-only (no published host reddening found, default to MW): SN2011HT, SN2024ISS,
+#   SN2002XX, SN2001EP, SN2024XRX, SN2024PSO, SN2026AYT, SN2025AFCR, ZTF21ACKXDOS,
+#   ZTF21AAABWZX=SN2020aekp (VERIFIED aug 18: Sharma+2023 corrects MW-only, no per-object host E(B-V)).
+# added aug 18: PSN2037+6607=SN2015G host 0.06 (Vinko&Csak / NGC 6951 sibling papers, from SN2015G high-res);
+#   AT2020NXT host 0.0 (Wang+2024a / F25 Ibn sample; no Na I D -> negligible; now curated below, was to-pull).
+name,host_ebv,host_ebv_err,host_ebv_src
+SN2023IXF,0.031,,"Bostroem+2024 ApJL 973 L47 (host term; SED/interaction)"
+SN2009IP,0.0,,"Margutti+2014 ApJ 780 21 (MW-only adopted; no host)"
+TESS-SN,0.52,0.01,"Tinyanont+2022 (SN2020fqv; blackbody fit to day-4 STIS+optical)"
+SN2024GGI,0.084,0.018,"Jacobson-Galan+2024a via Chen+2024 (Na I D; MW 0.070 + host = total 0.154)"
+SN2010JL,0.031,,"Fransson+2014 ApJ 797 118 (total 0.058 - MW 0.027)"
+SN2014C,0.67,0.05,"Milisavljevic+2015 ApJ 815 120 (Na I D EW, Turatto+2003; host; total 0.75)"
+SN-2005IP,0.0,,"Smith+2009 / Fox+2020 (total 0.047 = MW 0.047; negligible host)"
+SN1998S,0.128,0.035,"Shivvers+2015 ApJ 806 213 (resolved Na I D HIRES + Poznanski+2012; host)"
+SN1993J-STIS,0.11,0.09,"Richardson+2006 AJ 131 2233 / Richmond+1994 (Na I D + color; total 0.19 - MW 0.069)"
+SN2017EGM,0.007,,"Yan+2018 ApJ 858 91 (FUV HST continuum SED; low host)"
+SN1999EM,0.01,,"Elmhamdi+2003 MNRAS 338 939 / Leonard+2002 (Na I D EW; host small)"
+SN2002AP,0.008,0.002,"Takada-Hidai+2002 PASJ 54 899 (Na I D at M74 velocity)"
+SN2011DH,0.04,,"Ergon+2014 A&A 562 A17 (total 0.07 - MW 0.031; consistent with 0)"
+PTF11KLY,0.014,0.002,"Patat+2013 A&A 549 A62 (SN2011fe; Na I D EW)"
+ASASSN-15LH,0.0,,"Dong+2016 Science 351 257 / Brown+2016 (blue SED; negligible host)"
+SN2018BSZ,0.04,,"Anderson+2018 A&A 620 A67 / Chen+2021 (Na I D, Poznanski+2012; host A_V 0.13)"
+SN2021YJA,0.07,0.02,"Vasylyev+2022 ApJ 934 134 (total 0.07); Hosseinzadeh+2022 (host 0.085)"
+SN2010AL,0.017,,"Pastorello+2015 MNRAS 449 1921 (Ibn; color; small host)"
+AT2022ACKO,0.03,,"Bostroem+2023 ApJL 953 L18 (SED; MW 0.026 + host 0.03; total 0.05)"
+PSN2037+6607,0.06,,"Vinko&Csak / Konyves-Toth+2026 A&A (SN2015G in NGC 6951; host from high-res spectra; total 0.38 - MW 0.32)"
+AT2020NXT,0.0,,"Wang+2024a / F25 Ibn sample (SN2020nxt; no Na I D -> host extinction assumed zero/negligible)"
+LMC-SN1987A-STIS-2,0.10,,"Walker&Suntzeff 1990 / Fitzpatrick&Walborn 1990 (LMC component; total ~0.16 - MW ~0.06); NOTE resolved remnant, flux aperture-dependent (flux_scale_outlier)"

@@ -1,0 +1,18 @@
+{
+ "sn": "SN2025XAZ",
+ "instruments": {
+  "STIS": {
+   "z": 0.0324396419794725
+  }
+ },
+ "epochs": {
+  "CCD/2025-09-11_day5": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  }
+ },
+ "n_epochs": 1
+}

@@ -1,0 +1,19 @@
+{
+ "sn": "2025NGI",
+ "instruments": {
+  "STIS": {
+   "z": 0.01116
+  }
+ },
+ "epochs": {
+  "CCD/2025-06-19_day8": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 1
+}

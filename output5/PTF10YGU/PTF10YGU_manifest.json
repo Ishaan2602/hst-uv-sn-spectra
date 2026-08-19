@@ -1,0 +1,41 @@
+{
+ "sn": "PTF10YGU",
+ "instruments": {
+  "STIS": {
+   "z": 0.025047
+  }
+ },
+ "epochs": {
+  "CCD/2010-10-15_day4": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2010-10-20_day9": {
+   "gratings": [
+    "G430L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2010-10-26_day14": {
+   "gratings": [
+    "G430L",
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "CCD/2010-10-31_day20": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 4
+}

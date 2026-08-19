@@ -1,0 +1,32 @@
+{
+ "sn": "SN2010JL",
+ "z": 0.011,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2010-11-22_day19": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2011-01-23_day82": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "FUV/2012-06-20_day595": {
+   "gratings": [
+    "G130M",
+    "G160M"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,29 @@
+{
+ "sn": "GAIA16APD",
+ "z": 0.1013,
+ "instrument": "STIS",
+ "epochs": {
+  "MAMA/2016-06-02_day17": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2016-06-14_day28": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2016-06-30_day44": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,63 @@
+{
+ "sn": "SN1993J-STIS",
+ "instruments": {
+  "STIS": {
+   "z": 0.000113
+  },
+  "COS": {
+   "z": 0.000113
+  }
+ },
+ "epochs": {
+  "MAMA/1998-04-17_day1846": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/1998-02-21_day1792": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2000-04-18_day2578": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2000-04-24_day2584": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "FUV/2012-03-31_day6943": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": false
+  },
+  "NUV/2012-04-06_day6950": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  },
+  "NUV/2012-04-11_day6955": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "NUV",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 7
+}

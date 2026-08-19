@@ -1,0 +1,31 @@
+{
+ "sn": "AT2021J",
+ "z": 0.002445,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2001-04-18_day-7198": {
+   "gratings": [
+    "G430L",
+    "G750M"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2021-01-20_day19": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2021-01-20_day19": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

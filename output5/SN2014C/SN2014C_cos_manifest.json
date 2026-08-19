@@ -1,0 +1,15 @@
+{
+ "sn": "SN2014C",
+ "z": 0.003,
+ "instrument": "COS",
+ "epochs": {
+  "FUV/2015-10-22_day655": {
+   "gratings": [
+    "G140L"
+   ],
+   "detector": "FUV",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": []
+}

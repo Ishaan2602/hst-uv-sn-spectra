@@ -1,0 +1,34 @@
+{
+ "sn": "SN2025XAZ",
+ "z": 0.0324396419794725,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2025-09-11_day5": {
+   "gratings": [
+    "G230LB"
+   ],
+   "detector": "CCD",
+   "neg_continuum": true
+  }
+ },
+ "failed_exposures": [
+  {
+   "root": "ofhg12040",
+   "grating": "G230LB",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "ofhg12050",
+   "grating": "G430L",
+   "detector": "CCD",
+   "exptime": 1.5
+  },
+  {
+   "root": "ofhg12060",
+   "grating": "G750L",
+   "detector": "CCD",
+   "exptime": 1.5
+  }
+ ]
+}

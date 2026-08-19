@@ -1,0 +1,40 @@
+{
+ "sn": "SN2001EH",
+ "instruments": {
+  "STIS": {
+   "z": 0.037
+  }
+ },
+ "epochs": {
+  "CCD/2001-09-25_day17": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2001-09-25_day17": {
+   "gratings": [
+    "G140L",
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "CCD/2001-10-04_day25": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2001-10-04_day25": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

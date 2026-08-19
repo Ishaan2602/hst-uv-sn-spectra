@@ -1,0 +1,22 @@
+{
+ "sn": "NSNF5",
+ "z": 0.0202828790186173,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2003-03-24_day13": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2003-03-24_day13": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

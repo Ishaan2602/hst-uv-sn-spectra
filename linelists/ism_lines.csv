@@ -1,0 +1,32 @@
+# ISM absorption line list for the UV/optical SN spectra pipeline.
+# Concrete list: species from Zimmerman et al. 2024 (SN 2023ixf) Supplementary Table 1, with
+# standard rest wavelengths (vacuum for UV, air for optical Na I D / Ca II) and Morton 2003
+# oscillator strengths. Used for (a) the non-destructive ISM mask column in the coadd and (b) the
+# equivalent-width / curve-of-growth first-touch (Fe II is the CoG b-anchor; see paper_reviews/zimmerman_paper_review.md).
+# regime: linear / saturated / anchor (Fe II spans both, anchors the b fit).
+ion,wavelength_A,f_osc,frame,regime,notes
+Al III,1854.716,0.559,vac,linear,doublet
+Al III,1862.790,0.278,vac,linear,doublet
+Zn II,2026.137,0.501,vac,linear,blends slightly with Mg I wing
+Zn II,2062.664,0.246,vac,linear,blends with Cr II 2062
+Cr II,2056.254,0.105,vac,linear,
+Cr II,2062.234,0.078,vac,linear,blends with Zn II 2062
+Cr II,2066.161,0.051,vac,linear,
+Fe II,2249.877,0.001821,vac,anchor,weak Fe II
+Fe II,2260.780,0.00244,vac,anchor,weak Fe II
+Fe II,2344.214,0.114,vac,anchor,
+Fe II,2374.461,0.0313,vac,anchor,
+Fe II,2382.765,0.320,vac,anchor,strong
+Fe II,2586.650,0.0691,vac,anchor,
+Fe II,2600.173,0.239,vac,anchor,strong
+Mn II,2576.877,0.361,vac,linear,triplet
+Mn II,2594.499,0.280,vac,linear,triplet
+Mn II,2606.462,0.198,vac,linear,triplet
+Mg II,2796.352,0.615,vac,saturated,doublet
+Mg II,2803.531,0.306,vac,saturated,doublet
+Mg I,2852.964,1.83,vac,linear,
+Fe III,1122.526,0.0620,vac,linear,usually below the STIS UV cutoff - note only
+Ca II,3934.777,0.650,air,linear,K line
+Ca II,3969.591,0.322,air,linear,H line
+Na I,5889.951,0.641,air,linear,D2
+Na I,5895.924,0.320,air,linear,D1

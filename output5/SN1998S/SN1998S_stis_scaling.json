@@ -1,0 +1,104 @@
+[
+ {
+  "epoch": "1998-03-16_day14",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-03-16_day14",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-03-16_day14",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-03-30_day29",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-03-30_day29",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-03-30_day29",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-10-26_day238",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-10-26_day238",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-10-26_day238",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-05-13_day73",
+  "detector": "CCD",
+  "grating": "G430L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-05-13_day73",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-05-13_day73",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-04-11_day40",
+  "detector": "ECHELLE",
+  "grating": "E230M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-04-04_day34",
+  "detector": "ECHELLE",
+  "grating": "E230M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1998-04-12_day41",
+  "detector": "ECHELLE",
+  "grating": "E230M",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-06-30_day485",
+  "detector": "MAMA",
+  "grating": "G140L",
+  "scale": "none"
+ },
+ {
+  "epoch": "1999-07-03_day488",
+  "detector": "MAMA",
+  "grating": "G230L",
+  "scale": "none"
+ }
+]

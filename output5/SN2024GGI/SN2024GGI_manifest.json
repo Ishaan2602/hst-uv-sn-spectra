@@ -1,0 +1,26 @@
+{
+ "sn": "SN2024GGI",
+ "instruments": {
+  "STIS": {
+   "z": 0.002196
+  }
+ },
+ "epochs": {
+  "MAMA/2024-05-22_day41": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  },
+  "MAMA/2024-11-28_day232": {
+   "gratings": [
+    "G230L",
+    "G140L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "n_epochs": 2
+}

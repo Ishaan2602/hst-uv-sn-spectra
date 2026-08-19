@@ -1,0 +1,17 @@
+{
+ "sn": "SN2024PSO",
+ "z": 0.018,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2024-07-26_day8": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}

@@ -1,0 +1,22 @@
+{
+ "sn": "ASASSN-15LH",
+ "z": 0.2326,
+ "instrument": "STIS",
+ "epochs": {
+  "CCD/2015-12-29_day199": {
+   "gratings": [
+    "G430L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false
+  },
+  "MAMA/2015-12-29_day199": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": false
+  }
+ },
+ "failed_exposures": []
+}
