@@ -1,15 +1,15 @@
 {
   "sn": "SN2017EGM",
   "sn_type": "SLSN-I",
-  "generated": "2026-08-18",
+  "generated": "2026-08-20",
   "provenance": {
     "z": 0.031,
-    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar.",
     "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
     "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
   },
   "absorption": {
-    "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+    "note": "foreground MW+host ISM screen, blended at low-res",
     "b_kms": 65.8,
     "columns": {
       "Fe II": {

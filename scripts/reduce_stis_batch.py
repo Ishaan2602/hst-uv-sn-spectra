@@ -319,13 +319,11 @@ for (det, ep), grats in groups.items():
   except Exception as e:
     print('epoch coadd error', det, ep, repr(e)[:150])
 
-# ---- write the stis manifest fragment + scaling ----
+# ---- write the stis manifest fragment ----
 sndir = f'{a.outroot}/{a.sn}'
 os.makedirs(sndir, exist_ok=True)
 with open(f'{sndir}/{a.sn}_stis_manifest.json', 'w') as f:
     json.dump(manifest, f, indent=1)
-with open(f'{sndir}/{a.sn}_stis_scaling.json', 'w') as f:
-    json.dump(scaling, f, indent=1)
 
 # ---- cleanup heavy intermediates (keep raw downloads + the x1d/products) ----
 for d in glob.glob(f'{a.base}/defringe_work/*'):

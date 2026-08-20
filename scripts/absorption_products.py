@@ -64,7 +64,7 @@ def absorption_block(rows):
         elif q.startswith("[") and q.endswith("]"):
             met[q] = {"value": val, "err": err, "method": meth, "note": note}
     return {
-        "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+        "note": "foreground MW+host ISM screen, blended at low-res",
         "b_kms": b, "columns": cols, "N_HI": nhi, "metallicity": met, "depletion": dep,
     }
 
@@ -81,7 +81,7 @@ def build_absorption(sn, tab):
         "provenance": {
             "z": zof(sn),
             "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped "
-                      "Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+                      "Lya joint emission+absorption fit; [X/H] vs Asplund09 solar.",
             "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
             "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
         },

@@ -1,5 +1,5 @@
-# curated ISM absorption / metallicity measurements per SN, from the investigation notebooks
-# (ism_ew_cog_sandbox phase-1 columns + ism_investigation2 phase-3 N(HI)/[X/H]). manually maintained.
+# curated ISM absorption / metallicity measurements per SN, from the investigation notebooks.
+# manually maintained.
 # scripts/ism_products.py joins this with the emission products it computes -> per-SN JSON sidecars.
 # long format so it extends cleanly. quantity = b_kms | logN(<ion>) | logN(HI) | [X/H] | [Fe/Zn].
 # NOTE: foreground screen is MW+host blended at low-res (do not over-claim host-only).
@@ -14,7 +14,7 @@ SN2023IXF,[Zn/H],-0.09,0.3,N(Zn)-N(HI)-solar,gas-phase metallicity (Zn undeplete
 SN2023IXF,[Fe/H],-1.17,0.3,N(Fe)-N(HI)-solar,iron plus depletion onto dust
 SN2023IXF,[Cr/H],-0.57,0.3,N(Cr)-N(HI)-solar,
 SN2023IXF,[Mn/H],-1.16,0.3,N(Mn)-N(HI)-solar,
-SN2023IXF,[Fe/Zn],-1.08,,depletion,phase-1 relative [Zn/Fe]=+1.1; Zimmerman proxy Z~0.95 solar
+SN2023IXF,[Fe/Zn],-1.08,,depletion,[Fe/Zn] depletion pattern; Zimmerman+2024 proxy Z~0.95 solar
 # --- phase-3.5 (aug 18): absolute-metallicity extension to anchored SNe with FUV G140L Lya coverage.
 # N(HI) from the damped Lya fit against the early photospheric CONTINUUM backlight (cont*exp(-tau_Lya),
 # b-independent damping wings; vabs = MW-host blend so N carries a ~0.2-0.3 dex velocity systematic).

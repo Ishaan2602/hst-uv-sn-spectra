@@ -28,6 +28,18 @@ from specutils.analysis import line_flux
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import time
+
+def _savefig(fig, path, dpi=110):
+    # /mnt/c writes from the WSL Windows-python are intermittently flaky (OSError errno22 on the FS bridge);
+    # a bounded retry keeps one transient flake from killing a whole catalog run.
+    for i in range(4):
+        try:
+            fig.savefig(path, dpi=dpi); return
+        except OSError:
+            if i == 3:
+                raise
+            time.sleep(0.4)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from paths import OUT, CATALOG
@@ -325,7 +337,17 @@ def _fit_profiles(bf):
         if name == "kwok":
             ic["inner_v"] = round(float(p[1] + p[3] - p[4]))    # mu+vc-vin = shell blue edge
         models[name] = ic
-    return {"models": models, "best_model": min(models, key=lambda n: models[n]["bic"]),
+    # item-2 guard: don't let kwok WIN on a pegged FWHM floor (KWOK_LO[2]=3000) or a razor-thin, window-flippable
+    # BIC margin over lorentzian (SN2005ip d3065 pegged at 3000 won by dBIC 7.5, flips at a wider window). keep
+    # kwok in models{} for the record; only bar it from the SELECTION. real broad shells (2023ixf, GGI, 1998S,
+    # 2026ayt) have FWHM >> the floor and beat lorentzian by a wide margin, so they keep kwok.
+    sel = dict(models)
+    if "kwok" in sel and "lorentzian" in sel:
+        pegged = fits["kwok"][1][2] <= KWOK_LO[2] * 1.02
+        thin = (sel["lorentzian"]["bic"] - sel["kwok"]["bic"]) < 6.0
+        if pegged or thin:
+            sel = {k: v for k, v in sel.items() if k != "kwok"}
+    return {"models": models, "best_model": min(sel, key=lambda n: sel[n]["bic"]),
             "pcygni": False, "coherence": coh, "_fits": fits}
 
 
@@ -389,20 +411,26 @@ def _flux_syst(w, f, lam0, vline, vcont, deg, base_F, z=0.0):
 
 
 def _emis_rec(bf, ph, instr, prof=None, vphot=None, syst_err=None):
-    # detection gate uses photon SNR (F > 3 sigma_photon), but the REPORTED flux_err is the SYSTEMATIC
-    # (continuum/window/smoothing largest-deviation, bostroem method) - the dominant uncertainty; a
-    # photon-noise MC understates it ~10-25x (phase-2 B1/B7). photon MC kept as flux_err_photon.
+    # HONEST detection gate (phase-4 item 3). the marginal real-vs-noise boundary is genuinely fuzzy
+    # (coherence / syst-SNR overlap between faint real lines and noise), so we do NOT force a perfect binary.
+    # two layers: (1) KEEP the phase-3.5 photon-significance floor F > 3*sigma_photon -- it legitimately rejects
+    # low-count junk (few counts -> large photon error); (2) additionally drop an epoch only when BOTH honest
+    # metrics agree it is noise: the shape coherence is low_snr (<6) AND the systematic significance F/flux_err
+    # is <3. everything surviving keeps its coherence grade + flux_reliable flag. see docs/analysis_phase4.md sec 2.
     F, sigF = bf["F"] * 1e15, bf["sigF"] * 1e15
     has_err = np.isfinite(sigF) and sigF > 0
-    if not ((F > 3 * sigF) if has_err else (F > 0)):
-        return None
+    coh = prof.get("coherence") if prof else None
+    ferr = syst_err if (syst_err is not None and np.isfinite(syst_err)) else (sigF if has_err else None)
+    ssnr = (F / ferr) if (ferr and ferr > 0) else np.inf
+    if not (F > 3 * sigF if has_err else F > 0):
+        return None                                 # photon-significance floor (phase 3.5): rejects low-count junk
+    if (coh is None or coh < 6) and ssnr < 3:
+        return None                                 # + drop unambiguous noise: both the shape AND the systematic fail
     if _is_spike(bf["v"], bf["fc"], bf["emis"]):
         return None                                 # unresolved cosmic-ray/hot-pixel spike, not a real line
     edge = _edge_flux_frac(bf)
     pcyg = bool(prof["pcygni"]) if prof else False
     reason = prof.get("pcygni_reason") if prof else None
-    coh = prof.get("coherence") if prof else None
-    ferr = syst_err if (syst_err is not None and np.isfinite(syst_err)) else (sigF if has_err else None)
     vph = vphot if reason == "photospheric" else None   # only carry v_phot for a CONFIDENT photospheric feature
     rec = {"phase": ph, "flux": round(F, 1), "flux_err": round(ferr, 1) if ferr is not None else None,
            "flux_err_photon": round(sigF, 1) if has_err else None, "instr": instr,
@@ -462,7 +490,7 @@ def _emis_diag(bf, prof, sn, instr, ph, line, plotdir):
     os.makedirs(plotdir, exist_ok=True)
     tag = line.replace(" ", "").lower()
     instr_safe = instr.replace("?", "unk")      # '?' is invalid in Windows filenames
-    fig.tight_layout(); fig.savefig(os.path.join(plotdir, f"{sn}_{instr_safe}_day{ph:.0f}_{tag}_diag.png"), dpi=110)
+    fig.tight_layout(); _savefig(fig, os.path.join(plotdir, f"{sn}_{instr_safe}_day{ph:.0f}_{tag}_diag.png"))
     plt.close(fig)
 
 
@@ -499,7 +527,7 @@ def _emis_summary(sn, mg2, lya, mg2_prof, lya_prof, plotdir):
         sm = plt.cm.ScalarMappable(cmap="viridis", norm=norm); sm.set_array([])
         fig.colorbar(sm, ax=a1, label="phase [day]")   # was 'color=phase' with no key; give the reader the mapping
     os.makedirs(plotdir, exist_ok=True)
-    fig.tight_layout(); fig.savefig(os.path.join(plotdir, f"{sn}_emission_summary.png"), dpi=110)
+    fig.tight_layout(); _savefig(fig, os.path.join(plotdir, f"{sn}_emission_summary.png"))
     plt.close(fig)
 
 
@@ -525,13 +553,16 @@ def compute_emission(sn):
             seen.add(("mg", round(ph)))
             win = MG2_WINDOW.get(sn.upper(), _MG2_DEFAULT)
             bf = bostroem_flux(w, f, e=e, lam0=MG2, vline=win, deg=1, z=z)
-            prof = _fit_profiles(bf)
+            # item-1: fit the SHAPE over the full default window; a narrow per-SN flux override (GGI (-6000,4000))
+            # truncates a broad shell into a lorentzian. the flux stays on `win`; only the shape label uses the wide.
+            bf_shape = bf if win == _MG2_DEFAULT else bostroem_flux(w, f, e=e, lam0=MG2, vline=_MG2_DEFAULT, deg=1, z=z)
+            prof = _fit_profiles(bf_shape)
             vphot = _vphot_normalized(w, f, MG2) if (prof and prof.get("pcygni")) else None
             syst = _flux_syst(w, f, MG2, win, (-16000, 16000), 1, bf["F"], z=z)
             rec = _emis_rec(bf, ph, instr, prof, vphot, syst)
             if rec:
                 mg2.append(rec)
-                _emis_diag(bf, prof, sn, instr, ph, "Mg II", plotdir)
+                _emis_diag(bf_shape, prof, sn, instr, ph, "Mg II", plotdir)
                 mg2_prof.append((ph, bf["v"][bf["emis"]], bf["fc"][bf["emis"]]))
         if w.min() < 1185 and w.max() > 1270 and ("ly", round(ph)) not in seen:
             seen.add(("ly", round(ph)))
@@ -568,9 +599,10 @@ def build_emission(sn):
             "flux_units": "1e-15 erg s-1 cm-2",
             "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
             "emission_content": "Mg II 2800 + Lya 1216 emission-line flux for any epoch where the line is detected; NOT restricted to CSM - includes CSM-interaction shells (broad, strengthen at late phase, best_model kwok/skew) AND photospheric P-Cygni peaks (near max, pcygni=true). use sn_type + phase + best_model + pcygni to interpret.",
-            "emission_epochs": "epochs kept when F > 3 sigma_photon (detection significance). flux_err is the SYSTEMATIC error (bostroem+2026 / sembach&savage 1992 method: vary the integration limits, the continuum window, and smoothing, take the LARGEST deviation) - the dominant continuum-placement uncertainty. flux_err_photon is the pixel-noise MC, which understates the real error ~10-25x and is kept only for reference. early photospheric/absorption epochs fall below the detection cut.",
+            "emission_epochs": "epochs kept by a two-layer detection gate: (1) the photon-significance floor F > 3 sigma_photon; (2) additionally dropped ONLY when BOTH the shape coherence is low_snr (<6) AND the systematic significance F/flux_err is <3 -- i.e. only unambiguous noise is removed. marginal gray-zone epochs are KEPT carrying their coherence grade + flux_reliable flag for downstream filtering, because the real-vs-noise boundary is genuinely fuzzy (we grade rather than force-classify). flux_err is the SYSTEMATIC error (bostroem+2026 / sembach&savage 1992 method: vary the integration limits, the continuum window, and smoothing, take the LARGEST deviation) - the dominant continuum-placement uncertainty. flux_err_photon is the pixel-noise MC, which understates the real error ~10-25x and is kept only for reference.",
             "emission_quality": "flux_reliable=false marks an epoch with a deep central absorption vs the peak (pcygni=true, min/max<-0.3): its continuum-subtracted flux is dominated by continuum placement over the SN photosphere, so it is kept but is NOT a reliable emission-line flux. those epochs get no clean shape model. pcygni_reason grades what it actually is, from the profile COHERENCE (smoothed-amplitude / pixel residual scatter, reported as `coherence`): 'photospheric' (coherence>=12, a genuine coherent P-Cygni), 'marginal' (6-12, a low-SNR gray-zone feature), 'low_snr' (<6, noise / no clean line). this replaces an overclaiming pcygni bool that labeled noise as photospheric. v_phot_kms carries an APPROXIMATE photospheric velocity (absorption minimum of the continuum-normalized spectrum, UV is a forest so rough) ONLY for a confident 'photospheric' epoch. edge_flux_frac (|cont-sub flux at window edges|/peak) is a reported diagnostic. judge each epoch with pcygni_reason + coherence + best_model + sn_type + phase.",
-            "csm_benchmark": "our MW-only Mg II 2800 and Lya 1216 fluxes reproduce bostroem+2026 table 4 to ~5-10% (NUV+FUV flux-cal validated); the product applies MW+host de-reddening, so tabulated flux sits above bostroem by the host factor (x1.36 at Lya, x1.13-1.20 at Mg II for SN2023IXF host 0.031; larger at higher host E(B-V)). set host_ebv=0 to compare MW-only.",
+            "csm_benchmark": "our MW+host-dereddened Mg II 2800 and Lya 1216 fluxes sit ~15-25% above bostroem+2026 table 4 for SN2023IXF. this is NOT an extinction-convention difference: bostroem applies the SAME MW+host extinction (her MW 0.0076, host 0.031, Fitzpatrick) as we do (MW 0.0089, host 0.031, F19), so the offset is a FLUX-MEASUREMENT difference (continuum placement + fixed integration window vs her exact per-epoch recipe), within our own systematic error (flux_err). note: applying MW-only extinction appears to match by coincidence -- our flux runs ~15% high before the host term, not because the conventions agree. our custom reduction reproduces the MAST default x1d to 1-3%, so it is not a flux-cal error. SN2024GGI reads ~3x high from a genuine adopted-extinction disagreement (our total E(B-V)=0.154 from Jacobson-Galan+2024a/Chen+2024 vs bostroem's ~0.046), not a method error.",
+            "lya_airglow": "geocoronal Lya airglow (observed 1215.67 A = v approx -cz in the SN frame) is removed at product-build time: for STIS low-resolution the sibling x1d BACKGROUND array localizes it (redshift-independent) and a local poly2 + alpha*background decomposition subtracts only the airglow while preserving the real SN line; echelle/COS/flat-background epochs fall back to a narrow velocity notch.",
             "shell_model": "clean-emission epochs are fit with 4 models (gaussian, lorentzian, skew-normal, kwok off-center-hole shell), each fit on O(1)-normalized flux (fixes a prior freeze that pinned the lorentzian at its guess); models{} lists every fit's params + BIC/AICc/redchi2 and best_model is the BIC winner. kwok carries inner_v = mu+vc-vin (shell blue edge). the flux is model-independent (direct integral); the models only describe the shape. best model varies by regime: broad CSM shell -> kwok/skew, narrow-line IIn -> gaussian or lorentzian (electron-scattering wings). photospheric P-Cygni epochs get no shape model (see emission_quality).",
         },
         "emission": {"mg2": mg2, "lya": lya},

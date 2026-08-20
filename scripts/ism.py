@@ -414,11 +414,23 @@ def run_catalog(n_mc=150, min_fe=3):
                          "n_fe": r["n_fe"], "fe_snr": round(r["fe_snr"], 1), "anchored": "yes" if r["anchored"] else "no"})
             print(f"  {sn:14} {g:7} day{ph:6.1f}  b={r['b']:5.1f}  logN(FeII)={r['logN_fe']:.2f}  feSNR={r['fe_snr']:.1f}  anchored={r['anchored']}")
     sfile = ISM_SUMMARY
-    # adopted = highest-SNR epoch per SN AMONG ANCHORED epochs (screen is constant -> best anchored epoch wins).
-    # unanchored epochs (fake Ia iron-photosphere columns) are reported but never adopted.
+    # adopted = best-quality anchored epoch WITH reliability guards (phase-4 item 4). the old rule (highest fe_snr
+    # among anchored) adopted garbage: b_err > b (AT2022ACKO d6 b=57 b_err=131), an impossible logN_err=0 (SN2013DY
+    # d17, a degenerate fit), a spatially-resolved remnant (LMC-1987A, fe_snr 2.7), or fe_snr ~ 2. require fe_snr>=3,
+    # b_err < b, logN_err > 0, and skip resolved SNRs. if no anchored epoch clears the bar, leave NO adopted (better
+    # than crowning garbage). unanchored epochs (fake Ia iron-photosphere columns) are still never adopted.
+    MIN_FE_SNR = 3.0
+    RESOLVED_SNR = {"LMC-SN1987A-STIS-2"}
     best = {}
     for row in summ:
-        if row["anchored"] != "yes":
+        if row["anchored"] != "yes" or row["sn"] in RESOLVED_SNR:
+            continue
+        if row["fe_snr"] < MIN_FE_SNR:
+            continue
+        be, le = row["b_err"], row["logN_FeII_err"]
+        if be == "" or be >= row["b"]:              # a b uncertainty >= b means the fit is unconstrained
+            continue
+        if le == "" or le <= 0:                     # logN_err = 0 = degenerate / single-line unconstrained fit
             continue
         if row["sn"] not in best or row["fe_snr"] > best[row["sn"]]["fe_snr"]:
             best[row["sn"]] = row

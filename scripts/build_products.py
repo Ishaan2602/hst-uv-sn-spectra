@@ -232,15 +232,6 @@ def main():
     manifest['n_epochs'] = len(epochs)
     json.dump(manifest, open(f'{sndir}/{a.sn}_manifest.json', 'w'), indent=1)
 
-    # flatten scaling.json -> scaling.csv
-    sp = f'{sndir}/{a.sn}_stis_scaling.json'
-    if os.path.exists(sp):
-        sc = json.load(open(sp))
-        with open(f'{sndir}/{a.sn}_scaling.csv', 'w') as f:
-            f.write('epoch,detector,grating,scale,slope,intercept,factor\n')
-            for r in sc:
-                f.write(f"{r.get('epoch')},{r.get('detector')},{r.get('grating')},{r.get('scale')},"
-                        f"{r.get('slope')},{r.get('intercept')},{r.get('factor')}\n")
     print(f'built products for {a.sn}: {len(epochs)} epochs')
 
 

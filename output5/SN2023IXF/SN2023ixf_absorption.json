@@ -1,15 +1,15 @@
 {
   "sn": "SN2023IXF",
   "sn_type": "SN II",
-  "generated": "2026-08-18",
+  "generated": "2026-08-20",
   "provenance": {
     "z": 0.00087,
-    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar. see docs/analysis_phase3.md sec 3.",
+    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar.",
     "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
     "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
   },
   "absorption": {
-    "note": "foreground MW+host ISM screen, blended at low-res (see docs/analysis_phase3.md sec 3)",
+    "note": "foreground MW+host ISM screen, blended at low-res",
     "b_kms": 63.0,
     "columns": {
       "Fe II": {
@@ -72,7 +72,7 @@
     "depletion": {
       "value": -1.08,
       "method": "depletion",
-      "note": "phase-1 relative [Zn/Fe]=+1.1; Zimmerman proxy Z~0.95 solar"
+      "note": "[Fe/Zn] depletion pattern; Zimmerman+2024 proxy Z~0.95 solar"
     }
   }
 }
