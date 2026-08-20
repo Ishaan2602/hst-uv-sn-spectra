@@ -15,7 +15,10 @@ OUT = os.path.join(ROOT, CANONICAL)           # current reduced-spectra tree; an
 CATDIR = os.path.join(ROOT, "catalog")
 CATALOG = os.path.join(CATDIR, "uv_sn_catalog_clean.csv")
 CATALOG_RAW = os.path.join(CATDIR, "uv_sn_catalog.csv")
-ISM_SUMMARY = os.path.join(CATDIR, "ism_cog_summary.csv")
+ISM_SUMMARY        = os.path.join(CATDIR, "ism_cog_summary.csv")
+EMISSION_SUMMARY   = os.path.join(CATDIR, "emission_summary.csv")
+ABSORPTION_SUMMARY = os.path.join(CATDIR, "absorption_summary.csv")
+LYA_NHI_SUMMARY    = os.path.join(CATDIR, "lya_nhi_summary.csv")
 XMATCH_CACHE = os.path.join(CATDIR, ".xmatch_cache")
 TNS_CACHE = os.path.join(CATDIR, ".tns_cache")
 

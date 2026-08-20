@@ -4,9 +4,11 @@
   "generated": "2026-08-20",
   "provenance": {
     "z": 0.0053,
-    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar.",
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
     "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
-    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "curated_only",
+    "metallicity_method": "N(HI) from damped Lya joint fit; [X/H] vs Asplund09 solar"
   },
   "absorption": {
     "note": "foreground MW+host ISM screen, blended at low-res",
@@ -24,8 +26,6 @@
       "err": 0.3,
       "method": "damped Lya continuum-backlight fit",
       "note": "day4 FUV; clean damped trough but vabs hit MW bound"
-    },
-    "metallicity": {},
-    "depletion": null
+    }
   }
 }

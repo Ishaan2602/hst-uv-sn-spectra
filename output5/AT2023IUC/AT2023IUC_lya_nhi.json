@@ -1,0 +1,13 @@
+{
+  "sn": "AT2023IUC",
+  "sn_type": "SN Ibn",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 9.0,
+  "logN_HI": 22.348,
+  "logN_HI_syst_vabs": 0.082,
+  "backlight_flux_e15": 0.142,
+  "redchi2": 0.014,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

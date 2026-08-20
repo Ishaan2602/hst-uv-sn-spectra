@@ -4,13 +4,23 @@
   "generated": "2026-08-20",
   "provenance": {
     "z": 0.031,
-    "method": "EW -> curve-of-growth metal columns (early-epoch anchor); N(HI) from the damped Lya joint emission+absorption fit; [X/H] vs Asplund09 solar.",
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
     "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
-    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)"
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "cog_plus_metallicity",
+    "adopted_epoch": {
+      "grating": "G230L",
+      "phase": 30.0,
+      "fe_snr": 25.9,
+      "n_fe": 6
+    },
+    "metallicity_method": "N(HI) from damped Lya joint fit; [X/H] vs Asplund09 solar"
   },
   "absorption": {
     "note": "foreground MW+host ISM screen, blended at low-res",
     "b_kms": 65.8,
+    "b_err": 2.2,
+    "anchored": true,
     "columns": {
       "Fe II": {
         "logN": 14.84,
@@ -44,7 +54,6 @@
         "method": "N(Mn)-N(HI)-solar",
         "note": ""
       }
-    },
-    "depletion": null
+    }
   }
 }

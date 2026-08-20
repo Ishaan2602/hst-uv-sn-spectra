@@ -1,0 +1,62 @@
+{
+  "sn": "SN2022WSP",
+  "sn_type": "SN II",
+  "generated": "2026-08-20",
+  "provenance": {
+    "z": 0.007318,
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "cog_automated",
+    "adopted_epoch": {
+      "grating": "G230L",
+      "phase": 9.0,
+      "fe_snr": 21.0,
+      "n_fe": 6
+    }
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res",
+    "b_kms": 47.7,
+    "b_err": 2.4,
+    "anchored": true,
+    "columns": {
+      "Cr II": {
+        "logN": 14.315,
+        "logN_err": 0.208,
+        "n_lines": 2,
+        "limit": false
+      },
+      "Fe II": {
+        "logN": 15.145,
+        "logN_err": 0.107,
+        "n_lines": 6,
+        "limit": false
+      },
+      "Mg I": {
+        "logN": 13.293,
+        "logN_err": 0.064,
+        "n_lines": 1,
+        "limit": false
+      },
+      "Mg II": {
+        "logN": 15.491,
+        "logN_err": 0.155,
+        "n_lines": 2,
+        "limit": true
+      },
+      "Mn II": {
+        "logN": 13.194,
+        "logN_err": 0.665,
+        "n_lines": 3,
+        "limit": false
+      },
+      "Zn II": {
+        "logN": 13.593,
+        "logN_err": 0.974,
+        "n_lines": 2,
+        "limit": false
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "sn": "AT2022ACKO",
+  "sn_type": "SN II",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 4.0,
+  "logN_HI": 20.93,
+  "logN_HI_syst_vabs": 0.29,
+  "backlight_flux_e15": 1.701,
+  "redchi2": 0.0207,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

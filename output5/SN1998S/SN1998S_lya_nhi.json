@@ -1,0 +1,13 @@
+{
+  "sn": "SN1998S",
+  "sn_type": "SN IIn",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 14.0,
+  "logN_HI": 20.209,
+  "logN_HI_syst_vabs": 0.258,
+  "backlight_flux_e15": 61.228,
+  "redchi2": 0.0221,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

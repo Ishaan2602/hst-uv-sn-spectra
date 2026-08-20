@@ -141,7 +141,7 @@ def main():
     ap.add_argument('--workers', type=int, default=4,
                     help='parallel worker processes (default 4; cap ~6 for MAST rate limits)')
     ap.add_argument('--outroot', default=OUT,
-                    help='per-SN product root (pass output2 for the phase-7 re-run; catalog stays in output)')
+                    help='per-SN product root (pass a candidate output dir for a new reduction run; catalog stays in output)')
     ap.add_argument('--presync', action='store_true',
                     help='optional one-time serial CRDS cache warm-up before the pool (rarely needed)')
     ap.add_argument('--cos-only', action='store_true', dest='cos_only',

@@ -1,0 +1,13 @@
+{
+  "sn": "AT-2023TSV",
+  "sn_type": "",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 8.0,
+  "logN_HI": 20.008,
+  "logN_HI_syst_vabs": 0.244,
+  "backlight_flux_e15": 0.372,
+  "redchi2": 0.0712,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

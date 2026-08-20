@@ -43,7 +43,7 @@ def _savefig(fig, path, dpi=110):
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from paths import OUT, CATALOG
-SUMMARY = os.path.join(OUT, "emission_summary.csv")
+from paths import EMISSION_SUMMARY as SUMMARY
 
 C_KMS = 2.99792458e5
 MG2, LYA = 2799.94, 1215.67
@@ -305,9 +305,9 @@ def _profile_coherence(v, ff):
 
 
 # Mg II emission window (km/s). the ASYMMETRIC default (more blue, since the CSM shell is blueshifted) is the
-# right call and reproduces bostroem+2026 for 2023ixf; phase-2's "symmetric +-10000" note is superseded.
+# right call and reproduces bostroem+2026 for 2023ixf; the symmetric +-10000 option is superseded.
 # MG2_WINDOW is a curated per-SN override for the few broad-blue-wing SNe the default over-captures (GGI ~2x).
-# NOTE (aug 17 phase-3.5): a data-driven adaptive-tightening window was tried and REJECTED - it is noise-fragile
+# NOTE: a data-driven adaptive-tightening window was tried and REJECTED - it is noise-fragile
 # (it cut real emission on 2023ixf d66 429->312 and did not fix GGI), so the fixed default + curated override
 # is the robust choice. a fit-based window (integrate over the fitted profile extent) is the future direction.
 MG2_WINDOW = {"SN2024GGI": (-6000, 4000)}
@@ -393,7 +393,7 @@ def _is_spike(v, fc, emis):
 def _flux_syst(w, f, lam0, vline, vcont, deg, base_F, z=0.0):
     # bostroem+2026 / sembach&savage systematic flux error: vary the integration limits, the continuum
     # window, and smoothing; take the LARGEST deviation from nominal. this is the DOMINANT uncertainty
-    # (continuum/window placement); a photon-noise MC understates it ~10-25x (phase-2 B1/B7). in 1e-15 units.
+    # (continuum/window placement); a photon-noise MC understates it ~10-25x. in 1e-15 units.
     dv = 1500.0
     devs = []
     for vl in ((vline[0] + dv, vline[1]), (vline[0] - dv, vline[1]), (vline[0], vline[1] + dv), (vline[0], vline[1] - dv)):
@@ -411,12 +411,11 @@ def _flux_syst(w, f, lam0, vline, vcont, deg, base_F, z=0.0):
 
 
 def _emis_rec(bf, ph, instr, prof=None, vphot=None, syst_err=None):
-    # HONEST detection gate (phase-4 item 3). the marginal real-vs-noise boundary is genuinely fuzzy
+    # two-layer detection gate. the marginal real-vs-noise boundary is genuinely fuzzy
     # (coherence / syst-SNR overlap between faint real lines and noise), so we do NOT force a perfect binary.
-    # two layers: (1) KEEP the phase-3.5 photon-significance floor F > 3*sigma_photon -- it legitimately rejects
-    # low-count junk (few counts -> large photon error); (2) additionally drop an epoch only when BOTH honest
-    # metrics agree it is noise: the shape coherence is low_snr (<6) AND the systematic significance F/flux_err
-    # is <3. everything surviving keeps its coherence grade + flux_reliable flag. see docs/analysis_phase4.md sec 2.
+    # layer 1: photon-significance floor F > 3*sigma_photon -- rejects low-count junk (few counts -> large error).
+    # layer 2: drop only when BOTH metrics agree it is noise: shape coherence low_snr (<6) AND syst-SNR F/flux_err
+    # is <3. everything surviving keeps its coherence grade + flux_reliable flag.
     F, sigF = bf["F"] * 1e15, bf["sigF"] * 1e15
     has_err = np.isfinite(sigF) and sigF > 0
     coh = prof.get("coherence") if prof else None

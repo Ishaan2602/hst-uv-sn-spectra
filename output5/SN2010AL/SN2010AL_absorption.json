@@ -1,0 +1,56 @@
+{
+  "sn": "SN2010AL",
+  "sn_type": "SN I",
+  "generated": "2026-08-20",
+  "provenance": {
+    "z": 0.017,
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "cog_automated",
+    "adopted_epoch": {
+      "grating": "G230LB",
+      "phase": 16.0,
+      "fe_snr": 17.1,
+      "n_fe": 6
+    }
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res",
+    "b_kms": 61.5,
+    "b_err": 11.7,
+    "anchored": true,
+    "columns": {
+      "Fe II": {
+        "logN": 15.84,
+        "logN_err": 0.446,
+        "n_lines": 6,
+        "limit": false
+      },
+      "Mg I": {
+        "logN": 13.386,
+        "logN_err": 0.235,
+        "n_lines": 1,
+        "limit": false
+      },
+      "Mg II": {
+        "logN": 14.0,
+        "logN_err": 0.252,
+        "n_lines": 2,
+        "limit": false
+      },
+      "Mn II": {
+        "logN": 13.794,
+        "logN_err": 0.105,
+        "n_lines": 2,
+        "limit": false
+      },
+      "Zn II": {
+        "logN": 15.111,
+        "logN_err": 2.032,
+        "n_lines": 1,
+        "limit": true
+      }
+    }
+  }
+}

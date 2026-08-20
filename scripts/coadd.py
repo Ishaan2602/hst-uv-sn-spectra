@@ -9,7 +9,7 @@ COMMON_AXIS = np.concatenate([
     np.arange(3050, 5600, 2.7),
     np.arange(5600, 10260, 4.9)])
 # drop the occasional float-precision duplicate at a segment join so the axis is STRICTLY increasing
-# (the FluxConservingResampler requires it - this is the splice-edge issue that bit us in phase 1).
+# (the FluxConservingResampler requires it - this is the splice-edge issue from strict-monotonic enforcement).
 COMMON_AXIS = COMMON_AXIS[np.concatenate([[True], np.diff(COMMON_AXIS) > 1e-6])]
 
 # inter-grating overlap windows (A) used to align each grating to the g230lb anchor.
@@ -160,7 +160,7 @@ def resel_step(grating):
 def resample_fcr(w, f, grid, e=None):
     # the PI's flux-conserving resample (specutils FluxConservingResampler, nan_fill), per exposure.
     # w must be monotonic increasing (clean_wf guarantees it) - that avoids the splice-edge failure
-    # that forced the np.interp fallback in phase 1. lazy import so non-coadd scripts don't pay for it.
+    # that required the np.interp fallback. lazy import so non-coadd scripts don't pay for it.
     import astropy.units as u
     from astropy.nddata import StdDevUncertainty
     from specutils.manipulation import FluxConservingResampler

@@ -1,0 +1,13 @@
+{
+  "sn": "GAIA16APD",
+  "sn_type": "SLSN-I",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 16.0,
+  "logN_HI": 20.447,
+  "logN_HI_syst_vabs": 0.065,
+  "backlight_flux_e15": 1.132,
+  "redchi2": 0.016,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

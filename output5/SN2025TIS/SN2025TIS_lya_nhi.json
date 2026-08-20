@@ -1,0 +1,13 @@
+{
+  "sn": "SN2025TIS",
+  "sn_type": "SN II",
+  "generated": "2026-08-20",
+  "grating": "G140L",
+  "phase": 3.0,
+  "logN_HI": 20.953,
+  "logN_HI_syst_vabs": 0.092,
+  "backlight_flux_e15": 15.056,
+  "redchi2": 0.0141,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

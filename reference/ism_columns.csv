@@ -1,6 +1,6 @@
 # curated ISM absorption / metallicity measurements per SN, from the investigation notebooks.
 # manually maintained.
-# scripts/ism_products.py joins this with the emission products it computes -> per-SN JSON sidecars.
+# absorption_products.py merges this with the automated CoG output -> per-SN JSON sidecars.
 # long format so it extends cleanly. quantity = b_kms | logN(<ion>) | logN(HI) | [X/H] | [Fe/Zn].
 # NOTE: foreground screen is MW+host blended at low-res (do not over-claim host-only).
 sn,quantity,value,err,method,note

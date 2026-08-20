@@ -1,0 +1,86 @@
+{
+  "sn": "SN1999EM",
+  "sn_type": "SN II",
+  "generated": "2026-08-20",
+  "provenance": {
+    "z": 0.002,
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "cog_plus_nhi_auto",
+    "adopted_epoch": {
+      "grating": "G230L",
+      "phase": 8.0,
+      "fe_snr": 11.8,
+      "n_fe": 5
+    },
+    "nhi_auto_epoch": {
+      "grating": "G140L",
+      "phase": 8.0
+    }
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res",
+    "b_kms": 58.2,
+    "b_err": 10.3,
+    "anchored": true,
+    "columns": {
+      "Al III": {
+        "logN": 14.756,
+        "logN_err": 0.451,
+        "n_lines": 2,
+        "limit": true
+      },
+      "Fe II": {
+        "logN": 14.878,
+        "logN_err": 0.338,
+        "n_lines": 5,
+        "limit": false
+      },
+      "Mg I": {
+        "logN": 13.323,
+        "logN_err": 0.193,
+        "n_lines": 1,
+        "limit": false
+      },
+      "Mg II": {
+        "logN": 14.901,
+        "logN_err": 0.191,
+        "n_lines": 2,
+        "limit": true
+      },
+      "Mn II": {
+        "logN": 13.123,
+        "logN_err": 0.986,
+        "n_lines": 1,
+        "limit": false
+      },
+      "Zn II": {
+        "logN": 13.572,
+        "logN_err": 0.233,
+        "n_lines": 1,
+        "limit": false
+      }
+    },
+    "N_HI": {
+      "logN": 20.615,
+      "logN_HI_syst_vabs": 0.858,
+      "method": "automated damped Lya",
+      "source": "automated"
+    },
+    "metallicity": {
+      "[Fe/H]": {
+        "value": -1.24,
+        "err": 0.34,
+        "method": "logN(X)-logN(HI)-solar; N(HI) automated",
+        "note": "see logN_HI_syst_vabs for dominant N(HI) uncertainty"
+      },
+      "[Zn/H]": {
+        "value": 0.4,
+        "err": 0.23,
+        "method": "logN(X)-logN(HI)-solar; N(HI) automated",
+        "note": "see logN_HI_syst_vabs for dominant N(HI) uncertainty"
+      }
+    }
+  }
+}

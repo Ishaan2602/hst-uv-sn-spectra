@@ -55,8 +55,10 @@ output5/
         {SN}_{date}_epochcoadd_resel.txt       # all-grating epoch coadd, resel
       MAMA/...                                 # same layout, MAMA detector
     COS/...                                    # same layout
-  absorption_summary.csv                       # catalog-level ISM fit results
 ```
+
+Analysis summary tables live in `catalog/` alongside the main target table:
+`emission_summary.csv`, `absorption_summary.csv`, `ism_cog_summary.csv`, `lya_nhi_summary.csv`.
 
 Each epoch coadd also ships as a `.fits` alongside the `.txt`, and per-SN
 diagnostic plots (`.png`: extraction traces, coadds, time series, line fits) sit
@@ -81,6 +83,7 @@ in the same tree.
 | `flags` | Data quality notes |
 
 `catalog/ism_cog_summary.csv` contains ISM curve-of-growth fit results per target.
+`catalog/lya_nhi_summary.csv` contains automated N(HI) measurements from damped Lya.
 
 ---
 

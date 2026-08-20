@@ -1,0 +1,25 @@
+{
+  "sn": "AT2024WPP",
+  "sn_type": "SN",
+  "generated": "2026-08-20",
+  "provenance": {
+    "z": 0.08678,
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "nhi_auto_only",
+    "nhi_auto_epoch": {
+      "grating": "G140L",
+      "phase": 20.0
+    }
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res",
+    "N_HI": {
+      "logN": 20.769,
+      "logN_HI_syst_vabs": 0.024,
+      "method": "automated damped Lya",
+      "source": "automated"
+    }
+  }
+}
