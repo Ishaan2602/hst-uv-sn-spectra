@@ -1,9 +1,6 @@
-# ISM absorption line list for the UV/optical SN spectra pipeline.
-# Concrete list: species from Zimmerman et al. 2024 (SN 2023ixf) Supplementary Table 1, with
-# standard rest wavelengths (vacuum for UV, air for optical Na I D / Ca II) and Morton 2003
-# oscillator strengths. Used for (a) the non-destructive ISM mask column in the coadd and (b) the
-# equivalent-width / curve-of-growth first-touch (Fe II is the CoG b-anchor; see paper_reviews/zimmerman_paper_review.md).
-# regime: linear / saturated / anchor (Fe II spans both, anchors the b fit).
+# ISM absorption line list for the UV/optical spectra pipeline.
+# Rest wavelengths are vacuum in the UV and air for optical Na I D / Ca II; oscillator strengths follow Morton 2003.
+# Fe II spans the anchor set for the curve-of-growth fit. regime = linear / saturated / anchor.
 ion,wavelength_A,f_osc,frame,regime,notes
 Al III,1854.716,0.559,vac,linear,doublet
 Al III,1862.790,0.278,vac,linear,doublet

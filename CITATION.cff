@@ -11,9 +11,10 @@ abstract: >
 authors:
   - family-names: Gurazada
     given-names: Ishaan
-    affiliation: "California Institute of Technology"
+    affiliation: "University of Illinois Urbana-Champaign"
   - family-names: Jacobson-Galán
     given-names: Wynn
+    affiliation: "California Institute of Technology"
   - family-names: Kasliwal
     given-names: Mansi
     affiliation: "California Institute of Technology"

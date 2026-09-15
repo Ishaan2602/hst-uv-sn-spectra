@@ -1,0 +1,13 @@
+{
+  "sn": "AT2024WPP",
+  "sn_type": "SN",
+  "generated": "2026-09-08",
+  "grating": "G140L",
+  "phase": 20.0,
+  "logN_HI": 20.769,
+  "logN_HI_syst_vabs": 0.024,
+  "backlight_flux_e15": 0.785,
+  "rms_resid": 0.0931,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
+  "note": "automated; curated ism_columns.csv values override this when present"
+}

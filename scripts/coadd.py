@@ -42,18 +42,34 @@ def clean_wf(w, f, e=None, dq=None):
 
 
 def resample(w, f, e=None, axis=COMMON_AXIS):
+    # simple np.interp onto the common axis; extrapolates as nan. for display only: not flux-conserving.
     fo = np.interp(axis, w, f, left=np.nan, right=np.nan)
     eo = np.interp(axis, w, e, left=np.nan, right=np.nan) if e is not None else None
     return fo, eo
 
 
-def ivar_combine(fluxes, errors):
+def ivar_combine(fluxes, errors, clip_k=4.0):
     # inverse-variance weighted mean on a shared axis. no deviation reject: in the low-snr uv the
     # scatter dwarfs the flux (and the running median sits near zero, so a relative cut divides by
     # ~0 and rejects everything), which is what was gutting the cos/mama uv. dq is already applied
     # upstream in clean_wf; keep every finite point and let the 1/err^2 weighting handle the noise.
     F = np.vstack(fluxes).astype(float)
     E = np.vstack(errors).astype(float)
+    # across-exposure cosmic-ray / hot-pixel rejection. a real feature (line, continuum) is in EVERY
+    # exposure -> it IS the per-pixel median; a CR/hot pixel is in ONE. with >=3 exposures reject a pixel whose
+    # deviation from the median exceeds clip_k * the LOCAL error (an ABSOLUTE, error-scaled cut -- NOT a relative
+    # one, which divides by ~0 flux and guts the low-snr uv, the reason the old combine had no reject). a pixel
+    # can never drop below 2 survivors, so a narrow line (in all exposures) is untouchable. STIS CCD is the main
+    # beneficiary (weak CRSPLIT=1/2 rejection leaves ~4.8 spikes/1000px); the reject is detector-agnostic + safe.
+    if F.shape[0] >= 3 and clip_k:
+        med = np.nanmedian(F, axis=0)
+        madp = 1.4826 * np.nanmedian(np.abs(F - med[None, :]), axis=0)
+        scale = np.fmax(np.where(np.isfinite(E) & (E > 0), E, 0.0), madp[None, :])
+        nfin = np.isfinite(F).sum(axis=0)
+        rej = np.isfinite(F) & (scale > 0) & (np.abs(F - med[None, :]) > clip_k * scale) & (nfin[None, :] >= 3)
+        nrej = rej.sum(axis=0)
+        rej[:, nrej > (nfin - 2)] = False        # never leave a pixel with < 2 survivors
+        F = np.where(rej, np.nan, F)
     with np.errstate(invalid='ignore', divide='ignore'):
         wgt = 1.0 / np.where(E > 0, E ** 2, np.nan)
         num = np.nansum(np.where(np.isfinite(F), F * wgt, 0.0), axis=0)

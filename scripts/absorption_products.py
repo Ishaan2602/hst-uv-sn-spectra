@@ -2,7 +2,7 @@
 # per-source ABSORPTION / ISM products for the public repo (foreground metal columns + metallicity).
 # combines three data sources at different depth levels:
 #
-#   1. AUTOMATED CoG  -- catalog/ism_cog_summary.csv + output5/<SN>/absorption/*_cog.csv
+#   1. AUTOMATED CoG  -- catalog/ism_cog_summary.csv + output/<SN>/absorption/*_cog.csv
 #      produced by ism.py for all SNe with NUV spectra where >=3 Fe II lines clear the 2-sigma
 #      detection gate. provides b, per-ion logN, quality metrics.
 #
@@ -59,12 +59,13 @@ def load_nhi_summary():
 
 def load_cog_summary():
     # return {sn_dir: adopted_row} for every SN with an adopted CoG epoch.
-    # keys are the SN directory names as ism.py wrote them (from os.listdir output5).
+    # keys are the SN directory names as ism.py wrote them (from os.listdir output).
     adopted = {}
     try:
         with open(ISM_SUMMARY) as fh:
             for row in csv.DictReader(fh):
-                if row.get("adopted") == "yes":
+                a = row.get("adopted") or ""
+                if a == "yes" or a.startswith("mean"):   # adopted is "yes" (1 epoch) or "mean(N)" (>=2)
                     adopted[row["sn"]] = row
     except FileNotFoundError:
         pass
@@ -142,7 +143,7 @@ def _curated_block(rows):
 
 def build_absorption(sn_dir, cog_row, cog_ions, curated_rows, nhi_row=None):
     """
-    sn_dir       -- exact SN directory name in output5/ (used for paths + provenance)
+    sn_dir       -- exact SN directory name in output/ (used for paths + provenance)
     cog_row      -- adopted row from ism_cog_summary.csv, or None
     cog_ions     -- {ion: ...} from per-epoch *_cog.csv, or {}
     curated_rows -- list of rows from ism_columns.csv for this SN, or []

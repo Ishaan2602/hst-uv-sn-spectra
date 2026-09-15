@@ -1,0 +1,237 @@
+{
+  "paths.py": {
+    "purpose": "single source of truth for all project paths; import this, never hardcode dirs",
+    "constants": [
+      {"name": "CANONICAL", "desc": "name of the current output tree dir (e.g. 'output'); bump this one string to promote a new reduction"},
+      {"name": "OUT", "desc": "full path to the canonical reduced-spectra tree"},
+      {"name": "CATDIR / CATALOG / CATALOG_RAW", "desc": "catalog/ dir and the clean/raw catalog CSVs"},
+      {"name": "ISM_SUMMARY / EMISSION_SUMMARY / ABSORPTION_SUMMARY / LYA_NHI_SUMMARY", "desc": "catalog-level product CSV paths"},
+      {"name": "REFERENCE / LINELISTS", "desc": "top-level curated-input directories (scripts read these, never docs/)"},
+      {"name": "HOST_EBV", "desc": "authoritative host-reddening CSV (reference/host_ebv.csv)"},
+      {"name": "PHASE_FILE", "desc": "scripts/project_phase.json -- the machine-readable {function, phase} marker"},
+      {"name": "BACKUPS", "desc": "output_backups/ directory for dated snapshot archives"}
+    ],
+    "functions": [
+      {"name": "host_ebv_map", "sig": "host_ebv_map()", "desc": "read reference/host_ebv.csv and return {SN_UPPER: (host_ebv, err, src)}; more reliable than the catalog mirror"},
+      {"name": "project_phase", "sig": "project_phase()", "desc": "read scripts/project_phase.json; return (function_str, phase_int) e.g. ('analysis', 5)"}
+    ]
+  },
+  "backup_output.py": {
+    "purpose": "snapshot the current output/ tree into output_backups/ with a dated phase-tagged name",
+    "run": "python scripts/backup_output.py  [src_dir]",
+    "functions": [
+      {"name": "backup_name", "sig": "backup_name(when=None)", "desc": "build the backup dir name from today's date + project_phase(); format: output_<mon><dd>-<yy>_<function>_phase<N>"},
+      {"name": "main", "sig": "main()", "desc": "create output_backups/<name>/ via robocopy; exits if the snapshot already exists"}
+    ]
+  },
+  "coadd.py": {
+    "purpose": "shared spectrum coadd + scaling utilities used by both the STIS and COS product builders",
+    "constants": [
+      {"name": "COMMON_AXIS", "desc": "the fixed output wavelength grid (1100-10260 A); finer in UV, coarser to red; shared by all coadds"},
+      {"name": "OVERLAP", "desc": "grating overlap windows used to scale G430L/G750L onto the G230LB anchor"},
+      {"name": "GAP_K", "desc": "FCR gap threshold (px): native-input pairs wider than this get nan-filled instead of bridged"}
+    ],
+    "functions": [
+      {"name": "clean_wf", "sig": "clean_wf(w, f, e=None, dq=None)", "desc": "apply DQ bitmask (drop 512/256/4, keep 16), remove non-finite/zero flux, sort and deduplicate wavelength"},
+      {"name": "resample", "sig": "resample(w, f, e=None, axis=COMMON_AXIS)", "desc": "simple np.interp onto the common axis; for display; not flux-conserving"},
+      {"name": "ivar_combine", "sig": "ivar_combine(fluxes, errors, clip_k=4.0)", "desc": "inverse-variance weighted mean with optional across-exposure CR sigma-clip (>=3 exposures, absolute error-scaled)"},
+      {"name": "align_and_merge", "sig": "align_and_merge(legs, prefer=(), method='ivar', trim=None)", "desc": "build a union wavelength grid from N grating legs, FCR each onto it, combine; the main per-epoch coadd function"},
+      {"name": "scale_factor", "sig": "scale_factor(anchor_w, anchor_f, w, f, overlap)", "desc": "flux scale factor to align one grating leg to an anchor in a shared overlap window"},
+      {"name": "resample_fcr", "sig": "resample_fcr(w, f, grid, e=None)", "desc": "flux-conserving resampling via specutils FluxConservingResampler; nan-fills real gaps (wider than GAP_K native px)"},
+      {"name": "coadd_native", "sig": "coadd_native(specs, grating=None)", "desc": "ivar combine of multiple exposures on their own native-dispersion grid"},
+      {"name": "coadd_resel", "sig": "coadd_resel(specs, grating, cos=False)", "desc": "coadd onto the 2-pixel (resolution element) grid for STIS; COS uses a fixed 0.073 A step"},
+      {"name": "coadd_exposures", "sig": "coadd_exposures(specs, axis=COMMON_AXIS)", "desc": "ivar combine of exposures resampled onto the common axis (used for the cross-grating display merge)"}
+    ]
+  },
+  "stis_extract.py": {
+    "purpose": "STIS extraction parameter lookup and adaptive trace/bg utilities; imported by reduce_stis_batch.py",
+    "constants": [
+      {"name": "EXTRSIZE", "desc": "per-grating default extraction aperture height (px); measured from enclosed-flux curves"},
+      {"name": "EXTRSIZE_CLAMP", "desc": "adaptive-widen bounds (lo, hi) for CCD gratings"},
+      {"name": "ECHELLE", "desc": "tuple of echelle grating names (excluded from standard reduction path)"}
+    ],
+    "functions": [
+      {"name": "is_echelle", "sig": "is_echelle(grating)", "desc": "return True if grating is one of the echelle modes"},
+      {"name": "extrsize_for", "sig": "extrsize_for(grating, detector='CCD')", "desc": "default extraction height for a grating+detector combination"},
+      {"name": "trace_window", "sig": "trace_window(detector, grating)", "desc": "row range to search for the spectral trace; tightened for MAMA to avoid airglow/host pull"},
+      {"name": "adaptive_extrsize", "sig": "adaptive_extrsize(sci, center, grating, detector, target=0.98, flags=None)", "desc": "widen the extraction aperture to enclose `target` fraction of cross-dispersion flux, clamped per grating; MAMA and flagged traces stay at default"},
+      {"name": "find_trace", "sig": "find_trace(sci, detector, extrsize, refcol, step, grating)", "desc": "find the spectral trace center row by collapsing columns and fitting a Gaussian along the cross-dispersion axis"},
+      {"name": "adaptive_bg", "sig": "adaptive_bg(sci, center, extrsize, size, gap, reach)", "desc": "place background apertures symmetrically around the trace, stepping outward until they clear the extraction box and fit within the detector"},
+      {"name": "draw_extraction", "sig": "draw_extraction(sci, res, detector, extrsize, title, save)", "desc": "save a 2D PNG showing the raw image with extraction and background apertures overlaid"}
+    ]
+  },
+  "emission_products.py": {
+    "purpose": "per-source Mg II 2800 + Lya 1216 CSM emission products: line flux, 4-model BIC shape, P-Cygni classification",
+    "run": "python emission_products.py [SN ...]  (no args = all SNe in output/)",
+    "constants": [
+      {"name": "MG2 / LYA", "desc": "Mg II 2800 doublet centroid (2799.94 A) and Lya rest wavelength (1215.67 A)"}
+    ],
+    "functions": [
+      {"name": "deredden", "sig": "deredden(wrest_A, z, mw_ebv, host_ebv=0.0)", "desc": "Fitzpatrick 1999 (R_V=3.1) dereddening factors for MW (observer frame) + host (rest frame)"},
+      {"name": "load_spec", "sig": "load_spec(path, z)", "desc": "load a _native.txt spectrum; shift wavelength to rest frame, return (w, f, e)"},
+      {"name": "bostroem_flux", "sig": "bostroem_flux(w, f, e, lam0, vline, vcont, vabs, deg, smooth, z)", "desc": "measure continuum-subtracted line flux following the Bostroem+2026 method; returns (F, F_err, base_F, fc, vc)"},
+      {"name": "kwok_shell", "sig": "kwok_shell(v, A, mu, fwhm, vc, vin)", "desc": "optically thin expanding shell profile (Kwok 1994): flat-topped with boxy edges, offset centroid, inner hole"},
+      {"name": "fit_kwok / fit_models", "sig": "fit_kwok(vv, ff) / _fit_models(vv, ff)", "desc": "fit the 4 candidate CSM profiles (Gaussian, Lorentzian, skew-Gaussian, Kwok shell); return BIC scores + parameters"},
+      {"name": "_central_notch", "sig": "_central_notch(v, fc, emis, lam0, sigma, z)", "desc": "conditionally interpolate over the narrow ISM / photospheric-core notch at line center only when broad emission is already present"},
+      {"name": "_profile_coherence", "sig": "_profile_coherence(v, ff)", "desc": "coherence score (0-24) for broad vs narrow emission profile; drives P-Cygni / marginal / low_snr grading"},
+      {"name": "_is_spike", "sig": "_is_spike(v, fc, emis)", "desc": "flag a 1-2 px isolated spike as a false detection; prevents CRs in single-exposure CCD epochs from being reported as Mg II"},
+      {"name": "_flux_syst", "sig": "_flux_syst(w, f, lam0, vline, vcont, deg, base_F, z)", "desc": "systematic flux error from continuum placement variation"},
+      {"name": "compute_emission", "sig": "compute_emission(sn)", "desc": "run the full emission measurement for one SN across all epochs; returns {line: [records]}"},
+      {"name": "build_emission", "sig": "build_emission(sn)", "desc": "write per-SN JSON sidecar + per-epoch diagnostic PNGs"},
+      {"name": "main", "sig": "main(names)", "desc": "entry point; processes each SN in `names` (or all SNe in output/) and appends to the catalog summary CSV"}
+    ]
+  },
+  "ism.py": {
+    "purpose": "ISM absorption curve-of-growth: NUV EW measurements -> Fe II anchor -> per-ion column densities + FUV apparent optical depth",
+    "run": "python ism.py [--mc N] [--min-fe N] [SN ...]",
+    "constants": [
+      {"name": "TAU_K", "desc": "tau0 = TAU_K * N * f * lam / b  (CGS; from the Voigt-profile analytic core)"},
+      {"name": "LIN_K", "desc": "W/lam = LIN_K * N * f * lam  (linear CoG regime only)"},
+      {"name": "AOD_K", "desc": "N = AOD_K / (f*lam) * integral(tau dv)  (Savage & Sembach 1991; the 1/300 bug from a unit error was fixed in the 300x-retraction)"},
+      {"name": "ANCHOR_TAU", "desc": "max tau0 for a 'good anchor': at least one detected Fe II line must be below this to keep N from floating freely on the flat CoG"},
+      {"name": "NUV_GRATINGS / FUV_GRATINGS", "desc": "where the Fe II / Mg II / ISM forest lives vs where COS resolved lines sit (G140L excluded: R~2000 doesn't resolve narrow ISM)"}
+    ],
+    "functions": [
+      {"name": "fit_group", "sig": "fit_group(w, f, group, all_lams, pad, cont_shift)", "desc": "fit a blended group of nearby ISM lines jointly: one Gaussian sigma, one amplitude per line, on a local linear continuum"},
+      {"name": "deblend_ews", "sig": "deblend_ews(w, f, e, inr, n_mc, seed, link, return_fits)", "desc": "measure deblended EW + error (MC photon noise) for every detected ISM line in the spectrum"},
+      {"name": "cog_F", "sig": "cog_F(tau0)", "desc": "the Voigt CoG integral F(tau0) = integral exp(-tau0 exp(-u^2)) du, evaluated numerically"},
+      {"name": "collect", "sig": "collect(inr, deb, ion, snr_min, cerr)", "desc": "gather CoG input points for one ion: (lam, f_osc, W, W_err); drop lines below snr_min"},
+      {"name": "fit_b_N", "sig": "fit_b_N(lam, fo, y, ye, b0, logN0)", "desc": "fit both b and logN from a set of Fe II lines in log-EW space; the Fe II anchor"},
+      {"name": "fit_N", "sig": "fit_N(lam, fo, y, ye, b, logN0)", "desc": "fit logN with b fixed at the Fe II value; used for all other ions"},
+      {"name": "aod_column", "sig": "aod_column(w, f, e, lam0, fval, vwin, cpad, sig_det)", "desc": "apparent optical depth column for one RESOLVED FUV line (Savage & Sembach 1991); returns dict with N, status, saturation flag"},
+      {"name": "analyze", "sig": "analyze(w, f, e, ism, n_mc, clean_spikes)", "desc": "full per-epoch ISM analysis: EW deblending -> CoG anchoring -> per-ion N; returns structured result dict"},
+      {"name": "run_catalog", "sig": "run_catalog(n_mc, min_fe)", "desc": "run ISM analysis over all SNe in the output tree; write per-epoch *_cog.csv files + the global ism_cog_summary.csv"},
+      {"name": "run_fuv", "sig": "run_fuv(vwin)", "desc": "run apparent optical depth analysis on all COS FUV medium-res (G130M/G160M) spectra; write fuv_aod_summary.csv"}
+    ]
+  },
+  "lya_nhi.py": {
+    "purpose": "automated N(HI) from damped Lya absorption for early photospheric-backlight epochs (phase < 50d, G140L)",
+    "run": "python lya_nhi.py [SN ...]  (no args = all SNe with G140L in output/)",
+    "constants": [
+      {"name": "FLUX_GATE", "desc": "minimum median flux in 1225-1290 A rest to accept an epoch as a usable backlight"},
+      {"name": "PHASE_MAX_CLEAN", "desc": "maximum phase (days) for a photospheric-backlight epoch"},
+      {"name": "RMS_GATE", "desc": "max RMS of O(1)-normalized residuals from the Voigt fit"},
+      {"name": "VABS_SYST_RANGE", "desc": "+/- km/s range for the v_abs systematic: captures host-ISM velocity spread"}
+    ],
+    "functions": [
+      {"name": "lya_tau", "sig": "lya_tau(w, logN, b, vabs)", "desc": "Lya Voigt-profile optical depth (Hjerting function via scipy.special.wofz); b fixed at 25 km/s in the damped regime where wings are b-independent"},
+      {"name": "backlight_flux", "sig": "backlight_flux(path, z)", "desc": "median flux in 1225-1290 A rest (the safe red wing of Lya); the backlight quality gate"},
+      {"name": "fit_nhi", "sig": "fit_nhi(w, f, logN0, b, vabs, wlo, whi)", "desc": "fit logN(HI) to a photospheric-backlight Lya trough; continuum = quadratic; returns (logN, rms_resid) or (None, None)"},
+      {"name": "run_sn", "sig": "run_sn(sn_dir)", "desc": "find all early G140L epochs for one SN, gate on flux + phase + fit quality, return list of result dicts"},
+      {"name": "main", "sig": "main(names)", "desc": "entry point; calls run_sn for each SN and writes catalog/lya_nhi_summary.csv"}
+    ]
+  },
+  "absorption_products.py": {
+    "purpose": "per-source ISM/absorption JSON sidecar: combines automated CoG + automated N(HI) + curated deep columns into one product",
+    "run": "python absorption_products.py [SN ...]",
+    "constants": [
+      {"name": "_SOLAR_REF", "desc": "log(X/H)_solar + 12 values (Asplund 2009) for the ISM abundance ions"},
+      {"name": "_ION_ERR_GATE", "desc": "skip [X/H] for ions whose logN_err >= this (0.5 dex); prevents poorly-measured columns from being reported as metallicities"}
+    ],
+    "functions": [
+      {"name": "load_nhi_summary", "sig": "load_nhi_summary()", "desc": "return {SN_UPPER: nhi_row} from catalog/lya_nhi_summary.csv"},
+      {"name": "load_cog_summary", "sig": "load_cog_summary()", "desc": "return {sn_dir: adopted_row} for every SN with an adopted CoG epoch in ism_cog_summary.csv"},
+      {"name": "load_cog_ions", "sig": "load_cog_ions(sn_dir, grating, phase)", "desc": "read the per-epoch *_cog.csv for the adopted epoch; return {ion: {logN, logN_err, n_lines, limit}}"},
+      {"name": "run_sn", "sig": "run_sn(sn_dir)", "desc": "assemble the 3-tier absorption product for one SN and write its *_absorption.json sidecar"},
+      {"name": "main", "sig": "main(names)", "desc": "entry point; writes the per-SN sidecars + catalog/absorption_summary.csv"}
+    ]
+  },
+  "catalog_clean.py": {
+    "purpose": "clean the raw MAST query catalog: dedup, SIMBAD+NED cross-match, host E(B-V), TNS z; run on Windows",
+    "run": "python catalog_clean.py [--host-sync]  (--host-sync = network-free re-join of host_ebv only)",
+    "functions": [
+      {"name": "name_variants", "sig": "name_variants(name)", "desc": "generate SIMBAD-resolvable name variants from the proposer-typed name (e.g. M82-SN -> SN 2014J)"},
+      {"name": "simbad_by_name", "sig": "simbad_by_name(name)", "desc": "query SIMBAD for object type + redshift; tries each name variant"},
+      {"name": "ned_z_by_name", "sig": "ned_z_by_name(name)", "desc": "NED redshift lookup as a fallback when SIMBAD has no z"},
+      {"name": "coord_fallback", "sig": "coord_fallback(ra, dec)", "desc": "SIMBAD coordinate cone search (8 arcsec); last resort when the name fails entirely"},
+      {"name": "xmatch_one", "sig": "xmatch_one(name, ra, dec)", "desc": "cross-match one SN: try name, then coordinate; cache the result"},
+      {"name": "ebv_one", "sig": "ebv_one(ra, dec)", "desc": "IRSA Dust Service MW E(B-V) (Schlegel/Schlafly) for a coordinate"},
+      {"name": "tns_one", "sig": "tns_one(name, canonical, ra, dec)", "desc": "TNS API lookup: discovery date, type, z; falls back to cone search"},
+      {"name": "join_host_ebv", "sig": "join_host_ebv(final)", "desc": "join the curated host_ebv.csv onto the final catalog DataFrame"},
+      {"name": "host_sync", "sig": "host_sync()", "desc": "network-free re-sync of the host_ebv column in the clean catalog from reference/host_ebv.csv"},
+      {"name": "main", "sig": "main()", "desc": "orchestrate the full catalog clean: raw CSV -> xmatch -> E(B-V) -> TNS -> host_ebv join -> write catalog/uv_sn_catalog_clean.csv"}
+    ]
+  },
+  "build_products.py": {
+    "purpose": "assemble SN-level products: time-series waterfall, per-epoch cross-grating coadds, manifests, scaling CSVs",
+    "run": "python build_products.py <sn_dir> [--outroot output] [--z Z] [--expl-mjd MJD] [--early-skip-dir DIR]",
+    "functions": [
+      {"name": "gather_epochs", "sig": "gather_epochs(sndir, tier, early_dir)", "desc": "collect all per-(detector,epoch) coadd files (STIS + COS + early pre-reduced 1Ds) with date/phase/instrument tags"},
+      {"name": "merge_epoch", "sig": "merge_epoch(specs, tier)", "desc": "combine all detectors/gratings for one global epoch into a single merged spectrum via align_and_merge"},
+      {"name": "waterfall_plot", "sig": "waterfall_plot(epochs, sn, tier, plotdir)", "desc": "draw the stacked log(f/median) time-series waterfall with dynamic per-epoch offsets"},
+      {"name": "main", "sig": "main()", "desc": "parse args, gather epochs, merge, plot waterfall, write manifest + scaling.csv"}
+    ]
+  },
+  "cos_products.py": {
+    "purpose": "build the COS output tree from already-run calcos products: mask artifacts, write 1d ascii + plots + per-grating coadds + manifest",
+    "run": "python cos_products.py <SN|ALL> [--reduced DIR] [--outroot output] [--z Z] [--expl-mjd MJD]",
+    "constants": [
+      {"name": "NUVC_ART", "desc": "the known NUVC artifact stripe (2150-2350 A) in COS G230L"},
+      {"name": "COS_RANGE", "desc": "per-grating useful wavelength range from the COS Instrument Handbook; pixels outside get mask code 4"},
+      {"name": "AIRGLOW / AIRGLOW_G140L", "desc": "H I Lya (1215.67) + O I 1302/1305/1306 airglow windows; G140L uses wider low-res masks"}
+    ],
+    "functions": [
+      {"name": "airglow_windows", "sig": "airglow_windows(grating)", "desc": "return the correct airglow mask list for a grating (wider for G140L)"},
+      {"name": "mask_row", "sig": "mask_row(segment, wvl, grating)", "desc": "build a per-pixel mask integer (0 keep; 1 NUVC; 2 airglow; 4 out-of-range)"},
+      {"name": "epoch_dir", "sig": "epoch_dir(mjd, expl)", "desc": "build the epoch directory name from MJD and explosion epoch"},
+      {"name": "counts_2d", "sig": "counts_2d(reddir, root, outpng, grat)", "desc": "save a 2D cross-dispersion counts image as a PNG (COS analog of the STIS 2D viz)"},
+      {"name": "prods", "sig": "prods(d)", "desc": "helper: list all x1dsum FITS files for one calcos output directory"},
+      {"name": "process_sn", "sig": "process_sn(sn, reduced, outroot, z, expl)", "desc": "full COS product assembly for one SN: load x1dsums, mask, write ascii/plots/coadds/manifest"},
+      {"name": "main", "sig": "main()", "desc": "parse args; call process_sn for one SN or loop over all"}
+    ]
+  },
+  "reduce_stis_batch.py": {
+    "purpose": "STIS pipeline: ocrreject + x1d for one SN, all gratings, all epochs; write the nested output tree; runs in WSL surf_uv",
+    "run": "python reduce_stis_batch.py <base_dir> <sn> [--outroot output] [--z Z] [--expl-mjd MJD] [--targname STR]",
+    "functions": [
+      {"name": "detector_of", "sig": "detector_of(h)", "desc": "return 'CCD' or 'MAMA' from the FITS header DETECTOR keyword"},
+      {"name": "is_cal", "sig": "is_cal(h)", "desc": "return True if the exposure is a calibration file (FLAT/LAMP/BIAS/etc.) to exclude from science reduction"},
+      {"name": "epoch_dir", "sig": "epoch_dir(mjd)", "desc": "build the date_dayN directory name from an observation MJD"},
+      {"name": "find_fringe_flat", "sig": "find_fringe_flat(sci_root)", "desc": "find the contemporaneous CCDFLAT exposure for G750L defringe (the _050 raw in the same visit)"},
+      {"name": "defringe_g750l", "sig": "defringe_g750l(sci_input, sci_root, flat_raw, work)", "desc": "run the normspflat -> mkfringeflat -> defringe chain; returns the defringed input file path"},
+      {"name": "x1d_run", "sig": "x1d_run(inp, out, **kw)", "desc": "call stistools.x1d with adaptive trace+bg parameters; deletes any pre-existing output (calstis cannot overwrite)"},
+      {"name": "write_1d", "sig": "write_1d(path, hdr, dat)", "desc": "write the 3-column (w, f, e) ascii product plus FITS header provenance"}
+    ]
+  },
+  "reduce_cos_batch.py": {
+    "purpose": "default calcos batch for the whole COS catalog: stage rawtags -> bestrefs -> calcos -> x1dsum; runs in WSL surf_uv",
+    "run": "python reduce_cos_batch.py <base_dir> [N_limit]  (N_limit for smoke tests)"
+  },
+  "run_full_catalog.py": {
+    "purpose": "top-level orchestrator: per-SN download -> STIS reduce -> COS products -> build products; parallelized, resumable",
+    "run": "python run_full_catalog.py [--workers 4] [--outroot output] [--cos-only] [--presync]",
+    "functions": [
+      {"name": "sh", "sig": "sh(args, log)", "desc": "run a subprocess, write stdout/stderr to a log file, return exit code"},
+      {"name": "script", "sig": "script(name)", "desc": "return the full path to a script in the scripts/ directory"},
+      {"name": "cos_dirs_for", "sig": "cos_dirs_for(name)", "desc": "glob for all COS reduced directories belonging to one SN"},
+      {"name": "run_sn_worker", "sig": "run_sn_worker(row_dict, redo, out, cos_only)", "desc": "process one SN end-to-end in a worker process: download -> STIS reduce -> COS products -> build products; writes a per-SN tmp log"},
+      {"name": "presync_crds", "sig": "presync_crds(rows, logf)", "desc": "serially sync CRDS reference files for all SNe before the parallel run (avoids concurrent CRDS writes)"},
+      {"name": "main", "sig": "main()", "desc": "parse args, load catalog, optionally presync, then run workers via ProcessPoolExecutor and merge logs"}
+    ]
+  },
+  "download_all.py": {
+    "purpose": "download all STIS science data (raw+flt+wav) for one SN or the whole catalog via astroquery coordinate query; runs on Windows",
+    "run": "python download_all.py <SN|ALL> [--limit N]",
+    "functions": [
+      {"name": "download_sn", "sig": "download_sn(name, ra, dec)", "desc": "coordinate query (8 arcsec) -> filter on-target STIS spectra (5 arcsec) -> download flt/crj/wav/raw"},
+      {"name": "main", "sig": "main()", "desc": "loop over the clean catalog and call download_sn; skip COS-only targets"}
+    ]
+  },
+  "tns_query.py": {
+    "purpose": "minimal TNS API client for the catalog cross-match; results cached per key",
+    "functions": [
+      {"name": "_post", "sig": "_post(endpoint, data, tries=4)", "desc": "POST to the TNS API with rate-limiting (>=1 s between calls) and exponential backoff on 429"},
+      {"name": "_cached", "sig": "_cached(key, fn)", "desc": "on-disk JSON cache wrapper; avoids re-hitting TNS on re-runs"},
+      {"name": "tns_name", "sig": "tns_name(name)", "desc": "strip SN/AT prefix to get the bare TNS designation (e.g. 'SN2023IXF' -> '2023ixf')"},
+      {"name": "get_object", "sig": "get_object(name)", "desc": "look up a single transient by TNS name; returns the raw TNS reply dict"},
+      {"name": "search_coord", "sig": "search_coord(ra, dec, radius=3.0)", "desc": "cone search on TNS (use sparingly per TNS guidelines); returns list of matches"}
+    ]
+  },
+  "build_investigation_notebooks.py": {
+    "purpose": "programmatically build and execute the 3 phase-5 investigation notebooks (emission/ism/spikes) so outputs render inline",
+    "run": "python scripts/build_investigation_notebooks.py [emission|ism|spikes]",
+    "functions": [
+      {"name": "build", "sig": "build(path, cells)", "desc": "write a new notebook from a list of nbformat cells and execute it in-place via nbconvert ExecutePreprocessor"}
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+# FUV ISM line list for COS/STIS work. low-ion ground-state resonance lines only.
+# Si IV / C IV / N V are left out (usually SN or hot-CSM features, not narrow foreground ISM).
+# f_osc values are from Morton 2003 (ApJS 149 205) Table 5 machine-readable file (IOP datafile5.txt). f = 10^log(lam*f) / lam_vac. Ni II keeps only NIST 1751 (not in Morton finding list within 1A).
+ion,wavelength_A,f_osc,frame,regime,notes
+Si II,1190.416,0.291945,vac,saturated,Morton2003; NIST was 0.277 (-5%)
+Si II,1193.290,0.582444,vac,saturated,Morton2003; NIST was 0.575 (-1%)
+Si II,1260.422,1.176208,vac,saturated,Morton2003; blends with S II 1259.5 at low res; NIST was 1.220 (+4%)
+Si II,1304.370,0.086417,vac,linear,Morton2003; blends with O I 1302; NIST was 0.0928 (+7%)
+Si II,1526.707,0.132814,vac,saturated,Morton2003; NIST was 0.133 (<1%)
+S II,1250.584,0.005431,vac,linear,Morton2003; NIST was 0.00602 (+11%)
+S II,1253.811,0.010909,vac,linear,Morton2003; NIST was 0.01210 (+11%)
+S II,1259.517,0.016588,vac,linear,Morton2003; blends with Si II 1260; NIST was 0.01820 (+10%)
+N I,1199.550,0.131820,vac,saturated,Morton2003; triplet 1199-1201; NIST was 0.1320 (<1%)
+N I,1200.223,0.086844,vac,linear,Morton2003; NIST was 0.0869 (<1%)
+N I,1200.710,0.043208,vac,linear,Morton2003; NIST was 0.0432 (<1%)
+O I,1302.168,0.048010,vac,linear,Morton2003; airglow + Si II 1304 nearby; NIST was 0.0520 (+8%)
+C II,1334.532,0.128431,vac,saturated,Morton2003; C II* 1335.7 excluded; NIST was 0.1290 (<1%)
+Fe II,1608.451,0.057755,vac,anchor,Morton2003; same-ion cross-check vs NUV Fe II CoG; NIST was 0.0591 (+2%)
+Fe II,1611.200,0.001380,vac,anchor,Morton2003; weak; NIST was 0.00140 (+1%)
+Al II,1670.787,1.738115,vac,saturated,Morton2003; NIST was 1.770 (+2%)
+Ni II,1751.910,0.02900,vac,linear,NIST-confirmed; other FUV Ni II lines deferred (not returned by NIST)

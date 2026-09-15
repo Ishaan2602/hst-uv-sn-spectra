@@ -1,8 +1,7 @@
-# curated ISM absorption / metallicity measurements per SN, from the investigation notebooks.
-# manually maintained.
-# absorption_products.py merges this with the automated CoG output -> per-SN JSON sidecars.
-# long format so it extends cleanly. quantity = b_kms | logN(<ion>) | logN(HI) | [X/H] | [Fe/Zn].
-# NOTE: foreground screen is MW+host blended at low-res (do not over-claim host-only).
+# curated ISM absorption / metallicity measurements per SN.
+# manually maintained; absorption_products.py merges this with the automated CoG output into per-SN JSON sidecars.
+# long format so new quantities append cleanly. quantity = b_kms | logN(<ion>) | logN(HI) | [X/H] | [Fe/Zn].
+# foreground screen is MW+host blended at low resolution, so do not over-claim host-only values.
 sn,quantity,value,err,method,note
 SN2023IXF,b_kms,63,,CoG Fe II anchor,day14 instrumental-dominated at STIS NUV low-res
 SN2023IXF,logN(Fe II),15.16,0.10,CoG,day14 anchor 7 lines (stable d14/20/25)
@@ -15,9 +14,8 @@ SN2023IXF,[Fe/H],-1.17,0.3,N(Fe)-N(HI)-solar,iron plus depletion onto dust
 SN2023IXF,[Cr/H],-0.57,0.3,N(Cr)-N(HI)-solar,
 SN2023IXF,[Mn/H],-1.16,0.3,N(Mn)-N(HI)-solar,
 SN2023IXF,[Fe/Zn],-1.08,,depletion,[Fe/Zn] depletion pattern; Zimmerman+2024 proxy Z~0.95 solar
-# --- phase-3.5 (aug 18): absolute-metallicity extension to anchored SNe with FUV G140L Lya coverage.
-# N(HI) from the damped Lya fit against the early photospheric CONTINUUM backlight (cont*exp(-tau_Lya),
-# b-independent damping wings; vabs = MW-host blend so N carries a ~0.2-0.3 dex velocity systematic).
+# aug 18 update: absolute-metallicity extension for anchored SNe with FUV G140L Ly-a coverage.
+# N(HI) comes from the damped Ly-a fit against the early photospheric continuum backlight; vabs is the MW+host blend.
 SN1998S,b_kms,67.1,,CoG Fe II anchor,day29 anchored G230L
 SN1998S,logN(Fe II),15.47,0.11,CoG,day29 anchored 7 lines
 SN1998S,logN(Mn II),13.85,0.12,CoG,day29

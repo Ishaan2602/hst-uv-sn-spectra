@@ -9,7 +9,7 @@
 # ISM foreground work (columns, N(HI), metallicity) lives in absorption_products.py - same 2800A
 # wavelength, opposite physics, kept separate on purpose.
 #
-# usage:  python emission_products.py [SN ...]      (no args -> every SN with spectra under output5)
+# usage:  python emission_products.py [SN ...]      (no args -> every SN with spectra under output)
 
 import os, glob, csv, re, json, datetime
 import numpy as np
@@ -44,6 +44,8 @@ def _savefig(fig, path, dpi=110):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from paths import OUT, CATALOG
 from paths import EMISSION_SUMMARY as SUMMARY
+from paths import LYA_NHI_SUMMARY, REFERENCE
+import lya_nhi
 
 C_KMS = 2.99792458e5
 MG2, LYA = 2799.94, 1215.67
@@ -73,6 +75,33 @@ hostsrc = lambda sn: (_HOST.get(sn.upper()) or (0.0, None, "none (MW-only)"))[2]
 tnstype = lambda sn: cat[sn.upper()].get("tns_type") or ""
 
 
+# per-SN logN(HI) for the Lya intrinsic-flux correction (F_ismcorr): curated reference/ism_columns.csv preferred,
+# else the automated damped-Lya fit in catalog/lya_nhi_summary.csv. single source of truth shared with the ISM thread.
+_ISM_COLUMNS = os.path.join(REFERENCE, "ism_columns.csv")
+def _build_nhi():
+    m = {}
+    if os.path.exists(LYA_NHI_SUMMARY):
+        with open(LYA_NHI_SUMMARY) as fh:
+            for r in csv.DictReader(fh):
+                try:
+                    lN = float(r["logN_HI"]); er = float(r.get("logN_HI_syst_vabs") or 0.0) or 0.3
+                except (ValueError, KeyError, TypeError):
+                    continue
+                m[r["sn"].upper()] = (lN, er, "lya_nhi_summary (automated damped-Lya fit)")
+    with open(_ISM_COLUMNS) as fh:                              # curated overrides the automated
+        for row in csv.reader(fh):
+            if len(row) < 4 or row[0].startswith("#") or row[1].strip() != "logN(HI)":
+                continue
+            try:
+                lN = float(row[2]); er = float(row[3]) if row[3] else 0.2
+            except ValueError:
+                continue
+            m[row[0].strip().upper()] = (lN, er, "ism_columns (curated)")
+    return m
+_NHI = _build_nhi()
+nhiof = lambda sn: _NHI.get(sn.upper())                        # (logN, logN_err, source) or None
+
+
 # --- emission machinery (ported verbatim from emission_investigation2.ipynb) ------------------------
 _f19 = F19(Rv=3.1)
 def _dered1(wave_A, ebv):
@@ -86,6 +115,7 @@ def deredden(wrest_A, z, mw_ebv, host_ebv=0.0):
 
 
 def load_spec(path, z):
+    # read a _native.txt 3-column spectrum (obs-frame wvl, flux, err); shift wvl to rest frame
     d = np.loadtxt(path, comments="#")
     w, f = d[:, 0], d[:, 1]
     e = d[:, 2] if d.shape[1] > 2 else np.full_like(f, np.nan)
@@ -187,6 +217,8 @@ def _central_notch(v, fc, emis, lam0, sigma=None, z=0.0):
 
 
 def bostroem_flux(w, f, e=None, lam0=MG2, vline=(-10000, 6000), vcont=(-16000, 16000), vabs=350, deg=1, smooth=0, z=0.0):
+    # continuum-subtract and integrate the line flux (bostroem+2026 method). fit a deg-1 continuum on the vcont
+    # flanks, then integrate the residual over vline. returns a dict with F, sigF, continuum, and diagnostic arrays.
     v = (w - lam0) / lam0 * C_KMS
     ff = savgol_filter(f, smooth, 2) if smooth > 2 else f.copy()
     emis = (v > vline[0]) & (v < vline[1]); contfit = (v > vcont[0]) & (v < vcont[1]) & ~emis
@@ -206,7 +238,8 @@ def bostroem_flux(w, f, e=None, lam0=MG2, vline=(-10000, 6000), vcont=(-16000, 1
 
 
 def kwok_shell(v, A, mu, fwhm, vc, vin):
-    # kwok+2023/24 asymmetric shell: gaussian-emissivity sphere with an off-center spherical hole cut out.
+    # optically thin expanding shell (kwok 1994): gaussian emissivity sphere with an off-center spherical hole.
+    # produces the flat-topped boxy profile seen in broad CSM shells; mu = centroid offset (blueshift).
     sig = fwhm / (2 * np.sqrt(2 * np.log(2)))
     g = np.exp(-0.5 * ((v - mu) / sig) ** 2)
     vh = mu + vc
@@ -231,7 +264,7 @@ def fit_kwok(vv, ff):
 
 
 # candidate profile models (the flux stays the model-free direct integral; these only pick the SHAPE label).
-def gaussv(v, A, mu, sig):                        # symmetric peak (k=3)
+def gaussv(v, A, mu, sig):                        # symmetric peak (k=3 free params)
     return A * np.exp(-0.5 * ((v - mu) / sig) ** 2)
 
 
@@ -244,20 +277,76 @@ def skewg(v, A, mu, sig, al):                     # mild asymmetry (k=4)
     return A * np.exp(-0.5 * t ** 2) * (1 + erf(al * t / np.sqrt(2)))
 
 
-def _fit_models(vv, ff):
+# shape-model parameter names + bounds. width floors are 100 km/s (were 500/300): a fixed 500 km/s
+# floor pegged genuinely narrow lines on COS/echelle (SN2010jl Lya d595 on G130M) and a floor is not what keeps a
+# low-res fit honest anyway -- the generic peg guard in _fit_profiles is. kwok keeps its 3000 km/s FWHM floor
+# because the shell model is only meaningful for a broad shell (below that it degenerates into a narrow gaussian).
+MODEL_SPECS = {
+    "gaussian":   (gaussv,     ["A", "mu", "sig"],              [1, -3000, 4000],          [0, -9000, 100],       [5, 4000, 12000]),
+    "lorentzian": (lorentzian, ["A", "mu", "gam"],              [1, -2000, 3000],          [0, -9000, 100],       [5, 4000, 12000]),
+    "skew":       (skewg,      ["A", "mu", "sig", "al"],        [1, -3000, 4000, -2],      [0, -9000, 100, -20],  [5, 4000, 12000, 20]),
+    "kwok":       (kwok_shell, ["A", "mu", "fwhm", "vc", "vin"], [1, -2995, 7580, 1750, 5000], KWOK_LO,          KWOK_HI),
+}
+PEG_TOL = 0.02          # a parameter within 2% of its bound span of either bound counts as pegged
+DBIC_STRONG = 6.0       # kass & raftery 'strong' evidence; a k>3 model must beat the best k=3 model by this to win
+COH_MIN = 6.0           # a k>3 model may only win BY DEFAULT (no unpegged k=3 competitor) if the profile is this coherent
+
+# instrumental LSF sigma sets the width floor for the narrow models. high-resolution gratings (COS medium, STIS
+# medium) resolve genuinely narrow lines that a fixed 100 km/s floor would peg and then bar (SN2010jl Lya d595 on
+# G130M was a real narrow line pegging an arbitrary floor); low-resolution (G140L, G230L, CCD) never produce a line
+# narrower than ~100 km/s. kwok keeps its 3000 km/s FWHM floor (the shell model is only meaningful for a broad shell).
+WIDTH_FLOOR = {"G130M": 15, "G160M": 15, "G140M": 15, "G185M": 15, "G225M": 15, "G285M": 15, "G230M": 15, "G230MB": 15}
+def _width_floor(instr):
+    return WIDTH_FLOOR.get(instr, 100)
+
+# extra p0 seeds for the non-convex models (skew, kwok) -- a single start lands in a different local minimum on some
+# epochs (GGI d232 kwok<->skew flipped when only a bound moved). multi-start + keep-lowest-RSS makes the fit stable.
+P0_SEEDS = {
+    "skew": [[1, -3000, 4000, -2], [1, -5000, 3000, 2], [1, -1500, 5000, 0]],
+    "kwok": [[1, -2995, 7580, 1750, 5000], [1, -4500, 5000, 1000, 3000], [1, -1000, 9000, 3000, 6000]],
+}
+
+
+def _lo_with_floor(name, lo, wfloor):
+    # replace the width lower bound (sig/gam, index 2) with the instrument-aware floor for the narrow models.
+    lo = list(lo)
+    if name in ("gaussian", "lorentzian", "skew"):
+        lo[2] = wfloor
+    return lo
+
+
+def _pegged(name, p, wfloor=100):
+    # which SHAPE parameters (everything but the amplitude, which is rescaled after the fit) sit on a bound.
+    # a pegged parameter means the optimizer wanted to leave the allowed region: the shape is not constrained
+    # by the data inside the model's domain, so that model must not be *selected* (it stays in models{} for the record).
+    _, names, _, lo, hi = MODEL_SPECS[name]; lo = _lo_with_floor(name, lo, wfloor); out = []
+    for nm, x, l, h in zip(names[1:], p[1:], lo[1:], hi[1:]):
+        span = h - l
+        if x <= l + PEG_TOL * span:
+            out.append(f"{nm}@lo")
+        elif x >= h - PEG_TOL * span:
+            out.append(f"{nm}@hi")
+    return out
+
+
+def _fit_models(vv, ff, wfloor=100):
     # every fit on O(1)-normalized flux then amplitude scaled back. fitting raw ~1e-15 froze the bounded
     # lorentzian at p0 (curve_fit hits its gradient tol at iter 0); normalizing is the same fix kwok used.
+    # skew/kwok are multi-started (P0_SEEDS) and the lowest-RSS fit is kept to remove local-minimum flips.
     A = np.nanmax(ff); out = {}
-    specs = [("gaussian", gaussv, [1, -3000, 4000], ([0, -9000, 500], [5, 4000, 12000])),
-             ("lorentzian", lorentzian, [1, -2000, 3000], ([0, -9000, 300], [5, 4000, 12000])),
-             ("skew", skewg, [1, -3000, 4000, -2], ([0, -9000, 500, -20], [5, 4000, 12000, 20])),
-             ("kwok", kwok_shell, [1, -2995, 7580, 1750, 5000], (KWOK_LO, KWOK_HI))]
-    for name, fn, p0, bnds in specs:
-        try:
-            p = curve_fit(fn, vv, ff / A, p0=p0, bounds=bnds, maxfev=40000)[0]
-            p = np.asarray(p, float); p[0] *= A; out[name] = (fn, p)
-        except Exception:
-            pass
+    for name, (fn, _names, p0, lo, hi) in MODEL_SPECS.items():
+        lo = _lo_with_floor(name, lo, wfloor)
+        best = None
+        for seed in P0_SEEDS.get(name, [p0]):
+            try:
+                p = curve_fit(fn, vv, ff / A, p0=seed, bounds=(lo, hi), maxfev=40000)[0]
+            except Exception:
+                continue
+            rss = float(np.nansum((ff / A - fn(vv, *np.asarray(p, float))) ** 2))
+            if best is None or rss < best[1]:
+                best = (np.asarray(p, float), rss)
+        if best is not None:
+            p = best[0]; p[0] *= A; out[name] = (fn, p)
     return out
 
 
@@ -305,16 +394,101 @@ def _profile_coherence(v, ff):
 
 
 # Mg II emission window (km/s). the ASYMMETRIC default (more blue, since the CSM shell is blueshifted) is the
-# right call and reproduces bostroem+2026 for 2023ixf; the symmetric +-10000 option is superseded.
-# MG2_WINDOW is a curated per-SN override for the few broad-blue-wing SNe the default over-captures (GGI ~2x).
-# NOTE: a data-driven adaptive-tightening window was tried and REJECTED - it is noise-fragile
-# (it cut real emission on 2023ixf d66 429->312 and did not fix GGI), so the fixed default + curated override
-# is the robust choice. a fit-based window (integrate over the fitted profile extent) is the future direction.
-MG2_WINDOW = {"SN2024GGI": (-6000, 4000)}
+# right call; it reproduces bostroem+2026 table 4 to 1.00 +- 0.03 on every 2023ixf epoch AND on SN2024ggi once the
+# comparison is done on OBSERVED flux; her table 4 is not dereddened.
+# the old per-SN override {"SN2024GGI": (-6000, 4000)} was fitted to a phantom 2.6x offset that was really the
+# dereddening convention; it captured only 41-64% of the GGI flux and is REMOVED. the dict stays as the mechanism.
+# NOTE: a data-driven adaptive-tightening window was tried and REJECTED - it is noise-fragile (it cut real emission on
+# 2023ixf d66 429->312); bostroem's own 99%-enclosed-flux edges are likewise set by her manual outer limits (A3), and
+# the window-spill census over every clean epoch (A4) shows <= 10% outside the default. so: fixed default, no override.
+MG2_WINDOW = {}
 _MG2_DEFAULT = (-10000, 6000)
 
+# gratings the emission thread measures on, and the echelle modes it skips. echelle spectra
+# (E230M/E140M/E230H/E140H) sample only the Mg II / Lya CORE at R~30000 in narrow orders whose continuum is
+# poorly defined over a +-10000 km/s window; the 1998S E230M "emission" epochs were really the narrow ISM Mg II
+# absorption seen against the broad SN line. those spectra belong to the ISM thread.
+EMIS_GRATINGS = ("G230LB", "G230L", "G140L", "G230M", "G130M", "G160M", "G185M", "G225M", "G285M", "G230MB")
+ECHELLE_GRATINGS = ("E230M", "E140M", "E230H", "E140H")
 
-def _fit_profiles(bf):
+# Lya blue edge -8000 -> -10000, shared with Mg II (bostroem fig 5, cool dense shell radiates both). the
+# C III 1176 scale-check (emission_investigation3 A8/A9) found no distinct C III feature in -11000..-9000 for any
+# science epoch; the wider edge adds real Lya blue-wing toe (spill 1.00-1.13) and de-inflates the window-perturbation
+# systematic (the -8000 edge sat on the steep toe, which had flagged the strong 2023ixf d183 line unreliable). red
+# edge stays +5000 (N V 1238/1242 walk in beyond that).
+_LYA_DEFAULT = (-10000, 5000)
+
+
+def _edges99(v, fc, wide, frac=0.99, win_px=5):
+    # bostroem table-5 method: smooth the cont-sub profile, integrate over a generous window, step inward from each
+    # side to the velocities enclosing `frac` of that flux. DIAGNOSTIC ONLY - A3 showed these edges are set by the
+    # outer manual window (the last 0.5%/side sits in noise), not stable; reported for comparison, not used for flux.
+    m = (v > wide[0]) & (v < wide[1]) & np.isfinite(fc)
+    vv, ff = v[m], fc[m]
+    if len(ff) <= win_px:
+        return None, None
+    ff = savgol_filter(ff, win_px, 2)
+    dv = np.gradient(vv); tot = float(np.sum(ff * dv))
+    if tot <= 0:
+        return None, None
+    cb = np.cumsum(ff * dv); cr = np.cumsum((ff * dv)[::-1])[::-1]
+    ib = int(np.argmax(cb >= (1 - frac) / 2 * tot))
+    ir = len(vv) - 1 - int(np.argmax(cr[::-1] >= (1 - frac) / 2 * tot))
+    return float(vv[ib]), float(vv[ir])
+
+
+def _diag_keys(bf, w, f, lam0, win, deg, z, wide):
+    # per-epoch window diagnostics, DIAGNOSTIC ONLY: the 99%-enclosed-flux edges (bostroem table 5 method)
+    # and the spill = F(default widened 3000 km/s each side) / F(default). spill is the cleaner one: ~1 means the
+    # default window captures the line, >> 1 means real flux sits outside it.
+    vb, vr = _edges99(bf["v"], bf["fc"], wide)
+    outer = (win[0] - 3000, win[1] + 3000)
+    vc = (min(-16000, outer[0] - 3000), max(16000, outer[1] + 3000))
+    Fo = bostroem_flux(w, f, lam0=lam0, vline=outer, vcont=vc, deg=deg, z=z)["F"]
+    Fd = bf["F"]
+    return {"v_blue99": round(vb) if vb is not None else None,
+            "v_red99": round(vr) if vr is not None else None,
+            "spill_frac": round(Fo / Fd, 3) if (Fd and Fd > 0 and Fo > 0) else None}   # None when the wider window is absorption-dominated (uninterpretable as a spill)
+
+
+def _lya_ismcorr_flux(w, bf, logN, b=25.0, Tmin=0.3, vline=_LYA_DEFAULT):
+    # divide the airglow-subtracted, continuum-subtracted Lya profile by the foreground ISM H I transmission
+    # exp(-tau) from the measured N(HI); bridge only the black core (T<=Tmin). returns (F, core_halfwidth) or None.
+    T = np.exp(-lya_nhi.lya_tau(w, logN, b, 0.0))
+    fc = bf["ff"] - bf["cont"]
+    good = T > Tmin; hole = ~good
+    if hole.all():
+        return None
+    fcc = np.where(good, fc / np.clip(T, Tmin, 1.0), np.nan)
+    if hole.any():
+        fcc[hole] = np.interp(w[hole], w[~hole], fcc[~hole])
+    v = bf["v"]
+    hw = 0.5 * float(v[hole].max() - v[hole].min()) if hole.any() else 0.0
+    m = (v > vline[0]) & (v < vline[1])
+    return float(np.trapezoid(fcc[m], w[m])), hw
+
+
+def _ismcorr_keys(w, bf, sn, vline=_LYA_DEFAULT):
+    # secondary INTRINSIC Lya flux (foreground H I divided out) with a logN-propagated error. keeps `flux` primary;
+    # this is a different, model-dependent quantity (A7) and swings ~0.9-1.6 over logN +-0.3. only when N(HI) exists.
+    hi = nhiof(sn)
+    if hi is None:
+        return {}
+    logN, logN_err, src = hi
+    base = _lya_ismcorr_flux(w, bf, logN, vline=vline)
+    if base is None:
+        return {}
+    F, hw = base
+    fp = _lya_ismcorr_flux(w, bf, logN + logN_err, vline=vline)
+    fm = _lya_ismcorr_flux(w, bf, logN - logN_err, vline=vline)
+    err = abs(fp[0] - fm[0]) / 2.0 * 1e15 if (fp and fm) else None
+    return {"F_ismcorr": round(F * 1e15, 1),
+            "F_ismcorr_err": round(err, 1) if err is not None else None,
+            "lya_core_halfwidth_kms": round(hw),
+            "logN_HI_used": logN, "logN_HI_source": src}
+
+
+def _fit_profiles(bf, instr=None):
     # multi-model fit + P-Cygni detection on the cont-sub emission profile (exclude the central notch).
     # returns {models:{name:{params,bic,aicc,redchi2}}, best_model, pcygni, _fits} or None if no emission.
     fitm = bf["emis"] & ~bf["notch"]
@@ -327,27 +501,46 @@ def _fit_profiles(bf):
         return {"models": None, "best_model": None, "pcygni": True, "pcygni_reason": reason,
                 "coherence": round(coh, 1), "_fits": {}}
     sigma = float(np.nanstd(bf["fc"][bf["contfit"]])) or (0.05 * np.nanmax(ff))
-    fits = _fit_models(vv, ff)
+    wfloor = _width_floor(instr)
+    fits = _fit_models(vv, ff, wfloor)
     coh = round(_profile_coherence(vv, ff), 1)      # honest confidence for EVERY epoch (amp/scatter), for the detection gate
     if not fits:
         return {"models": None, "best_model": None, "pcygni": False, "coherence": coh, "_fits": {}}
     models = {}
     for name, (fn, p) in fits.items():
         ic = _model_ic(vv, ff, fn, p, sigma)
+        ic["pegged"] = _pegged(name, p, wfloor)                  # shape params on a fit bound (empty = well inside)
         if name == "kwok":
             ic["inner_v"] = round(float(p[1] + p[3] - p[4]))    # mu+vc-vin = shell blue edge
         models[name] = ic
-    # item-2 guard: don't let kwok WIN on a pegged FWHM floor (KWOK_LO[2]=3000) or a razor-thin, window-flippable
-    # BIC margin over lorentzian (SN2005ip d3065 pegged at 3000 won by dBIC 7.5, flips at a wider window). keep
-    # kwok in models{} for the record; only bar it from the SELECTION. real broad shells (2023ixf, GGI, 1998S,
-    # 2026ayt) have FWHM >> the floor and beat lorentzian by a wide margin, so they keep kwok.
-    sel = dict(models)
-    if "kwok" in sel and "lorentzian" in sel:
-        pegged = fits["kwok"][1][2] <= KWOK_LO[2] * 1.02
-        thin = (sel["lorentzian"]["bic"] - sel["kwok"]["bic"]) < 6.0
-        if pegged or thin:
-            sel = {k: v for k, v in sel.items() if k != "kwok"}
-    return {"models": models, "best_model": min(sel, key=lambda n: sel[n]["bic"]),
+    # generic peg guard. a model whose shape parameters peg a bound is
+    # barred from SELECTION (kept in models{} with its `pegged` list for the record). census before the change:
+    # 8/55 shipped best models were pegged (1993J Lya mu@-9000, 2010jl Lya sig@floor on G130M, kwok vc@bound ...).
+    # then the parsimony rule: a k>3 model (skew k=4, kwok k=5) only wins if it beats the best unpegged k=3 model
+    # by >= DBIC_STRONG (kass & raftery 'strong'); a thinner margin is window-flippable (SN2005ip d3065 kwok won by
+    # dBIC 7.5 and flipped at a wider window). if every model pegs, best_model=None and shape_note says so --
+    # the flux is model-independent and unaffected.
+    unpeg = {n: m for n, m in models.items() if not m["pegged"]}
+    note = None
+    if not unpeg:
+        best = None; note = "all shape models peg a fit bound: shape unconstrained (flux unaffected)"
+    else:
+        best = min(unpeg, key=lambda n: unpeg[n]["bic"])
+        simple = [n for n in unpeg if unpeg[n]["k"] <= 3]
+        if unpeg[best]["k"] > 3 and simple:
+            best3 = min(simple, key=lambda n: unpeg[n]["bic"])
+            if unpeg[best3]["bic"] - unpeg[best]["bic"] < DBIC_STRONG:
+                note = f"{best} beat {best3} by dBIC<{DBIC_STRONG:.0f}: kept the simpler model"; best = best3
+        elif unpeg[best]["k"] > 3 and not simple and coh < COH_MIN:
+            # no unpegged k<=3 competitor (the narrow models all pegged) AND the profile is not coherent: a k>3
+            # shape would be selected BY DEFAULT on a noise feature (AT2022acko Lya d18). do not label it.
+            note = f"only a k>3 model ({best}) is unpegged and coherence {coh}<{COH_MIN:.0f}: shape unconstrained (flux unaffected)"
+            best = None
+        if best is not None:
+            barred = [n for n in models if n not in unpeg]
+            if barred and models[min(models, key=lambda n: models[n]["bic"])]["pegged"]:
+                note = (note + "; " if note else "") + f"lowest-BIC model {min(models, key=lambda n: models[n]['bic'])} barred (pegged)"
+    return {"models": models, "best_model": best, "shape_note": note,
             "pcygni": False, "coherence": coh, "_fits": fits}
 
 
@@ -422,7 +615,7 @@ def _emis_rec(bf, ph, instr, prof=None, vphot=None, syst_err=None):
     ferr = syst_err if (syst_err is not None and np.isfinite(syst_err)) else (sigF if has_err else None)
     ssnr = (F / ferr) if (ferr and ferr > 0) else np.inf
     if not (F > 3 * sigF if has_err else F > 0):
-        return None                                 # photon-significance floor (phase 3.5): rejects low-count junk
+        return None                                 # photon-significance floor: rejects low-count junk
     if (coh is None or coh < 6) and ssnr < 3:
         return None                                 # + drop unambiguous noise: both the shape AND the systematic fail
     if _is_spike(bf["v"], bf["fc"], bf["emis"]):
@@ -431,14 +624,24 @@ def _emis_rec(bf, ph, instr, prof=None, vphot=None, syst_err=None):
     pcyg = bool(prof["pcygni"]) if prof else False
     reason = prof.get("pcygni_reason") if prof else None
     vph = vphot if reason == "photospheric" else None   # only carry v_phot for a CONFIDENT photospheric feature
+    # flux_reliable also requires the SYSTEMATIC significance F/flux_err >= 3. the layer-1 gate is photon
+    # SNR (which understates the real error 10-25x), so an epoch could pass detection with a flux smaller than its own
+    # continuum-placement error and still be flagged reliable. nothing is dropped; the flag becomes honest.
+    unreliable = []
+    if pcyg:
+        unreliable.append("pcygni: deep central absorption, continuum-placement dominated")
+    if ssnr < 3:
+        unreliable.append(f"low syst-SNR: F/flux_err={ssnr:.1f}<3")
     rec = {"phase": ph, "flux": round(F, 1), "flux_err": round(ferr, 1) if ferr is not None else None,
            "flux_err_photon": round(sigF, 1) if has_err else None, "instr": instr,
-           "flux_reliable": not pcyg,                 # deep-central-absorption flux is continuum-placement dominated
+           "flux_reliable": not unreliable,
+           "flux_reliable_reason": "; ".join(unreliable) or None,
            "edge_flux_frac": round(edge, 2) if np.isfinite(edge) else None,
            "pcygni": pcyg, "pcygni_reason": reason,   # photospheric / marginal / low_snr (was an overclaiming bool)
            "coherence": coh,                          # smoothed-amp / residual scatter: the honest confidence number
            "v_phot_kms": vph,                         # only for a confident photospheric epoch (approx, normalized abs min)
            "best_model": prof["best_model"] if prof else None,
+           "shape_note": prof.get("shape_note") if prof else None,   # peg-guard / parsimony decisions, if any
            "models": prof["models"] if prof else None}
     return rec
 
@@ -507,7 +710,7 @@ def _emis_summary(sn, mg2, lya, mg2_prof, lya_prof, plotdir):
                         fmt="o-", color=col, ms=4, lw=1, capsize=2, label=lab)
         if unr:
             a0.plot([r["phase"] for r in unr], [r["flux"] for r in unr], "x", color=col, ms=6, alpha=0.55,
-                    label=f"{lab} pcygni (unreliable)")
+                    label=f"{lab} flux unreliable (pcygni / low syst-SNR)")
     a0.set_xlabel("phase [day]"); a0.set_ylabel("line flux [1e-15]"); a0.set_yscale("log")
     a0.set_title(f"{sn}  emission-line flux vs phase", fontsize=9); a0.legend(fontsize=8)
     allp = mg2_prof + lya_prof
@@ -542,7 +745,9 @@ def compute_emission(sn):
         ph = phase_of(pth)
         if "epochcoadd" in pth or "/epochs/" in pth or not np.isfinite(ph):
             continue                            # skip stitched epoch/coadd files -> use per-grating native
-        instr = next((g for g in ("G230LB", "G230L", "G140L", "E230M", "G230M") if f"/{g}/" in pth), "?")
+        instr = next((g for g in EMIS_GRATINGS + ECHELLE_GRATINGS if f"/{g}/" in pth), "?")
+        if instr in ECHELLE_GRATINGS:
+            continue                            # echelle is an ISM/absorption product, not an emission one (see provenance)
         w, f, e = load_spec(pf, z)
         fac = deredden(w, z, mw, host); f = f * fac; e = e * fac       # deredden the errors too
         ok = np.isfinite(f); w, f, e = w[ok], f[ok], e[ok]
@@ -555,23 +760,27 @@ def compute_emission(sn):
             # item-1: fit the SHAPE over the full default window; a narrow per-SN flux override (GGI (-6000,4000))
             # truncates a broad shell into a lorentzian. the flux stays on `win`; only the shape label uses the wide.
             bf_shape = bf if win == _MG2_DEFAULT else bostroem_flux(w, f, e=e, lam0=MG2, vline=_MG2_DEFAULT, deg=1, z=z)
-            prof = _fit_profiles(bf_shape)
+            prof = _fit_profiles(bf_shape, instr)
             vphot = _vphot_normalized(w, f, MG2) if (prof and prof.get("pcygni")) else None
             syst = _flux_syst(w, f, MG2, win, (-16000, 16000), 1, bf["F"], z=z)
             rec = _emis_rec(bf, ph, instr, prof, vphot, syst)
             if rec:
+                rec.update(_diag_keys(bf, w, f, MG2, win, 1, z, (-14000, 9000)))
                 mg2.append(rec)
                 _emis_diag(bf_shape, prof, sn, instr, ph, "Mg II", plotdir)
                 mg2_prof.append((ph, bf["v"][bf["emis"]], bf["fc"][bf["emis"]]))
         if w.min() < 1185 and w.max() > 1270 and ("ly", round(ph)) not in seen:
             seen.add(("ly", round(ph)))
             fly = _airglow_subtract(w, f, z, _airglow_bg(pth, w, z))    # remove geocoronal Lya via the x1d background
-            bf = bostroem_flux(w, fly, e=e, lam0=LYA, vline=(-8000, 5000), deg=0, vabs=800, vcont=(-13000, 13000), z=z)
-            prof = _fit_profiles(bf)       # same 4-model selection on Lya (kwok validated there too)
+            bf = bostroem_flux(w, fly, e=e, lam0=LYA, vline=_LYA_DEFAULT, deg=0, vabs=800, vcont=(-13000, 13000), z=z)
+            prof = _fit_profiles(bf, instr)       # same 4-model selection on Lya (kwok validated there too)
             vphot = _vphot_normalized(w, fly, LYA) if (prof and prof.get("pcygni")) else None
-            syst = _flux_syst(w, fly, LYA, (-8000, 5000), (-13000, 13000), 0, bf["F"])
+            syst = _flux_syst(w, fly, LYA, _LYA_DEFAULT, (-13000, 13000), 0, bf["F"])
             rec = _emis_rec(bf, ph, instr, prof, vphot, syst)
             if rec:
+                rec.update(_diag_keys(bf, w, fly, LYA, _LYA_DEFAULT, 0, z, (-13000, 8000)))
+                if not rec["pcygni"]:                          # F_ismcorr is meaningless on a core-peaked P-Cygni profile (the bridge cuts the peak)
+                    rec.update(_ismcorr_keys(w, bf, sn))
                 lya.append(rec)
                 _emis_diag(bf, prof, sn, instr, ph, "Lya", plotdir)
                 lya_prof.append((ph, bf["v"][bf["emis"]], bf["fc"][bf["emis"]]))
@@ -597,12 +806,16 @@ def build_emission(sn):
             "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
             "flux_units": "1e-15 erg s-1 cm-2",
             "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
-            "emission_content": "Mg II 2800 + Lya 1216 emission-line flux for any epoch where the line is detected; NOT restricted to CSM - includes CSM-interaction shells (broad, strengthen at late phase, best_model kwok/skew) AND photospheric P-Cygni peaks (near max, pcygni=true). use sn_type + phase + best_model + pcygni to interpret.",
-            "emission_epochs": "epochs kept by a two-layer detection gate: (1) the photon-significance floor F > 3 sigma_photon; (2) additionally dropped ONLY when BOTH the shape coherence is low_snr (<6) AND the systematic significance F/flux_err is <3 -- i.e. only unambiguous noise is removed. marginal gray-zone epochs are KEPT carrying their coherence grade + flux_reliable flag for downstream filtering, because the real-vs-noise boundary is genuinely fuzzy (we grade rather than force-classify). flux_err is the SYSTEMATIC error (bostroem+2026 / sembach&savage 1992 method: vary the integration limits, the continuum window, and smoothing, take the LARGEST deviation) - the dominant continuum-placement uncertainty. flux_err_photon is the pixel-noise MC, which understates the real error ~10-25x and is kept only for reference.",
-            "emission_quality": "flux_reliable=false marks an epoch with a deep central absorption vs the peak (pcygni=true, min/max<-0.3): its continuum-subtracted flux is dominated by continuum placement over the SN photosphere, so it is kept but is NOT a reliable emission-line flux. those epochs get no clean shape model. pcygni_reason grades what it actually is, from the profile COHERENCE (smoothed-amplitude / pixel residual scatter, reported as `coherence`): 'photospheric' (coherence>=12, a genuine coherent P-Cygni), 'marginal' (6-12, a low-SNR gray-zone feature), 'low_snr' (<6, noise / no clean line). this replaces an overclaiming pcygni bool that labeled noise as photospheric. v_phot_kms carries an APPROXIMATE photospheric velocity (absorption minimum of the continuum-normalized spectrum, UV is a forest so rough) ONLY for a confident 'photospheric' epoch. edge_flux_frac (|cont-sub flux at window edges|/peak) is a reported diagnostic. judge each epoch with pcygni_reason + coherence + best_model + sn_type + phase.",
-            "csm_benchmark": "our MW+host-dereddened Mg II 2800 and Lya 1216 fluxes sit ~15-25% above bostroem+2026 table 4 for SN2023IXF. this is NOT an extinction-convention difference: bostroem applies the SAME MW+host extinction (her MW 0.0076, host 0.031, Fitzpatrick) as we do (MW 0.0089, host 0.031, F19), so the offset is a FLUX-MEASUREMENT difference (continuum placement + fixed integration window vs her exact per-epoch recipe), within our own systematic error (flux_err). note: applying MW-only extinction appears to match by coincidence -- our flux runs ~15% high before the host term, not because the conventions agree. our custom reduction reproduces the MAST default x1d to 1-3%, so it is not a flux-cal error. SN2024GGI reads ~3x high from a genuine adopted-extinction disagreement (our total E(B-V)=0.154 from Jacobson-Galan+2024a/Chen+2024 vs bostroem's ~0.046), not a method error.",
-            "lya_airglow": "geocoronal Lya airglow (observed 1215.67 A = v approx -cz in the SN frame) is removed at product-build time: for STIS low-resolution the sibling x1d BACKGROUND array localizes it (redshift-independent) and a local poly2 + alpha*background decomposition subtracts only the airglow while preserving the real SN line; echelle/COS/flat-background epochs fall back to a narrow velocity notch.",
-            "shell_model": "clean-emission epochs are fit with 4 models (gaussian, lorentzian, skew-normal, kwok off-center-hole shell), each fit on O(1)-normalized flux (fixes a prior freeze that pinned the lorentzian at its guess); models{} lists every fit's params + BIC/AICc/redchi2 and best_model is the BIC winner. kwok carries inner_v = mu+vc-vin (shell blue edge). the flux is model-independent (direct integral); the models only describe the shape. best model varies by regime: broad CSM shell -> kwok/skew, narrow-line IIn -> gaussian or lorentzian (electron-scattering wings). photospheric P-Cygni epochs get no shape model (see emission_quality).",
+            "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
+            "emission_epochs": "Epochs pass a two-step gate: F > 3 sigma_photon first, then only clearly noisy cases are dropped when coherence < 6 and F/flux_err < 3. flux_err is the continuum/window systematic from varying the measurement setup; flux_err_photon is the pixel-noise term kept for reference.",
+            "emission_quality": "flux_reliable=false marks epochs where the quoted line flux is not cleanly separated from continuum placement, either because a deep P-Cygni trough drives the measurement or because F/flux_err < 3. flux_reliable_reason records which case. pcygni_reason grades the profile as photospheric, marginal, or low_snr from the reported coherence value. v_phot_kms is reported only for confident photospheric cases, and edge_flux_frac is kept as a window-edge diagnostic.",
+            "csm_benchmark": "For SN2023ixf and SN2024ggi, the Mg II comparison to Bostroem+2026 Table 4 is an observed-flux comparison. The stored `flux` values here are MW+host dereddened, so they sit above Table 4 by the extinction factor. For Ly-a, the remaining offset is a core-treatment difference: that comparison bridges the airglow/ISM core, while this product subtracts airglow and keeps the damped foreground trough.",
+            "lya_airglow": "geocoronal Lya airglow (observed 1215.67 A = v approx -cz in the SN frame) is removed at product-build time: for STIS low-resolution the sibling x1d BACKGROUND array localizes it (redshift-independent) and a local poly2 + alpha*background decomposition subtracts only the airglow while preserving the real SN line; COS/flat-background epochs fall back to a narrow velocity notch. the damped foreground ISM Lya absorption trough (0..+1000 km/s for 2023ixf, N(HI)~1e21) is NOT filled: `flux` is the Lya that reaches us after H I absorption, minus airglow.",
+            "lya_window": "the Ly-a integration window is (-10000, +5000) km/s. The wider blue edge follows the same shell wing seen in Mg II and does not pick up a separate C III 1176 feature; the red edge stays at +5000 to avoid N V 1238/1242. Narrow host-ISM absorption can still carve structure into the broad line, so the direct-integral flux is measured as seen while the shape models remain approximate over those notches.",
+            "lya_ismcorr": "F_ismcorr is a SECONDARY, model-dependent Lya flux: the INTRINSIC SN Lya before the foreground H I absorbed it, obtained by dividing the airglow-subtracted continuum-subtracted profile by the ISM transmission exp(-tau) from the measured N(HI) (b=25 km/s, host frame) where transmission > 0.3, bridging the opaque core. `flux` stays primary (what reaches us). F_ismcorr swings ~0.9-1.6x over logN(HI) +-0.3 because the damping wings multiply the whole blue peak, so F_ismcorr_err is the logN-propagated half-range and logN_HI_source records whether N(HI) is curated (ism_columns.csv) or the automated damped-Lya fit (lya_nhi_summary.csv). lya_core_halfwidth_kms is the bridged (T<=0.3) core half-width. present only when an N(HI) exists for the SN, and only for non-P-Cygni epochs (the bridge cuts the peak of a core-peaked profile).",
+            "window_diagnostics": "v_blue99/v_red99 are the velocities enclosing 99% of the smoothed continuum-subtracted flux, reported only as a comparison metric. spill_frac compares the default window to one widened by 3000 km/s on each side; values near 1 mean the default window already captures the line.",
+            "gratings": "measured on low/medium-resolution first-order gratings only (STIS G230L/G230LB/G140L/G230M/G230MB, COS G130M/G160M/G185M/G225M/G285M). Echelle modes (E230M/E140M/E230H/E140H) are excluded because narrow orders do not define a stable continuum over a +-10000 km/s window, and in cases like SN1998S they isolate narrow ISM absorption rather than the broad emission component.",
+            "shell_model": "clean-emission epochs are fit with four models (gaussian, lorentzian, skew-normal, kwok off-center-hole shell), each on O(1)-normalized flux. models{} stores each fit's params, BIC, AICc, redchi2, and any `pegged` shape parameters. best_model is chosen from the unpegged fits, with simpler k=3 models preferred unless a higher-parameter model wins by dBIC>=6; if every model pegs, best_model=null and shape_note explains why. The flux itself is always the direct integral, so these models describe shape only.",
         },
         "emission": {"mg2": mg2, "lya": lya},
     }

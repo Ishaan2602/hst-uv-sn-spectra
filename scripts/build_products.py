@@ -23,6 +23,7 @@ DATE_RE = re.compile(r'(\d{4}-\d{2}-\d{2})(?:_day(-?\d+))?')
 
 
 def load_txt(path):
+    # load a 3-column whitespace-separated spectrum file; return (w, f, e) or (None, None, None) on error
     try:
         a = np.loadtxt(path, comments='#')
         if a.ndim < 2 or a.shape[0] < 2:
@@ -34,6 +35,7 @@ def load_txt(path):
 
 
 def phase_num(phase_str):
+    # parse the phase string from the epoch dirname (e.g. '66' -> 66.0); None if it's not a number
     try:
         return float(phase_str)
     except (TypeError, ValueError):
@@ -147,7 +149,7 @@ def cluster_epochs(specs, sndir, tier, expl_mjd=None):
 def waterfall(sn, epochs, out, z=0.0):
     # one line per global epoch (merged across detectors/instruments), earliest on top. log10(f/med)
     # like the gold standard; nan coverage gaps break the line (no connectors). the vertical offset
-    # is DYNAMIC: each epoch gets room proportional to its own robust spread, so noisy late epochs
+    # is DYNAMIC: each epoch gets room proportional to its own clipped spread, so noisy late epochs
     # stop bleeding into the next one (the fixed 1.6 gap was too small for the noisy uv legs).
     # products are stored observed-frame; convert the axis to rest here (the single z-application).
     if not epochs:

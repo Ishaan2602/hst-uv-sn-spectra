@@ -12,7 +12,7 @@ Uniformly re-reduced UV spectra of supernovae observed by the Hubble Space Teles
 | `catalog/` | SN target catalog and ISM curve-of-growth summary |
 | `reference/` | Hand-curated inputs: host reddening, ISM column densities |
 | `linelists/` | ISM and CSM line wavelength tables |
-| `output5/` | Reduced spectra and per-SN data products (canonical) |
+| `output/` | Reduced spectra and per-SN data products (canonical) |
 
 Raw HST FITS exposures are not included; they are publicly available on MAST and can be fetched with `scripts/download_all.py`.
 
@@ -38,7 +38,7 @@ Filename suffix `_resel` = 2-pixel (resolution element) binning.
 ## Output Tree
 
 ```
-output5/
+output/
   {SN}/
     {SN}_manifest.json                         # epoch list, instruments, n_epochs
     {SN}_{stis,cos}_manifest.json              # per-instrument manifests

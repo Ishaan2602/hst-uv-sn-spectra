@@ -2,14 +2,16 @@
 # automated N(HI) measurement from damped Lya absorption for photospheric-backlight epochs.
 # applies to all SNe with an early (phase < 50d) G140L spectrum bright enough to see damping wings.
 # model: F = (c0 + c1*(w-1215.67) + c2*(w-1215.67)^2) * exp(-tau_Lya(w, logN, b=25, vabs=0))
-# b is fixed (damping wings are b-independent), vabs fixed at 0 (host frame).
+# b is fixed at 25 km/s. its value is arbitrary here: every N(HI) we fit is 20-22 (damped regime), where the
+# Lorentzian damping wings carry the column and are b-independent, so 25 vs 30 km/s changes logN by < 0.01 dex.
+# (old notebook notes quote 30; the automated script uses 25 -- same answer.) vabs fixed at 0 (host frame).
 # syst_vabs = 0.5 * abs(logN(vabs=-300) - logN(vabs=+300)) captures host-ISM velocity dispersion.
 #
 # late-time epochs where CSM Lya emission is active need the joint emission+absorption model;
 # those are NOT handled here -- only photospheric-backlight epochs (phase < 50 days).
 # curated values in reference/ism_columns.csv override these automated results.
 #
-# usage:  python lya_nhi.py [SN ...]     (no args -> all SNe in output5 with G140L coverage)
+# usage:  python lya_nhi.py [SN ...]     (no args -> all SNe in output with G140L coverage)
 
 import os, csv, glob, re, json, datetime
 import numpy as np
@@ -27,7 +29,8 @@ GAMMA_LYA = 6.265e8   # s^-1
 # pipeline gates
 FLUX_GATE       = 0.1e-15    # min median flux in 1225-1290 A rest (the backlight quality check)
 PHASE_MAX_CLEAN = 50         # max phase (days) for a photospheric-backlight epoch
-CHI2_GATE       = 0.20       # max reduced chi2
+RMS_GATE        = 0.45       # max RMS of the O(1)-normalized-flux residuals. NOT a reduced chi2: the fit is unweighted,
+                             # so this is a plain goodness-of-fit RMS (0.45 ~ sqrt(the old 0.20 mean-square gate))
 LOG_N_LO        = 18.0
 LOG_N_HI        = 22.5
 VABS_SYST_RANGE = 300.0      # ±km/s for the v_abs systematic (host-ISM velocity dispersion)
@@ -91,7 +94,8 @@ def lya_tau(w, logN, b, vabs):
 def fit_nhi(w, f, logN0=20.5, b=25.0, vabs=0.0, wlo=1185, whi=1252):
     """
     Fit N(HI) to a photospheric-backlight Lya absorption profile.
-    Returns (logN_fit, redchi2) or (None, None) on failure.
+    Returns (logN_fit, rms_resid) or (None, None) on failure. rms_resid is the RMS of the residuals on the
+    O(1)-normalized flux -- an unweighted goodness-of-fit, NOT a reduced chi2 (the fit carries no error array).
     """
     mask = (w > wlo) & (w < whi) & np.isfinite(f) & (f > 0)
     if mask.sum() < 12:
@@ -114,8 +118,8 @@ def fit_nhi(w, f, logN0=20.5, b=25.0, vabs=0.0, wlo=1185, whi=1252):
 
     logN_fit = popt[3]
     resid    = fm/A0 - model(wm, *popt)
-    redchi2  = float(np.nansum(resid**2) / max(len(wm) - len(p0), 1))
-    return logN_fit, redchi2
+    rms_resid = float(np.sqrt(np.nansum(resid**2) / max(len(wm) - len(p0), 1)))   # RMS of the normalized residuals (unweighted)
+    return logN_fit, rms_resid
 
 
 # --- main scan ---------------------------------------------------------------------------------
@@ -142,13 +146,13 @@ def run_catalog(names=None):
             if bl is None or bl < FLUX_GATE:
                 continue
             w, f = load_spec(p, z)
-            logN, chi2 = fit_nhi(w, f, vabs=0.0)
+            logN, rms = fit_nhi(w, f, vabs=0.0)
             if logN is None or not (LOG_N_LO < logN < LOG_N_HI):
                 continue
             # reject fits stuck at either bound (sign of a failed/unconstrained fit)
             if abs(logN - LOG_N_LO) < 0.1 or abs(logN - LOG_N_HI) < 0.1:
                 continue
-            if chi2 is not None and chi2 > CHI2_GATE:
+            if rms is not None and rms > RMS_GATE:
                 continue
             # syst_vabs: half-range over ±VABS_SYST_RANGE km/s
             logN_lo, _ = fit_nhi(w, f, logN0=logN, vabs=-VABS_SYST_RANGE)
@@ -163,7 +167,7 @@ def run_catalog(names=None):
                 "logN_HI":     round(logN, 3),
                 "logN_HI_syst_vabs": round(syst, 3),
                 "backlight_flux_e15": round(bl * 1e15, 3),
-                "redchi2":     round(chi2, 4) if chi2 is not None else None,
+                "rms_resid":   round(rms, 4) if rms is not None else None,
                 "method":      "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
                 "note":        "automated; curated ism_columns.csv values override this when present",
             }
@@ -178,12 +182,12 @@ def run_catalog(names=None):
             json.dump(result, fh, indent=2)
         summ.append(result)
         print(f"  {sn_dir:16s} d{result['phase']:5.0f}  logN={result['logN_HI']:.2f} ± {result['logN_HI_syst_vabs']:.2f}(syst)"
-              f"  chi2={result['redchi2']}  -> {os.path.relpath(sn_out, ROOT)}")
+              f"  rms={result['rms_resid']}  -> {os.path.relpath(sn_out, ROOT)}")
 
     # write catalog summary
     if summ:
         cols = ["sn", "sn_type", "grating", "phase", "logN_HI", "logN_HI_syst_vabs",
-                "backlight_flux_e15", "redchi2", "generated"]
+                "backlight_flux_e15", "rms_resid", "generated"]
         with open(SUMMARY, "w", newline="") as fh:
             wr = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")
             wr.writeheader(); wr.writerows(summ)

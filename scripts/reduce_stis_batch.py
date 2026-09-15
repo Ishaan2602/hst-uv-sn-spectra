@@ -19,7 +19,7 @@ import stistools.x1d
 import stistools.defringe
 from astropy.io import fits
 from astropy.time import Time
-from stis_extract import find_trace, adaptive_bg, adaptive_extrsize, draw_extraction, extrsize_for, is_echelle
+from stis_extract import find_trace, adaptive_bg, adaptive_extrsize, draw_extraction, extrsize_for, is_echelle, lacosmic_flt
 import coadd as co
 
 p = argparse.ArgumentParser()
@@ -39,15 +39,18 @@ CAL = ('LAMP', 'FLAT', 'BIAS', 'DARK', 'WAVE')
 
 
 def detector_of(h):
+    # return 'CCD' or 'MAMA' from the FITS primary header DETECTOR keyword
     return 'CCD' if str(h.get('DETECTOR', '')).upper() == 'CCD' else 'MAMA'
 
 
 def is_cal(h):
+    # return True if the exposure header identifies it as a calibration (flat/lamp/bias/etc.)
     it = str(h.get('IMAGETYP', '')).upper(); tn = str(h.get('TARGNAME', '')).upper()
     return any(x in it for x in CAL) or any(x in tn for x in ('FLAT', 'LAMP', 'BIAS', 'DARK', 'WAVE'))
 
 
 def epoch_dir(mjd):
+    # build the date_dayN directory name from an observation MJD using the explosion epoch from args
     date = Time(mjd, format='mjd').iso[:10] if mjd else 'unknown'
     if a.expl_mjd and mjd:
         return f'{date}_day{int(round(mjd - a.expl_mjd))}'
@@ -55,6 +58,7 @@ def epoch_dir(mjd):
 
 
 def find_fringe_flat(sci_root):
+    # find the G750L CCDFLAT from the same visit as sci_root (first 6 chars = visit ID)
     visit = sci_root[:6]
     for raw in glob.glob(f'{a.base}/mastDownload/HST/{visit}*/*_raw.fits'):
         h = fits.getheader(raw, 0)
@@ -64,6 +68,7 @@ def find_fringe_flat(sci_root):
 
 
 def defringe_g750l(sci_input, sci_root, flat_raw, work):
+    # normspflat -> mkfringeflat -> defringe for one G750L science+flat pair; return path to the defringed drj
     d = os.path.dirname(sci_input)
     wav = f'{d}/{sci_root}_wav.fits'
     if not os.path.exists(wav):
@@ -91,6 +96,7 @@ def defringe_g750l(sci_input, sci_root, flat_raw, work):
 
 
 def x1d_run(inp, out, **kw):
+    # call stistools.x1d; delete any existing output first (calstis cannot overwrite)
     if os.path.exists(out):
         os.remove(out)
     try:
@@ -176,6 +182,23 @@ for e in exps:
     if e['grat'] in best:
         e['es'] = best[e['grat']][1]
 
+# ---- LA-Cosmic pass: flag CRs on single-exposure CCD flt frames before x1d ----
+# only runs on _flt.fits (CRSPLIT=1 -- ocrreject never ran); _crj.fits frames are already CR-rejected.
+# writes _lacr.fits next to the original; pass 2 uses that as inp.
+for e in exps:
+    if e['det'] != 'CCD' or not e['inp'].endswith('_flt.fits') or is_echelle(e['grat']):
+        continue
+    lacr = e['inp'].replace('_flt.fits', '_lacr.fits')
+    if os.path.exists(lacr):
+        e['inp'] = lacr
+        continue
+    try:
+        ncr, _ = lacosmic_flt(e['inp'], lacr)
+        print(f'LACOSMIC {e["root"]} {e["grat"]} flagged {ncr} CR pixels')
+        e['inp'] = lacr
+    except Exception as ex:
+        print(f'LACOSMIC-SKIP {e["root"]} {repr(ex)[:80]}')
+
 # assign epoch labels by clustering within each detector on a rolling ~1-day window, so a single
 # visit that straddles ut midnight (two calendar dates a few hours apart) stays one epoch.
 for det in set(e['det'] for e in exps):
@@ -256,7 +279,7 @@ import matplotlib
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
 
 def _ylim(f):
-    # robust linear y-limits: clip to the 1-99 pct so noisy tails don't flatten the plot.
+    # clipped linear y-limits: use the 1-99 pct so noisy tails don't flatten the plot.
     g = f[np.isfinite(f)]
     if len(g) < 5:
         return None

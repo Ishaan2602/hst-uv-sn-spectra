@@ -1,11 +1,6 @@
-# CSM / flash-ionization line list (TENTATIVE - not yet finalized).
-# These are the narrow high-ionization EMISSION features seen in the first days of interacting
-# Type II SNe (flash spectroscopy), from SN 2023ixf work (Bostroem et al. 2024, Zimmerman et al.
-# 2024, Jacobson-Galan et al. 2023) plus the standard CSM-interaction UV lines. Kept SEPARATE from
-# the ISM absorption list because these are emission, phase-dependent (fade within days-weeks), and
-# the exact set/wavelengths still need to be pinned per-species before we use them quantitatively.
-# Treat everything here as provisional; verify rest wavelengths + which are real vs blends before
-# any measurement. type: emission unless noted.
+# CSM / flash-ionization line list. still provisional, so check IDs and blends before quoting measurements.
+# These are narrow emission features seen in early flash spectra and later CSM-interaction spectra, kept separate from the ISM list.
+# type = emission unless noted.
 species,wavelength_A,frame,type,phase,status,notes
 N IV,1486.5,vac,emission,early flash,tentative,N IV] intercombination
 N IV,1718.6,vac,emission,early flash,tentative,strong early flash feature

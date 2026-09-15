@@ -45,12 +45,9 @@ def cos_dirs_for(name):
 
 
 def run_sn_worker(row_dict, redo=False, out=OUT, cos_only=False):
-    """Process one SN. Called by each pool worker. Returns (name, logpath, elapsed_s).
-
-    Writes ALL output to a per-SN tmp log (OUT/_run_sn_<name>.log) so concurrent
-    workers never interleave writes to the shared main log.  The main process appends
-    the tmp log to run_full_catalog.log after this function returns.
-    """
+    # process one SN end-to-end in a pool worker: download STIS -> reduce STIS -> COS products ->
+    # build products. all output goes to a per-SN tmp log (out/_run_sn_<name>.log) so concurrent workers
+    # never interleave writes to the shared main log. returns (name, logpath, elapsed_s).
     t0 = time.time()
     r = row_dict
     name = str(r['name']); z = float(r['z']); expl = EXPL_MJD.get(name)

@@ -91,6 +91,9 @@ def prods(d):
 
 
 def process_sn(sn, reduced, outroot, z, expl):
+    # full COS product assembly for one SN: gate failed exposures, cluster by detector+epoch,
+    # mask artifacts (NUVC, airglow, out-of-range), write 1d.txt, per-grating native/resel coadds,
+    # cross-grating epoch coadd, 2D counts viz, and a per-SN manifest.
     import coadd as co
     dirs = sorted(glob.glob(f'{reduced}/{sn}_*'))
     if not dirs:

@@ -1,0 +1,31 @@
+{
+  "sn": "AT2022ACKO",
+  "sn_type": "SN II",
+  "generated": "2026-09-08",
+  "provenance": {
+    "z": 0.0053,
+    "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
+    "screen": "foreground MW+host ISM, blended at low-res (host-dominated where noted)",
+    "cog_engine": "scripts/ism.py (per-epoch EW/CoG batch)",
+    "data_tier": "curated_only",
+    "metallicity_method": "N(HI) from damped Lya joint fit; [X/H] vs Asplund09 solar"
+  },
+  "absorption": {
+    "note": "foreground MW+host ISM screen, blended at low-res",
+    "b_kms": 57.3,
+    "columns": {
+      "Fe II": {
+        "logN": 14.6,
+        "err": 2.0,
+        "method": "CoG",
+        "note": "day6 3 lines - UNRELIABLE (large err); no reliable [X/H]"
+      }
+    },
+    "N_HI": {
+      "logN": 21.26,
+      "err": 0.3,
+      "method": "damped Lya continuum-backlight fit",
+      "note": "day4 FUV; clean damped trough but vabs hit MW bound"
+    }
+  }
+}

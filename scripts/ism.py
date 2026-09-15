@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # ism equivalent-width -> curve-of-growth -> column density, ported from ism_ew_cog_sandbox.ipynb.
-# reads the observed-frame products in output5, applies z from the catalog, measures deblended EWs,
+# reads the observed-frame products in output, applies z from the catalog, measures deblended EWs,
 # anchors the doppler b on the Fe II series, reads off per-ion column densities.
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +21,53 @@ LIN_K = 8.853e-21           # linear CoG W/lam = LIN_K * N f lam
 AOD_K = 3.7679e14           # N = AOD_K/(f lam) * int tau dv (Savage&Sembach 1991; was 1.13e17 = 300x too high)
 ANCHOR_TAU = 3.0            # CoG anchor: need >=1 detected Fe II line below this tau0 (linear/transition part) or N floats
 NUV_GRATINGS = ("G230LB", "G230L", "G230M", "G230MB")   # where the Fe II / Mg II forest lives
+FUV_GRATINGS = ("G130M", "G160M")                       # RESOLVED COS FUV -> apparent optical depth (G140L R~2000 does not resolve narrow ISM, excluded)
+FUV_LINES = os.path.join(ROOT, "linelists", "ism_lines_fuv.csv")
+FUV_SUMMARY = os.path.join(ROOT, "catalog", "fuv_aod_summary.csv")
+
+ABS_TAB = os.path.join(ROOT, "reference", "ism_columns.csv")     # curated columns / N(HI) (high-column sightlines live here)
+NHI_SUM = os.path.join(ROOT, "catalog", "lya_nhi_summary.csv")   # automated damped-Lya N(HI)
+FEH_SOLAR = -4.50           # asplund+2009: log(Fe/H)_sun + 12 = 7.50 -> [Fe/H] = logN(Fe) - logN(HI) - (-4.50)
+
+
+def _iter_csv_rows(path):
+    with open(path) as fh:
+        for line in fh:
+            if line.strip() and not line.lstrip().startswith("#"):
+                yield line
+
+
+def load_curated_sns():
+    # SNe with any curated row in ism_columns.csv -- these are the known high-column sightlines exempt from the
+    # logN(FeII) <= 16 plausibility guard (the adopted flag should not silently drop a genuinely dense sightline).
+    s = set()
+    with open(ABS_TAB) as fh:
+        for row in csv.reader(fh):
+            if row and row[0].strip() and not row[0].startswith("#"):
+                s.add(row[0].strip().upper())
+    return s
+
+
+def load_nhi():
+    # per-SN (logN_HI, source): curated ism_columns.csv preferred, else the automated lya_nhi_summary.csv.
+    # same single source of truth the emission thread's F_ismcorr uses.
+    m = {}
+    if os.path.exists(NHI_SUM):
+        with open(NHI_SUM) as fh:
+            for r in csv.DictReader(fh):
+                try:
+                    m[r["sn"].upper()] = (float(r["logN_HI"]), "lya_nhi_summary (automated)")
+                except (ValueError, KeyError, TypeError):
+                    pass
+    with open(ABS_TAB) as fh:
+        for row in csv.reader(fh):
+            if len(row) >= 3 and not row[0].startswith("#") and row[1].strip() == "logN(HI)":
+                try:
+                    m[row[0].strip().upper()] = (float(row[2]), "ism_columns (curated)")
+                except ValueError:
+                    pass
+    return m
+
 
 
 def load_catalog():
@@ -33,10 +80,9 @@ def load_catalog():
 
 def load_lines():
     ism = []
-    with open(LINES) as fh:
-        for row in csv.DictReader(r for r in fh if not r.startswith("#")):
-            ism.append({"ion": row["ion"], "lam": float(row["wavelength_A"]),
-                        "f": float(row["f_osc"]), "regime": row["regime"], "notes": row["notes"]})
+    for row in csv.DictReader(_iter_csv_rows(LINES)):
+        ism.append({"ion": row["ion"], "lam": float(row["wavelength_A"]),
+                    "f": float(row["f_osc"]), "regime": row["regime"], "notes": row["notes"]})
     return ism
 
 
@@ -45,6 +91,85 @@ def load_spec(path, z):
     w, f = d[:, 0], d[:, 1]
     e = d[:, 2] if d.shape[1] > 2 else np.full_like(f, np.nan)
     return w / (1.0 + z), f, e
+
+
+def load_fuv_lines():
+    out = []
+    for row in csv.DictReader(_iter_csv_rows(FUV_LINES)):
+        out.append({"ion": row["ion"], "lam": float(row["wavelength_A"]),
+                    "f": float(row["f_osc"]), "regime": row["regime"], "notes": row["notes"],
+                    "blend": "blend" in row["notes"].lower()})       # flag the known blends (S II 1259/Si II 1260, O I 1302/Si II 1304)
+    return out
+
+
+def aod_column(w, f, e, lam0, fval, vwin=150.0, cpad=250.0, sig_det=3.0):
+    # apparent optical depth column for one RESOLVED line (savage&sembach 1991). w,f already in host rest frame,
+    # so host ISM sits at v~0 (MW foreground is off at -cz). tau(v)=ln(Icont/Iobs); Na(v)=AOD_K*tau/(f lam);
+    # N = int Na dv over +-vwin km/s. continuum = linear fit on flanks vwin..vwin+cpad. status: 'saturated' (black
+    # core, lower limit >), 'detected' (integrated tau > sig_det sigma), or 'upper' (non-detection -> sig_det-sigma
+    # upper limit <). the significance gate is what kills the AOD 1/f weak-line trap: a spurious low-tau blip at a
+    # tiny f-value no longer masquerades as a huge detected column.
+    v = (w / lam0 - 1.0) * C_KMS
+    core = np.abs(v) <= vwin
+    flank = (np.abs(v) > vwin) & (np.abs(v) <= vwin + cpad)
+    if core.sum() < 4 or flank.sum() < 6:
+        return None
+    cfit = np.polyfit(v[flank], f[flank], 1)
+    cont_rms = float(np.nanstd(f[flank] - np.polyval(cfit, v[flank])))
+    vc = v[core]; fc = f[core]; ec = e[core]; contc = np.polyval(cfit, vc)
+    if np.nanmedian(contc) <= 0:
+        return None
+    contc = np.clip(contc, 1e-6 * float(np.nanmax(contc)), None)     # flank fit can extrapolate negative; floor it
+    floor = np.maximum(1e-3 * contc, np.where(ec > 0, 0.5 * ec, 1e-3 * contc))
+    fsafe = np.clip(fc, floor, None)                            # keep ln finite; the sat flag records the clip
+    dv = np.gradient(vc)
+    tau = np.log(contc / fsafe)
+    tint = float(np.sum(tau * dv))
+    stau = np.where(fc > 0, ec / np.clip(fc, ec, None), 0.0)    # per-pixel photon sigma on tau = df/f
+    st_tau = float(np.sqrt(np.sum((stau * dv) ** 2)))          # photon sigma on the tau integral
+    thi = np.log(np.clip((contc + cont_rms) / fsafe, 1e-6, None))    # continuum-placement +-1 RMS
+    tlo = np.log(np.clip((contc - cont_rms) / fsafe, 1e-6, None))
+    sc_tau = 0.5 * abs(float(np.sum((thi - tlo) * dv)))
+    k = AOD_K / (fval * lam0)
+    sig = tint / st_tau if st_tau > 0 else 0.0                 # detection significance (photon only; continuum is systematic)
+    # saturation is a SUB-CASE of detection: a genuinely black narrow core (|v|<60, 5px-smoothed min below 2 sigma).
+    # a non-detection (low/negative sig = net emission or continuum slope) can never be "saturated".
+    narrow = np.abs(vc) <= min(60.0, vwin)
+    fsm = median_filter(fc, size=5)
+    eloc = float(np.nanmedian(ec[ec > 0])) if np.any(ec > 0) else 0.0
+    black_core = bool(narrow.any() and np.min(fsm[narrow]) <= max(0.0, 2.0 * eloc))
+    if sig < sig_det:
+        status, flag, sat = "upper", "<", False        # non-detection -> report the sig_det-sigma upper bound
+        N = k * sig_det * st_tau; sN = np.nan
+    elif black_core:
+        status, flag, sat = "saturated", ">", True     # detected AND black core -> AOD undercounts, lower limit
+        N = k * tint; sN = k * float(np.hypot(st_tau, sc_tau))
+    else:
+        status, flag, sat = "detected", "", False
+        N = k * tint; sN = k * float(np.hypot(st_tau, sc_tau))
+    if N <= 0:
+        return None
+    return {"logN": float(np.log10(N)), "logN_err": float(sN / (N * np.log(10))) if np.isfinite(sN) else np.nan,
+            "status": status, "flag": flag, "sig": float(sig), "sat": sat, "tau_int": tint,
+            "npix": int(core.sum()), "cont_rms": cont_rms, "v": vc, "f": fc, "cont": contc}
+
+
+def analyze_fuv(w, f, e, fuv_lines, vwin=150.0):
+    # AOD column for every covered FUV ISM line in one resolved COS FUV product (host rest frame already applied).
+    ok = np.isfinite(f)
+    w, f, e = w[ok], f[ok], e[ok]
+    med_e = np.nanmedian(e[np.isfinite(e) & (e > 0)]) if np.any(np.isfinite(e) & (e > 0)) else 0.0
+    e = np.where(np.isfinite(e) & (e > 0), e, med_e)
+    out = {}
+    for L in fuv_lines:
+        if not (w.min() + 1 < L["lam"] < w.max() - 1):
+            continue
+        res = aod_column(w, f, e, L["lam"], L["f"], vwin=vwin)
+        if res is not None:
+            res["blend"] = L["blend"]
+            out[(L["ion"], round(L["lam"], 3))] = res
+    return out
+
 
 
 def despike(f, size=5, nsig=6.0):
@@ -59,10 +184,12 @@ def despike(f, size=5, nsig=6.0):
 
 
 def lines_in(ism, w, pad=5.0):
+    # return line list entries whose rest wavelength falls at least pad A inside the spectrum coverage
     return [L for L in ism if w.min() + pad < L["lam"] < w.max() - pad]
 
 
 def group_lines(inr, link=12.0):
+    # cluster lines into blended groups: any two lines within `link` A of each other share a group
     ls = sorted(inr, key=lambda L: L["lam"])
     grps = [[ls[0]]]
     for L in ls[1:]:
@@ -74,6 +201,7 @@ def group_lines(inr, link=12.0):
 
 
 def _mg(x, sig, amps, lams):
+    # superposition of Gaussians all sharing the same sigma (the instrumental + thermal broadening)
     y = np.zeros_like(x, float)
     for a, mu in zip(amps, lams):
         y += a * np.exp(-0.5 * ((x - mu) / sig) ** 2)
@@ -163,14 +291,20 @@ _Fint = np.array([quad(lambda x, t=10.0 ** lt: 1.0 - np.exp(-t * np.exp(-x * x))
 
 
 def cog_F(tau0):
+    # interpolate the pre-tabulated CoG integral F(tau0) = int_0^inf [1 - exp(-tau0 * exp(-u^2))] du
     return np.interp(np.log10(np.clip(tau0, 1e-4, 1e6)), _ltau, _Fint)
 
 
 def red_ew(N, f, lam, b):
+    # reduced equivalent width W/lam = (2b/c) * F(tau0);  tau0 = TAU_K * N * f * lam / b
     return (2.0 * b / C_KMS) * cog_F(TAU_K * N * f * lam / b)
 
 
-def collect(inr, deb, ion=None, snr_min=2.0):
+def collect(inr, deb, ion=None, snr_min=2.0, cerr=None):
+    # detection gate + CoG points. default gates on the MC photon EW error; if cerr (per-line continuum-placement EW
+    # error) is given, gate AND weight on the TOTAL error hypot(photon, continuum) at snr_min sigma. that way a line
+    # whose EW is mostly continuum-placement artifact no longer counts
+    # as a detection; the Fe II anchor is essentially unchanged, only the marginal weak-line detections are cleaned).
     lam, fo, y, ye = [], [], [], []
     for L in inr:
         if ion and L["ion"] != ion:
@@ -179,6 +313,8 @@ def collect(inr, deb, ion=None, snr_min=2.0):
         if not np.isfinite(ew) or ew <= 0.02 or not (hi > 0):
             continue
         err = 0.5 * (lo + hi)
+        if cerr is not None:
+            err = float(np.hypot(err, cerr.get(round(L["lam"], 3), 0.0) or 0.0))    # total EW error
         if err > 0 and ew / err < snr_min:      # drop non-detections (2-sigma EW gate)
             continue
         lam.append(L["lam"]); fo.append(L["f"]); y.append(ew / L["lam"]); ye.append(err / L["lam"])
@@ -186,6 +322,7 @@ def collect(inr, deb, ion=None, snr_min=2.0):
 
 
 def fit_b_N(lam, fo, y, ye, b0=60.0, logN0=14.5):
+    # joint Fe II fit: minimize log-EW residuals in log space (compressed dynamic range across the CoG branches)
     def resid(p):
         pred = red_ew(10.0 ** p[1], fo, lam, p[0])
         return (np.log10(y) - np.log10(np.clip(pred, 1e-30, None))) / (ye / (y * np.log(10)) + 1e-3)
@@ -193,16 +330,16 @@ def fit_b_N(lam, fo, y, ye, b0=60.0, logN0=14.5):
 
 
 def fit_N(lam, fo, y, ye, b, logN0=14.0):
+    # logN with b fixed; for all non-Fe ions (Fe II sets b, every other ion inherits it)
     def resid(p):
         return np.log10(y) - np.log10(np.clip(red_ew(10.0 ** p[0], fo, lam, b), 1e-30, None))
     return least_squares(resid, [logN0], bounds=([9], [21]), max_nfev=3000).x[0]
 
 
 def _total_ew_err(inr, deb, cerr, ion):
-    # per-detected-line TOTAL EW error = quadrature(photon MC, continuum placement), returned in W/lam units
-    lam, fo, y, ye = collect(inr, deb, ion=ion)               # ye = MC err in W/lam
-    tot = np.array([np.hypot(ye[i], (cerr.get(round(lam[i], 3), 0.0) or 0.0) / lam[i]) for i in range(len(lam))])
-    return lam, fo, y, tot
+    # per-detected-line TOTAL EW error = quadrature(photon MC, continuum placement), returned in W/lam units.
+    # collect(cerr=...) already gates + returns the total error, so this is just the option-A collect for `ion`.
+    return collect(inr, deb, ion=ion, cerr=cerr)
 
 
 def _bN_mc(inr, deb, cerr, n=15, seed=1):
@@ -238,7 +375,7 @@ def analyze(w, f, e, ism, n_mc=200, clean_spikes=True):
     if len(inr) < 4:
         return None
     deb, cerr, fits = deblend_ews(w, f, e, inr, n_mc=n_mc, return_fits=True)
-    fl, ff, fy, fye = collect(inr, deb, ion="Fe II")
+    fl, ff, fy, fye = collect(inr, deb, ion="Fe II", cerr=cerr)    # option A: total-error 2-sigma gate
     if len(fl) < 3:
         return None
     b, logN_fe = fit_b_N(fl, ff, fy, fye)
@@ -254,7 +391,7 @@ def analyze(w, f, e, ism, n_mc=200, clean_spikes=True):
     b_err, logN_fe_err = _bN_mc(inr, deb, cerr)      # b + logN(FeII) uncertainty (photon MC + continuum placement)
     Ncol = {}
     for ion in sorted(set(L["ion"] for L in inr)):
-        lam, fo, y, ye = collect(inr, deb, ion=ion)
+        lam, fo, y, ye = collect(inr, deb, ion=ion, cerr=cerr)     # option A: total-error gate for every ion
         if len(lam) == 0:
             continue
         ln = logN_fe if ion == "Fe II" else fit_N(lam, fo, y, ye, b)
@@ -370,13 +507,92 @@ def _write_ism_csv(sn, g, ph, r, ismdir):
             mc = 0.5 * (lo + hi) if np.isfinite(lo) else np.nan
             ce = cerr.get(k, np.nan)
             tot = np.hypot(mc, ce) if (np.isfinite(mc) and np.isfinite(ce)) else (mc if np.isfinite(mc) else ce)
-            det = bool(np.isfinite(ew) and np.isfinite(mc) and mc > 0 and ew / mc >= 2.0)
+            det = bool(np.isfinite(ew) and np.isfinite(tot) and tot > 0 and ew / tot >= 2.0)   # option A: total-error 2-sigma gate
             ln = ioncol.get(L["ion"], r["logN_fe"])
             tau0 = TAU_K * 10 ** ln * L["f"] * L["lam"] / b
             wri.writerow([L["ion"], f"{L['lam']:.3f}", f"{L['f']:.4f}",
                           f"{ew:.4f}" if np.isfinite(ew) else "", f"{mc:.4f}" if np.isfinite(mc) else "",
                           f"{ce:.4f}" if np.isfinite(ce) else "", f"{tot:.4f}" if np.isfinite(tot) else "",
                           "yes" if det else "no", f"{tau0:.2f}", "yes" if tau0 > 5 else "no"])
+
+
+def finalize_and_write(summ, cat):
+    # decide the adopted foreground column per SN and write the master summary. the adopted flag
+    # now means what a user thinks it means, with four guards on top of the anchor: (1) precision -- logN(FeII)_err
+    # <= 0.3 dex; (2) plausibility -- logN(FeII) <= 16 unless the SN is a curated high-column sightline
+    # (ism_columns.csv); (3) never a Type Ia (the broad SN Fe II photosphere fakes an enormous ISM column);
+    # (4) fe_snr >= 3, b_err < b, logN_err > 0. when >= 2 anchored gated epochs survive, the column CANNOT change
+    # between epochs (the gas is light-years away), so we report the MEAN over those epochs with the epoch scatter as
+    # the honest error (the per-epoch photon error understates the truth ~10x); a single surviving epoch keeps its own
+    # value/error. N(HI) + [Fe/H]_gas are joined from the single N(HI) source of truth (curated ism_columns.csv, else
+    # automated lya_nhi_summary.csv). this runs on the per-epoch rows only, so it can be re-applied without the
+    # (slow) CoG rerun via `--finalize`.
+    MIN_FE_SNR, MAX_LOGN_ERR, MAX_LOGN = 3.0, 0.3, 16.0
+    RESOLVED_SNR = {"LMC-SN1987A-STIS-2"}
+    curated_sns = load_curated_sns()
+    nhi_map = load_nhi()
+    new_cols = ["logN_FeII_adopted", "logN_FeII_adopted_err", "b_adopted", "n_epochs_adopted",
+                "logN_HI", "logN_HI_src", "FeH_gas"]
+    gated = {}
+    for row in summ:
+        sn = row["sn"]
+        if row["anchored"] != "yes" or sn in RESOLVED_SNR:
+            continue
+        if "IA" in (cat.get(sn.upper(), {}).get("tns_type") or "").upper().replace(" ", ""):
+            continue                                # never adopt a Type Ia (iron-photosphere fake column)
+        if row["fe_snr"] < MIN_FE_SNR:
+            continue
+        be, le = row["b_err"], row["logN_FeII_err"]
+        if be == "" or be >= row["b"]:              # a b uncertainty >= b means the fit is unconstrained
+            continue
+        if le == "" or le <= 0 or le > MAX_LOGN_ERR:    # precision guard: reject imprecise / degenerate columns
+            continue
+        if row["logN_FeII"] > MAX_LOGN and sn.upper() not in curated_sns:   # plausibility guard
+            continue
+        gated.setdefault(sn, []).append(row)
+    for row in summ:                                # default the new columns blank
+        row["adopted"] = ""
+        for c in new_cols:
+            row[c] = ""
+    for sn, rows in gated.items():
+        rep = max(rows, key=lambda r: r["fe_snr"])
+        logNs = [r["logN_FeII"] for r in rows]; bs = [r["b"] for r in rows]; n = len(rows)
+        if n >= 2:
+            mean = float(np.mean(logNs)); bmean = float(np.mean(bs))
+            scat = float(np.std(logNs, ddof=1)) if n >= 3 else abs(logNs[0] - logNs[1]) / 2.0
+            rep["adopted"] = f"mean({n})"
+        else:
+            mean, bmean, scat = logNs[0], bs[0], float(rep["logN_FeII_err"]); rep["adopted"] = "yes"
+        rep["logN_FeII_adopted"] = round(mean, 3)
+        rep["logN_FeII_adopted_err"] = round(scat, 3)
+        rep["b_adopted"] = round(bmean, 1)
+        rep["n_epochs_adopted"] = n
+        hi = nhi_map.get(sn.upper())
+        if hi:
+            rep["logN_HI"] = round(hi[0], 3); rep["logN_HI_src"] = hi[1]
+            rep["FeH_gas"] = round(mean - hi[0] - FEH_SOLAR, 2)   # gas-phase [Fe/H]; iron is depleted onto dust so this is a LOWER limit on Z
+    with open(ISM_SUMMARY, "w", newline="") as fh:
+        wri = csv.DictWriter(fh, restval="", fieldnames=["sn", "grating", "phase", "z", "b", "b_err",
+            "logN_FeII", "logN_FeII_err", "n_fe", "fe_snr", "anchored", "adopted"] + new_cols)
+        wri.writeheader()
+        for row in summ:
+            wri.writerow(row)
+
+
+def _load_summ_csv():
+    # re-load the per-epoch rows from an existing ism_cog_summary.csv (coerce the numeric fields back) so the adopted
+    # finalization can be re-applied without the slow CoG rerun (the per-epoch numbers do not change).
+    rows = []
+    with open(ISM_SUMMARY) as fh:
+        for r in csv.DictReader(fh):
+            for k in ("z", "b", "logN_FeII", "fe_snr", "phase"):
+                r[k] = float(r[k])
+            r["n_fe"] = int(r["n_fe"])
+            for k in ("b_err", "logN_FeII_err"):
+                r[k] = float(r[k]) if r.get(k) not in ("", None) else ""
+            rows.append({k: r[k] for k in ("sn", "grating", "phase", "z", "b", "b_err", "logN_FeII",
+                                            "logN_FeII_err", "n_fe", "fe_snr", "anchored")})
+    return rows
 
 
 def run_catalog(n_mc=150, min_fe=3):
@@ -413,34 +629,90 @@ def run_catalog(n_mc=150, min_fe=3):
                          "logN_FeII_err": round(r["logN_fe_err"], 3) if np.isfinite(r["logN_fe_err"]) else "",
                          "n_fe": r["n_fe"], "fe_snr": round(r["fe_snr"], 1), "anchored": "yes" if r["anchored"] else "no"})
             print(f"  {sn:14} {g:7} day{ph:6.1f}  b={r['b']:5.1f}  logN(FeII)={r['logN_fe']:.2f}  feSNR={r['fe_snr']:.1f}  anchored={r['anchored']}")
-    sfile = ISM_SUMMARY
-    # adopted = best-quality anchored epoch WITH reliability guards. requires fe_snr>=3,
-    # b_err < b, logN_err > 0, and skips resolved SNRs. if no anchored epoch clears the bar, leave NO adopted (better
-    # than crowning garbage). unanchored epochs (fake Ia iron-photosphere columns) are still never adopted.
-    MIN_FE_SNR = 3.0
-    RESOLVED_SNR = {"LMC-SN1987A-STIS-2"}
-    best = {}
-    for row in summ:
-        if row["anchored"] != "yes" or row["sn"] in RESOLVED_SNR:
-            continue
-        if row["fe_snr"] < MIN_FE_SNR:
-            continue
-        be, le = row["b_err"], row["logN_FeII_err"]
-        if be == "" or be >= row["b"]:              # a b uncertainty >= b means the fit is unconstrained
-            continue
-        if le == "" or le <= 0:                     # logN_err = 0 = degenerate / single-line unconstrained fit
-            continue
-        if row["sn"] not in best or row["fe_snr"] > best[row["sn"]]["fe_snr"]:
-            best[row["sn"]] = row
-    for row in summ:
-        row["adopted"] = "yes" if best.get(row["sn"]) is row else ""
-    with open(sfile, "w", newline="") as fh:
-        wri = csv.DictWriter(fh, fieldnames=["sn", "grating", "phase", "z", "b", "b_err", "logN_FeII", "logN_FeII_err", "n_fe", "fe_snr", "anchored", "adopted"])
-        wri.writeheader()
-        for row in summ:
-            wri.writerow(row)
-    print(f"\n{len(summ)} epochs measured -> {sfile}")
+    finalize_and_write(summ, cat)
+    print(f"\n{len(summ)} epochs measured -> {ISM_SUMMARY}")
     return summ
+
+
+def _nuv_feii_lookup():
+    # per-SN NUV Fe II column for the same-ion cross-check: prefer the adopted (mean) value, else the best single
+    # epoch (highest fe_snr). this is what the FUV AOD Fe II 1608 gets compared against.
+    m = {}; best = {}
+    if not os.path.exists(ISM_SUMMARY):
+        return m
+    with open(ISM_SUMMARY) as fh:
+        for r in csv.DictReader(fh):
+            sn = r["sn"].upper()
+            if r.get("logN_FeII_adopted") not in ("", None):
+                le = r.get("logN_FeII_adopted_err")
+                m[sn] = (float(r["logN_FeII_adopted"]), float(le) if le not in ("", None) else np.nan, r.get("adopted") or "adopted")
+            else:
+                try:
+                    fs = float(r["fe_snr"])
+                except (ValueError, KeyError, TypeError):
+                    continue
+                if sn not in best or fs > best[sn][0]:
+                    le = r.get("logN_FeII_err")
+                    best[sn] = (fs, float(r["logN_FeII"]), float(le) if le not in ("", None) else np.nan)
+    for sn, (fs, ln, le) in best.items():
+        m.setdefault(sn, (ln, le, "single-epoch NUV"))
+    return m
+
+
+def run_fuv(vwin=150.0):
+    # loop every resolved COS FUV product, measure the FUV ISM lines by AOD, and cross-check Fe II 1608 (AOD)
+    # against the NUV Fe II CoG for the same sightline (same ion, independent method + spectrograph).
+    cat = load_catalog()
+    fuv_lines = load_fuv_lines()
+    nuv_fe = _nuv_feii_lookup()
+    sne = sorted(d for d in os.listdir(OUT) if os.path.isdir(os.path.join(OUT, d)) and d.upper() in cat)
+    rows = []
+    for sn in sne:
+        z = float(cat[sn.upper()]["z"])
+        prods = []
+        for g in FUV_GRATINGS:
+            prods += glob.glob(f"{OUT}/{sn}/**/{g}/{sn}_*_{g}_native.txt", recursive=True)
+        for p in sorted(set(prods)):
+            g = next((g for g in FUV_GRATINGS if f"_{g}_native" in p), "?")
+            try:
+                res = analyze_fuv(*load_spec(p, z), fuv_lines, vwin=vwin)
+            except Exception as ex:
+                print(f"  {sn} {os.path.basename(p)}: {ex}")
+                continue
+            if not res:
+                continue
+            ph = phase_of(p, cat)
+            ismdir = os.path.join(OUT, sn, "absorption")
+            os.makedirs(ismdir, exist_ok=True)
+            with open(os.path.join(ismdir, f"{sn}_{g}_day{ph:.0f}_aod.csv"), "w", newline="") as fh:
+                wri = csv.writer(fh); wri.writerow(["ion", "lam", "logN", "logN_err", "status", "flag", "sig", "blend", "tau_int", "npix"])
+                for (ion, lam), d in sorted(res.items(), key=lambda kv: kv[0][1]):
+                    wri.writerow([ion, f"{lam:.3f}", f"{d['logN']:.3f}",
+                                  f"{d['logN_err']:.3f}" if np.isfinite(d["logN_err"]) else "", d["status"], d["flag"],
+                                  f"{d['sig']:.1f}", "yes" if d["blend"] else "", f"{d['tau_int']:.2f}", d["npix"]])
+            for (ion, lam), d in sorted(res.items(), key=lambda kv: kv[0][1]):
+                rows.append({"sn": sn, "grating": g, "phase": round(ph, 1), "ion": ion, "lam": round(lam, 3),
+                             "logN_aod": round(d["logN"], 3),
+                             "logN_aod_err": round(d["logN_err"], 3) if np.isfinite(d["logN_err"]) else "",
+                             "status": d["status"], "flag": d["flag"], "sig": round(d["sig"], 1),
+                             "blend": "yes" if d["blend"] else "", "npix": d["npix"]})
+            fe = res.get(("Fe II", 1608.451))
+            if fe is not None:
+                nu = nuv_fe.get(sn.upper())
+                tag = (f" | NUV(FeII)={nu[0]:.2f}+-{nu[1]:.2f} [{nu[2]}] d={fe['logN']-nu[0]:+.2f}") if nu else " | NUV=n/a"
+                print(f"  {sn:14} {g:6} day{ph:6.1f}  FeII1608 {fe['flag'] or '='}{fe['logN']:5.2f} ({fe['status']}, sig={fe['sig']:.1f}){tag}")
+            else:
+                det = sum(1 for d in res.values() if d["status"] == "detected")
+                print(f"  {sn:14} {g:6} day{ph:6.1f}  {len(res)} FUV lines ({det} detected), no Fe II 1608")
+    with open(FUV_SUMMARY, "w", newline="") as fh:
+        wri = csv.DictWriter(fh, fieldnames=["sn", "grating", "phase", "ion", "lam", "logN_aod", "logN_aod_err",
+                                             "status", "flag", "sig", "blend", "npix"])
+        wri.writeheader()
+        for r in rows:
+            wri.writerow(r)
+    ndet = sum(1 for r in rows if r["status"] == "detected")
+    print(f"\n{len(rows)} FUV AOD line-columns ({ndet} detected, rest upper/lower limits) -> {FUV_SUMMARY}")
+    return rows
 
 
 if __name__ == "__main__":
@@ -448,8 +720,15 @@ if __name__ == "__main__":
     ap.add_argument("--nmc", type=int, default=150)
     ap.add_argument("--min-fe", type=int, default=3)
     ap.add_argument("--sn", default=None, help="run a single SN (uppercase dir name)")
+    ap.add_argument("--finalize", action="store_true", help="re-derive the adopted flag + N(HI) join from the existing summary CSV (no CoG rerun)")
+    ap.add_argument("--fuv", action="store_true", help="run the resolved COS FUV AOD pass + Fe II 1608 cross-check vs the NUV CoG")
     a = ap.parse_args()
-    if a.sn:
+    if a.finalize:
+        finalize_and_write(_load_summ_csv(), load_catalog())
+        print(f"re-finalized -> {ISM_SUMMARY}")
+    elif a.fuv:
+        run_fuv()
+    elif a.sn:
         cat = load_catalog(); ism = load_lines(); z = float(cat[a.sn.upper()]["z"])
         for g in NUV_GRATINGS:
             for p in sorted(glob.glob(f"{OUT}/{a.sn}/**/{g}/{a.sn}_*_{g}_native.txt", recursive=True)):

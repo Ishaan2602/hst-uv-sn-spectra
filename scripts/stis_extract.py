@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')   # headless, we only save pngs
 import matplotlib.pyplot as plt
+from astropy.io import fits
 
 # per-grating extrsize. stis ccd psf broadens toward the red (charge diffusion + optical psf),
 # so a fixed box doesn't fit every grating. measured off 2024iss enclosed-flux curves:
@@ -162,3 +163,57 @@ def draw_extraction(sci, res, detector='CCD', extrsize=None, title='', save=None
         plt.savefig(save, dpi=90, bbox_inches='tight')
     plt.close(fig)
     return (o1, o2)
+
+
+# STIS CCD DQ bit for cosmic-ray rejection: bit 256 = "rejected during image combination (ocrreject)".
+# This is in SDQFLAGS=31743 so calstis x1d skips these pixels during extraction.
+# Our analysis code also drops dq & 256 != 0.
+_STIS_CR_DQ_BIT = 256
+
+
+def lacosmic_flt(flt_path, out_path, sigclip=4.5, objlim=15.0, niter=4):
+    """
+    run LA-Cosmic on a STIS CCD _flt.fits; write _lacr.fits with CRs OR'd into DQ as bit 1024.
+    returns (n_cr_flagged, out_path).
+    only called for CRSPLIT=1 CCD frames where ocrreject never ran -- the _crj.fits preferred path
+    already handles CRSPLIT>1.
+    objlim=15 (not the imaging default 5) because spectral-trace features have real sharp Laplacians
+    and the default would massively over-flag the extracted region.
+    """
+    import astroscrappy
+    from scipy.ndimage import median_filter
+
+    with fits.open(flt_path) as h:
+        hdr0  = h[0].header
+        sci   = h[1].data.astype(float)
+        dq    = h[3].data.copy() if len(h) > 3 else np.zeros(sci.shape, dtype=np.int16)
+
+        gain    = float(hdr0.get('CCDGAIN',  1.0))
+        rdnoise = float(hdr0.get('READNSE',  3.5))
+        sat     = float(hdr0.get('SATURATE', 99999.0))
+
+    # pass ALL pre-existing DQ flags as inmask so LA-Cosmic ignores them entirely.
+    # this is critical: bit 16 (hot pixels) look like 1-px spikes and cause massive over-flagging
+    # if not excluded up front. fill their values with local median for the Laplacian computation.
+    from scipy.ndimage import median_filter
+    pre_mask = (dq != 0)
+    sci_in = sci.copy()
+    if pre_mask.any():
+        sci_in[pre_mask] = median_filter(sci, size=5)[pre_mask]
+
+    crmask, _ = astroscrappy.detect_cosmics(
+        sci_in, inmask=pre_mask,
+        gain=gain, readnoise=rdnoise,
+        sigclip=sigclip, objlim=objlim,
+        satlevel=sat, niter=niter,
+        cleantype='medmask', verbose=False,
+    )
+
+    ncr = int(crmask.sum())
+
+    # write a new file with updated DQ; don't touch the original MAST frame
+    with fits.open(flt_path) as hdul_out:
+        hdul_out[3].data = (dq | (crmask.astype(np.uint16) * _STIS_CR_DQ_BIT)).astype(dq.dtype)
+        hdul_out.writeto(out_path, overwrite=True)
+
+    return ncr, out_path

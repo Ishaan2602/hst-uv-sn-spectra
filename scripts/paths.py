@@ -1,13 +1,13 @@
 import os
 
-# single source of truth for where things live. bump CANONICAL to promote a newly-validated reduction
-# (output5 -> output6 -> ...); every analysis script reads OUT so they all follow automatically.
-# reduction scripts still take --outroot (target a fresh candidate tree each iteration) but default to
-# OUT so a bare run can never land in a stale dir.
+# single source of truth for where things live. bump CANONICAL to promote a newly-validated reduction;
+# every analysis script reads OUT so they all follow automatically. reduction scripts still take
+# --outroot (target a fresh candidate tree each iteration) but default to OUT so a bare run can never
+# land in a stale dir. old trees get archived under output_backups/ (see backup_output.py), not left around.
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-CANONICAL = "output5"                         # <-- the ONE line to bump when promoting a new reduction
+CANONICAL = "output"                          # <-- the ONE line to bump when promoting a new reduction
 OUT = os.path.join(ROOT, CANONICAL)           # current reduced-spectra tree; analysis READS this
 
 # catalog + catalog-level products live outside any versioned tree so they survive tree bumps and can't
@@ -26,6 +26,19 @@ TNS_CACHE = os.path.join(CATDIR, ".tns_cache")
 REFERENCE = os.path.join(ROOT, "reference")
 LINELISTS = os.path.join(ROOT, "linelists")
 HOST_EBV = os.path.join(REFERENCE, "host_ebv.csv")     # AUTHORITATIVE host reddening (the catalog only mirrors it)
+
+# current work marker: which function (pipeline/analysis) and phase we are on. read by backup_output.py
+# and any tooling that names outputs by phase. edit project_phase.json to advance the phase.
+PHASE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "project_phase.json")
+BACKUPS = os.path.join(ROOT, "output_backups")
+
+
+def project_phase():
+    # returns (function, phase) e.g. ("analysis", 5). single source for the current work marker.
+    import json
+    with open(PHASE_FILE) as fh:
+        d = json.load(fh)
+    return d["function"], int(d["phase"])
 
 
 def host_ebv_map():

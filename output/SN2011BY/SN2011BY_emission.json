@@ -1,0 +1,29 @@
+{
+  "sn": "SN2011BY",
+  "sn_type": "SN Ia",
+  "generated": "2026-09-08",
+  "flags": [],
+  "provenance": {
+    "z": 0.003,
+    "ebv_mw": 0.0138,
+    "host_ebv": 0.0,
+    "host_ebv_src": "none (MW-only)",
+    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "flux_units": "1e-15 erg s-1 cm-2",
+    "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
+    "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
+    "emission_epochs": "Epochs pass a two-step gate: F > 3 sigma_photon first, then only clearly noisy cases are dropped when coherence < 6 and F/flux_err < 3. flux_err is the continuum/window systematic from varying the measurement setup; flux_err_photon is the pixel-noise term kept for reference.",
+    "emission_quality": "flux_reliable=false marks epochs where the quoted line flux is not cleanly separated from continuum placement, either because a deep P-Cygni trough drives the measurement or because F/flux_err < 3. flux_reliable_reason records which case. pcygni_reason grades the profile as photospheric, marginal, or low_snr from the reported coherence value. v_phot_kms is reported only for confident photospheric cases, and edge_flux_frac is kept as a window-edge diagnostic.",
+    "csm_benchmark": "For SN2023ixf and SN2024ggi, the Mg II comparison to Bostroem+2026 Table 4 is an observed-flux comparison. The stored `flux` values here are MW+host dereddened, so they sit above Table 4 by the extinction factor. For Ly-a, the remaining offset is a core-treatment difference: that comparison bridges the airglow/ISM core, while this product subtracts airglow and keeps the damped foreground trough.",
+    "lya_airglow": "geocoronal Lya airglow (observed 1215.67 A = v approx -cz in the SN frame) is removed at product-build time: for STIS low-resolution the sibling x1d BACKGROUND array localizes it (redshift-independent) and a local poly2 + alpha*background decomposition subtracts only the airglow while preserving the real SN line; COS/flat-background epochs fall back to a narrow velocity notch. the damped foreground ISM Lya absorption trough (0..+1000 km/s for 2023ixf, N(HI)~1e21) is NOT filled: `flux` is the Lya that reaches us after H I absorption, minus airglow.",
+    "lya_window": "the Ly-a integration window is (-10000, +5000) km/s. The wider blue edge follows the same shell wing seen in Mg II and does not pick up a separate C III 1176 feature; the red edge stays at +5000 to avoid N V 1238/1242. Narrow host-ISM absorption can still carve structure into the broad line, so the direct-integral flux is measured as seen while the shape models remain approximate over those notches.",
+    "lya_ismcorr": "F_ismcorr is a SECONDARY, model-dependent Lya flux: the INTRINSIC SN Lya before the foreground H I absorbed it, obtained by dividing the airglow-subtracted continuum-subtracted profile by the ISM transmission exp(-tau) from the measured N(HI) (b=25 km/s, host frame) where transmission > 0.3, bridging the opaque core. `flux` stays primary (what reaches us). F_ismcorr swings ~0.9-1.6x over logN(HI) +-0.3 because the damping wings multiply the whole blue peak, so F_ismcorr_err is the logN-propagated half-range and logN_HI_source records whether N(HI) is curated (ism_columns.csv) or the automated damped-Lya fit (lya_nhi_summary.csv). lya_core_halfwidth_kms is the bridged (T<=0.3) core half-width. present only when an N(HI) exists for the SN, and only for non-P-Cygni epochs (the bridge cuts the peak of a core-peaked profile).",
+    "window_diagnostics": "v_blue99/v_red99 are the velocities enclosing 99% of the smoothed continuum-subtracted flux, reported only as a comparison metric. spill_frac compares the default window to one widened by 3000 km/s on each side; values near 1 mean the default window already captures the line.",
+    "gratings": "measured on low/medium-resolution first-order gratings only (STIS G230L/G230LB/G140L/G230M/G230MB, COS G130M/G160M/G185M/G225M/G285M). Echelle modes (E230M/E140M/E230H/E140H) are excluded because narrow orders do not define a stable continuum over a +-10000 km/s window, and in cases like SN1998S they isolate narrow ISM absorption rather than the broad emission component.",
+    "shell_model": "clean-emission epochs are fit with four models (gaussian, lorentzian, skew-normal, kwok off-center-hole shell), each on O(1)-normalized flux. models{} stores each fit's params, BIC, AICc, redchi2, and any `pegged` shape parameters. best_model is chosen from the unpegged fits, with simpler k=3 models preferred unless a higher-parameter model wins by dBIC>=6; if every model pegs, best_model=null and shape_note explains why. The flux itself is always the direct integral, so these models describe shape only."
+  },
+  "emission": {
+    "mg2": [],
+    "lya": []
+  }
+}
