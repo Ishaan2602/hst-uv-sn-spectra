@@ -1,0 +1,46 @@
+{
+  "sn": "NSNF5",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "NSNF5/epochs/2003-03-24_day13_native.txt"
+      ],
+      "epoch_resel": [
+        "NSNF5/epochs/2003-03-24_day13_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "NSNF5/NSNF5_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "NSNF5/NSNF5_manifest.json",
+      "stis": "NSNF5/NSNF5_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "NSNF5/NSNF5_timeseries.png"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "sn": "SN2013DH",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2013DH/epochs/2013-06-26_day14_native.txt",
+        "SN2013DH/epochs/2013-06-27_day15_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2013DH/epochs/2013-06-26_day14_resel.txt",
+        "SN2013DH/epochs/2013-06-27_day15_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2013DH/SN2013DH_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2013DH/SN2013DH_manifest.json",
+      "stis": "SN2013DH/SN2013DH_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2013DH/SN2013DH_timeseries.png"
+  }
+}

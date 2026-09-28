@@ -1,14 +1,15 @@
 {
   "sn": "SN2002XX",
   "sn_type": "SN Ib/c",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.00292,
     "ebv_mw": 0.0104,
     "host_ebv": 0.0,
     "host_ebv_src": "none (MW-only)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
@@ -26,23 +27,23 @@
     "mg2": [
       {
         "phase": 4.0,
-        "flux": 76.4,
+        "flux": 74.7,
         "flux_err": 60.6,
         "flux_err_photon": 2.7,
         "instr": "G230L",
         "flux_reliable": false,
-        "flux_reliable_reason": "pcygni: deep central absorption, continuum-placement dominated; low syst-SNR: F/flux_err=1.3<3",
+        "flux_reliable_reason": "pcygni: deep central absorption, continuum-placement dominated; low syst-SNR: F/flux_err=1.2<3",
         "edge_flux_frac": 1.01,
         "pcygni": true,
         "pcygni_reason": "photospheric",
-        "coherence": 18.4,
-        "v_phot_kms": -1163,
+        "coherence": 18.5,
+        "v_phot_kms": -1162,
         "best_model": null,
         "shape_note": null,
         "models": null,
         "v_blue99": -11409,
-        "v_red99": 8919,
-        "spill_frac": 3.484
+        "v_red99": 8920,
+        "spill_frac": 3.542
       }
     ],
     "lya": []

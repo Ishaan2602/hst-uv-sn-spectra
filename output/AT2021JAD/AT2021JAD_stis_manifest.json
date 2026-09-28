@@ -8,7 +8,26 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oeax06010",
+      "grating": "G230L",
+      "exptime": 2059.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oeax06020",
+      "grating": "G230L",
+      "exptime": 1309.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2021-04-28_day17": {
    "gratings": [
@@ -16,7 +35,26 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oeax06030",
+      "grating": "G430L",
+      "exptime": 200.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "oeax06040",
+      "grating": "G750L",
+      "exptime": 200.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

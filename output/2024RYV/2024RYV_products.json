@@ -1,0 +1,48 @@
+{
+  "sn": "2024RYV",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "2024RYV/epochs/2024-08-15_day4_native.txt"
+      ],
+      "epoch_resel": [
+        "2024RYV/epochs/2024-08-15_day4_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "2024RYV/2024RYV_emission.json",
+      "plots": [
+        "2024RYV/emission/2024RYV_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "2024RYV/2024RYV_manifest.json",
+      "stis": "2024RYV/2024RYV_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "2024RYV/2024RYV_timeseries.png"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "sn": "SN2023IXF",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2023IXF/epochs/2023-05-22_day3.2_native.txt",
+        "SN2023IXF/epochs/2023-05-23_day4.2_native.txt",
+        "SN2023IXF/epochs/2023-05-24_day5.2_native.txt",
+        "SN2023IXF/epochs/2023-05-27_day8.2_native.txt",
+        "SN2023IXF/epochs/2023-05-30_day11.2_native.txt",
+        "SN2023IXF/epochs/2023-06-02_day14_native.txt",
+        "SN2023IXF/epochs/2023-06-07_day20_native.txt",
+        "SN2023IXF/epochs/2023-06-12_day25_native.txt",
+        "SN2023IXF/epochs/2023-07-24_day66_native.txt",
+        "SN2023IXF/epochs/2023-11-17_day183_native.txt",
+        "SN2023IXF/epochs/2023-12-18_day214_native.txt",
+        "SN2023IXF/epochs/2024-03-21_day308_native.txt",
+        "SN2023IXF/epochs/2024-03-24_day311_native.txt",
+        "SN2023IXF/epochs/2024-03-25_day312_native.txt",
+        "SN2023IXF/epochs/2024-03-27_day314_native.txt",
+        "SN2023IXF/epochs/2025-01-26_day619_native.txt",
+        "SN2023IXF/epochs/2025-05-10_day723_native.txt",
+        "SN2023IXF/epochs/2025-05-11_day724_native.txt",
+        "SN2023IXF/epochs/2025-11-17_day913_native.txt",
+        "SN2023IXF/epochs/2025-11-27_day924_native.txt",
+        "SN2023IXF/epochs/2025-11-28_day924_native.txt",
+        "SN2023IXF/epochs/2026-05-16_day1094_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2023IXF/epochs/2023-06-02_day14_resel.txt",
+        "SN2023IXF/epochs/2023-06-07_day20_resel.txt",
+        "SN2023IXF/epochs/2023-06-12_day25_resel.txt",
+        "SN2023IXF/epochs/2023-07-24_day66_resel.txt",
+        "SN2023IXF/epochs/2023-11-17_day183_resel.txt",
+        "SN2023IXF/epochs/2023-12-18_day214_resel.txt",
+        "SN2023IXF/epochs/2024-03-21_day308_resel.txt",
+        "SN2023IXF/epochs/2024-03-24_day311_resel.txt",
+        "SN2023IXF/epochs/2024-03-25_day312_resel.txt",
+        "SN2023IXF/epochs/2024-03-27_day314_resel.txt",
+        "SN2023IXF/epochs/2025-01-26_day619_resel.txt",
+        "SN2023IXF/epochs/2025-05-10_day723_resel.txt",
+        "SN2023IXF/epochs/2025-05-11_day724_resel.txt",
+        "SN2023IXF/epochs/2025-11-17_day913_resel.txt",
+        "SN2023IXF/epochs/2025-11-27_day924_resel.txt",
+        "SN2023IXF/epochs/2025-11-28_day924_resel.txt",
+        "SN2023IXF/epochs/2026-05-16_day1094_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2023IXF/SN2023IXF_emission.json",
+      "plots": [
+        "SN2023IXF/emission/SN2023IXF_G140L_day1094_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day183_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day308_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day311_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day312_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day619_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day724_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day913_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G140L_day924_lya_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230LB_day66_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day1094_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day214_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day311_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day314_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day619_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day723_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day913_mgii_diag.png",
+        "SN2023IXF/emission/SN2023IXF_G230L_day924_mgii_diag.png",
+        "SN2023IXF/emission/SN2023ixf_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN2023IXF/SN2023IXF_absorption.json",
+      "cog_csv": [
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day14_cog.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day20_cog.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day25_cog.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day1094_cog.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day314_cog.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day723_cog.csv"
+      ],
+      "line_csv": [
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day14_lines.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day20_lines.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day25_lines.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day1094_lines.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day314_lines.csv",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day723_lines.csv"
+      ],
+      "plots": [
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day14_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day14_cont.png",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day20_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day20_cont.png",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day25_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230LB_day25_cont.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day1094_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day1094_cont.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day314_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day314_cont.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day723_cog.png",
+        "SN2023IXF/absorption/SN2023IXF_G230L_day723_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2023IXF/SN2023IXF_manifest.json",
+      "stis": "SN2023IXF/SN2023IXF_stis_manifest.json",
+      "cos": "SN2023IXF/SN2023IXF_cos_manifest.json"
+    },
+    "timeseries_plot": "SN2023IXF/SN2023IXF_timeseries.png"
+  }
+}

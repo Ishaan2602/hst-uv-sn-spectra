@@ -1,0 +1,53 @@
+{
+ "sn": "2024RYV",
+ "instruments": {
+  "STIS": {
+   "z": 0.015
+  }
+ },
+ "epochs": {
+  "CCD/2024-08-15_day4": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "of8b04010",
+      "grating": "G230LB",
+      "exptime": 1954.8,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8b04020",
+      "grating": "G230LB",
+      "exptime": 1803.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8b04030",
+      "grating": "G430L",
+      "exptime": 1072.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8b04040",
+      "grating": "G750L",
+      "exptime": 1072.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
+  }
+ },
+ "n_epochs": 1
+}

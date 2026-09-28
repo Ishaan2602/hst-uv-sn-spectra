@@ -1,0 +1,50 @@
+{
+  "sn": "ASASSN-15LH",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "ASASSN-15LH/epochs/2015-12-29_day199_native.txt"
+      ],
+      "epoch_resel": [
+        "ASASSN-15LH/epochs/2015-12-29_day199_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "ASASSN-15LH/ASASSN-15LH_emission.json",
+      "plots": [
+        "ASASSN-15LH/emission/ASASSN-15LH_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "ASASSN-15LH/absorption/ASASSN-15LH_G140L_day199_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "ASASSN-15LH/ASASSN-15LH_manifest.json",
+      "stis": "ASASSN-15LH/ASASSN-15LH_stis_manifest.json",
+      "cos": "ASASSN-15LH/ASASSN-15LH_cos_manifest.json"
+    },
+    "timeseries_plot": "ASASSN-15LH/ASASSN-15LH_timeseries.png"
+  }
+}

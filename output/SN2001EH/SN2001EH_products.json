@@ -1,0 +1,50 @@
+{
+  "sn": "SN2001EH",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2001EH/epochs/2001-09-25_day17_native.txt",
+        "SN2001EH/epochs/2001-10-04_day25_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2001EH/epochs/2001-09-25_day17_resel.txt",
+        "SN2001EH/epochs/2001-10-04_day25_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2001EH/SN2001EH_emission.json",
+      "plots": [
+        "SN2001EH/emission/SN2001EH_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2001EH/SN2001EH_manifest.json",
+      "stis": "SN2001EH/SN2001EH_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2001EH/SN2001EH_timeseries.png"
+  }
+}

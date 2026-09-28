@@ -5,6 +5,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import cm, colors
 import matplotlib as mpl
+import plotstyle; plotstyle.apply()
 from astropy.time import Time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import paths
@@ -85,7 +86,7 @@ def gather_epochs(sndir, tier, early_dir=''):
     return specs
 
 
-def cluster_epochs(specs, sndir, tier, expl_mjd=None):
+def cluster_epochs(specs, sndir, tier, expl_mjd=None, protect=False):
     # group the per-detector epoch spectra into global epochs on a rolling ~1-day window, across
     # detectors AND instruments: a date carrying both a ccd g750m stub and a mama uv epoch, or a
     # contemporaneous stis + cos visit, collapses to ONE epoch line (like the gold standard).
@@ -133,13 +134,16 @@ def cluster_epochs(specs, sndir, tier, expl_mjd=None):
         if not len(gw):
             continue
         mm = np.isfinite(merged)
+        gwm, mgm, mem = gw[mm], merged[mm], merr[mm]
+        if len(mgm):
+            mgm, _ = co.despike(mgm, protect=protect)     # 1d cosmic-spike safety net; off for narrow-line objs
         if mm.any() and rep['date']:
             tag = f"_day{rep['phase']}" if rep['phase'] else ''
             np.savetxt(f"{epdir}/{rep['date']}{tag}_{tier}.txt",
-                       np.column_stack([gw[mm], merged[mm], merr[mm]]),
+                       np.column_stack([gwm, mgm, mem]),
                        header=f'obs_wvl flux error  |  merged epoch ({tier}): {",".join(insts)}', comments='# ')
         # the waterfall (time series) is the one place the coarse COMMON_AXIS still lives: realign there.
-        fcommon = co.resample_fcr(gw[mm], merged[mm], co.COMMON_AXIS)[0] if mm.sum() > 2 else np.full_like(co.COMMON_AXIS, np.nan)
+        fcommon = co.resample_fcr(gwm, mgm, co.COMMON_AXIS)[0] if mm.sum() > 2 else np.full_like(co.COMMON_AXIS, np.nan)
         out.append({'date': rep['date'], 'phase': rep['phase'], 'phase_num': rep['phase_num'],
                     'insts': insts, 'merged_common': fcommon})
     out.sort(key=lambda s: (0, s['phase_num']) if s['phase_num'] is not None else (1, s['date']))
@@ -206,6 +210,11 @@ def waterfall(sn, epochs, out, z=0.0):
     fig.tight_layout(); fig.savefig(out, dpi=130, bbox_inches='tight'); plt.close(fig)
 
 
+def _narrow_line_object(sn):
+    # thin alias of the shared protect flag so reduction and product-build never disagree (see paths).
+    return paths.narrow_line_object(sn)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('sn')
@@ -217,9 +226,10 @@ def main():
     sndir = f'{a.outroot}/{a.sn}'
     if not os.path.isdir(sndir):
         print(f'no products dir for {a.sn}'); return
+    protect = _narrow_line_object(a.sn)                # IIn/Ibn/remnant: skip the 1d despike (keeps real narrow lines)
     specs_n = gather_epochs(sndir, 'native', a.early_skip_dir)
-    epochs = cluster_epochs(specs_n, sndir, 'native', a.expl_mjd)   # native drives the time-series waterfall
-    cluster_epochs(gather_epochs(sndir, 'resel', a.early_skip_dir), sndir, 'resel', a.expl_mjd)
+    epochs = cluster_epochs(specs_n, sndir, 'native', a.expl_mjd, protect=protect)   # native drives the time-series waterfall
+    cluster_epochs(gather_epochs(sndir, 'resel', a.early_skip_dir), sndir, 'resel', a.expl_mjd, protect=protect)
     waterfall(a.sn, epochs, f'{sndir}/{a.sn}_timeseries.png', a.z)
     # master_coadd removed: coadding epochs of an evolving SN is not physically meaningful.
 

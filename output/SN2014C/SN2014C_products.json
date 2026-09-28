@@ -1,0 +1,48 @@
+{
+  "sn": "SN2014C",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2014C/epochs/2015-08-22_day595_native.txt",
+        "SN2014C/epochs/2015-10-22_day655_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2014C/epochs/2015-08-22_day595_resel.txt",
+        "SN2014C/epochs/2015-10-22_day655_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2014C/SN2014C_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2014C/SN2014C_manifest.json",
+      "stis": "SN2014C/SN2014C_stis_manifest.json",
+      "cos": "SN2014C/SN2014C_cos_manifest.json"
+    },
+    "timeseries_plot": "SN2014C/SN2014C_timeseries.png"
+  }
+}

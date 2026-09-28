@@ -9,7 +9,47 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 5,
+    "exposures": [
+     {
+      "root": "obk001010",
+      "grating": "G230LB",
+      "exptime": 1050.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk001020",
+      "grating": "G230LB",
+      "exptime": 1000.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk001030",
+      "grating": "G230LB",
+      "exptime": 1500.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk001040",
+      "grating": "G430L",
+      "exptime": 350.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk001050",
+      "grating": "G430L",
+      "exptime": 350.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2010-11-22_day19": {
    "gratings": [
@@ -17,7 +57,47 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 5,
+    "exposures": [
+     {
+      "root": "obk002010",
+      "grating": "G230LB",
+      "exptime": 1075.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk002020",
+      "grating": "G230LB",
+      "exptime": 1000.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk002030",
+      "grating": "G230LB",
+      "exptime": 1500.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk002040",
+      "grating": "G430L",
+      "exptime": 350.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk002050",
+      "grating": "G430L",
+      "exptime": 350.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2011-01-23_day82": {
    "gratings": [
@@ -25,21 +105,106 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 7,
+    "exposures": [
+     {
+      "root": "obk004010",
+      "grating": "G230LB",
+      "exptime": 1100.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004020",
+      "grating": "G230LB",
+      "exptime": 1100.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004030",
+      "grating": "G230LB",
+      "exptime": 1100.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004040",
+      "grating": "G230LB",
+      "exptime": 1198.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004060",
+      "grating": "G230LB",
+      "exptime": 1250.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004070",
+      "grating": "G430L",
+      "exptime": 600.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obk004080",
+      "grating": "G430L",
+      "exptime": 600.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2012-05-03_day548": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "oboo20010",
+      "grating": "G430L",
+      "exptime": 600.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "MAMA/2012-05-03_day548": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oboo20020",
+      "grating": "G230L",
+      "exptime": 1450.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oboo20030",
+      "grating": "G230L",
+      "exptime": 2950.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2014-03-11_day1225": {
    "gratings": [
@@ -47,7 +212,152 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 20,
+    "exposures": [
+     {
+      "root": "ocdd03010",
+      "grating": "G140L",
+      "exptime": 513.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03020",
+      "grating": "G140L",
+      "exptime": 513.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03030",
+      "grating": "G140L",
+      "exptime": 513.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03040",
+      "grating": "G140L",
+      "exptime": 513.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03050",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03060",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03070",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03080",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd03090",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030a0",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030b0",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030c0",
+      "grating": "G140L",
+      "exptime": 639.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030d0",
+      "grating": "G230L",
+      "exptime": 680.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030e0",
+      "grating": "G230L",
+      "exptime": 680.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030f0",
+      "grating": "G230L",
+      "exptime": 680.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030g0",
+      "grating": "G230L",
+      "exptime": 680.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030h0",
+      "grating": "G230L",
+      "exptime": 644.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030i0",
+      "grating": "G230L",
+      "exptime": 644.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030j0",
+      "grating": "G230L",
+      "exptime": 644.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd030k0",
+      "grating": "G230L",
+      "exptime": 883.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2015-04-09_day1618": {
    "gratings": [
@@ -55,7 +365,152 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": true
+   "neg_continuum": true,
+   "provenance": {
+    "n_exposures": 20,
+    "exposures": [
+     {
+      "root": "ocdd05010",
+      "grating": "G140L",
+      "exptime": 543.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05020",
+      "grating": "G140L",
+      "exptime": 543.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05030",
+      "grating": "G140L",
+      "exptime": 543.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05040",
+      "grating": "G140L",
+      "exptime": 543.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05050",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05060",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05070",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05080",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd05090",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050a0",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050b0",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050c0",
+      "grating": "G140L",
+      "exptime": 669.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050d0",
+      "grating": "G230L",
+      "exptime": 695.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050e0",
+      "grating": "G230L",
+      "exptime": 695.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050f0",
+      "grating": "G230L",
+      "exptime": 695.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050g0",
+      "grating": "G230L",
+      "exptime": 695.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050h0",
+      "grating": "G230L",
+      "exptime": 658.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050i0",
+      "grating": "G230L",
+      "exptime": 658.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050j0",
+      "grating": "G230L",
+      "exptime": 658.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "ocdd050k0",
+      "grating": "G230L",
+      "exptime": 897.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

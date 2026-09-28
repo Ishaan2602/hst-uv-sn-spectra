@@ -1,0 +1,70 @@
+{
+  "sn": "AT2022ACKO",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "AT2022ACKO/epochs/2022-12-10_day4_native.txt",
+        "AT2022ACKO/epochs/2022-12-11_day5_native.txt",
+        "AT2022ACKO/epochs/2022-12-12_day6_native.txt",
+        "AT2022ACKO/epochs/2022-12-24_day18_native.txt",
+        "AT2022ACKO/epochs/2022-12-25_day20_native.txt"
+      ],
+      "epoch_resel": [
+        "AT2022ACKO/epochs/2022-12-10_day4_resel.txt",
+        "AT2022ACKO/epochs/2022-12-11_day5_resel.txt",
+        "AT2022ACKO/epochs/2022-12-12_day6_resel.txt",
+        "AT2022ACKO/epochs/2022-12-24_day18_resel.txt",
+        "AT2022ACKO/epochs/2022-12-25_day20_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "AT2022ACKO/AT2022ACKO_emission.json",
+      "plots": [
+        "AT2022ACKO/emission/AT2022ACKO_G230L_day20_mgii_diag.png",
+        "AT2022ACKO/emission/AT2022ACKO_G230L_day4_mgii_diag.png",
+        "AT2022ACKO/emission/AT2022ACKO_G230L_day6_mgii_diag.png",
+        "AT2022ACKO/emission/AT2022ACKO_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "AT2022ACKO/AT2022ACKO_absorption.json",
+      "cog_csv": [
+        "AT2022ACKO/absorption/AT2022ACKO_G230L_day4_cog.csv"
+      ],
+      "line_csv": [
+        "AT2022ACKO/absorption/AT2022ACKO_G230L_day4_lines.csv"
+      ],
+      "plots": [
+        "AT2022ACKO/absorption/AT2022ACKO_G230L_day4_cog.png",
+        "AT2022ACKO/absorption/AT2022ACKO_G230L_day4_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "AT2022ACKO/AT2022ACKO_lya_nhi.json",
+      "plots": [
+        "AT2022ACKO/absorption/AT2022ACKO_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "AT2022ACKO/AT2022ACKO_manifest.json",
+      "stis": "AT2022ACKO/AT2022ACKO_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "AT2022ACKO/AT2022ACKO_timeseries.png"
+  }
+}

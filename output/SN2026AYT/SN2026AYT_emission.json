@@ -1,14 +1,15 @@
 {
   "sn": "SN2026AYT",
   "sn_type": "SN II",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.0036,
     "ebv_mw": 0.1299,
     "host_ebv": 0.0,
     "host_ebv_src": "none (MW-only)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
@@ -99,7 +100,7 @@
       },
       {
         "phase": 7.0,
-        "flux": 927.6,
+        "flux": 927.7,
         "flux_err": 105.4,
         "flux_err_photon": 5.9,
         "instr": "G230L",
@@ -108,7 +109,7 @@
         "edge_flux_frac": 0.44,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": 25.7,
+        "coherence": 25.9,
         "v_phot_kms": null,
         "best_model": "kwok",
         "shape_note": null,
@@ -116,58 +117,58 @@
           "gaussian": {
             "params": [
               0.0,
-              -2064.25,
-              5361.69
+              -2064.43,
+              5362.75
             ],
             "k": 3,
-            "bic": -6283.6,
-            "aicc": -6290.9,
+            "bic": -6283.7,
+            "aicc": -6291.0,
             "redchi2": 1.28,
             "pegged": []
           },
           "lorentzian": {
             "params": [
               0.0,
-              -2396.57,
-              6495.62
+              -2396.9,
+              6497.2
             ],
             "k": 3,
-            "bic": -6275.9,
-            "aicc": -6283.2,
+            "bic": -6276.0,
+            "aicc": -6283.3,
             "redchi2": 1.39,
             "pegged": []
           },
           "skew": {
             "params": [
               0.0,
-              -7716.07,
-              10300.53,
+              -7716.32,
+              10300.91,
               6.65
             ],
             "k": 4,
-            "bic": -6313.4,
-            "aicc": -6323.1,
+            "bic": -6313.5,
+            "aicc": -6323.2,
             "redchi2": 0.9,
             "pegged": []
           },
           "kwok": {
             "params": [
               0.0,
-              -1572.51,
-              8923.5,
-              723.48,
-              4639.48
+              -1572.56,
+              8925.91,
+              724.06,
+              4639.02
             ],
             "k": 5,
-            "bic": -6314.6,
-            "aicc": -6326.6,
+            "bic": -6314.8,
+            "aicc": -6326.7,
             "redchi2": 0.85,
             "pegged": [],
             "inner_v": -5488
           }
         },
-        "v_blue99": -7521,
-        "v_red99": 8666,
+        "v_blue99": -7520,
+        "v_red99": 8667,
         "spill_frac": 1.001
       },
       {
@@ -242,6 +243,26 @@
         "v_blue99": -8017,
         "v_red99": 8831,
         "spill_frac": 1.077
+      },
+      {
+        "phase": 61.0,
+        "flux": 1.1,
+        "flux_err": 1.8,
+        "flux_err_photon": 0.3,
+        "instr": "G230L",
+        "flux_reliable": false,
+        "flux_reliable_reason": "pcygni: deep central absorption, continuum-placement dominated; low syst-SNR: F/flux_err=0.6<3",
+        "edge_flux_frac": 0.62,
+        "pcygni": true,
+        "pcygni_reason": "marginal",
+        "coherence": 8.6,
+        "v_phot_kms": null,
+        "best_model": null,
+        "shape_note": null,
+        "models": null,
+        "v_blue99": -13731,
+        "v_red99": 8733,
+        "spill_frac": 1.746
       }
     ],
     "lya": []

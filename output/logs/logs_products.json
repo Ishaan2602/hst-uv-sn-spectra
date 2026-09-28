@@ -1,0 +1,40 @@
+{
+  "sn": "logs",
+  "generated": "2026-09-28",
+  "available_threads": [],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [],
+      "epoch_resel": []
+    },
+    "emission": {
+      "json": null,
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": null,
+      "stis": null,
+      "cos": null
+    },
+    "timeseries_plot": null
+  }
+}

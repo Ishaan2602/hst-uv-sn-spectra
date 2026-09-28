@@ -1,7 +1,7 @@
 {
   "sn": "SN2023IXF",
   "sn_type": "SN II",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "provenance": {
     "z": 0.00087,
     "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
@@ -10,8 +10,8 @@
     "data_tier": "cog_plus_metallicity",
     "adopted_epoch": {
       "grating": "G230LB",
-      "phase": 14.0,
-      "fe_snr": 45.6,
+      "phase": 20.0,
+      "fe_snr": 22.1,
       "n_fe": 7
     },
     "metallicity_method": "N(HI) from damped Lya joint fit; [X/H] vs Asplund09 solar"
@@ -19,7 +19,7 @@
   "absorption": {
     "note": "foreground MW+host ISM screen, blended at low-res",
     "b_kms": 63.0,
-    "b_err": 1.4,
+    "b_err": 2.2,
     "anchored": true,
     "columns": {
       "Fe II": {

@@ -1,0 +1,42 @@
+{
+  "sn": "PS15DPQ-AS-OFFSET",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [],
+      "epoch_resel": []
+    },
+    "emission": {
+      "json": "PS15DPQ-AS-OFFSET/PS15DPQ-AS-OFFSET_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PS15DPQ-AS-OFFSET/PS15DPQ-AS-OFFSET_manifest.json",
+      "stis": "PS15DPQ-AS-OFFSET/PS15DPQ-AS-OFFSET_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": null
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "sn": "PTF11DIJ",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PTF11DIJ/epochs/2011-05-30_day35_native.txt"
+      ],
+      "epoch_resel": [
+        "PTF11DIJ/epochs/2011-05-30_day35_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PTF11DIJ/PTF11DIJ_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PTF11DIJ/PTF11DIJ_manifest.json",
+      "stis": "PTF11DIJ/PTF11DIJ_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PTF11DIJ/PTF11DIJ_timeseries.png"
+  }
+}

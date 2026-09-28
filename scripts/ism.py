@@ -1,4 +1,4 @@
-import os, glob, csv, re, argparse, datetime
+import os, glob, csv, re, argparse, datetime, json
 import numpy as np
 from scipy.optimize import curve_fit, least_squares
 from scipy.integrate import quad
@@ -6,6 +6,7 @@ from scipy.ndimage import median_filter
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 
 # ism equivalent-width -> curve-of-growth -> column density, ported from ism_ew_cog_sandbox.ipynb.
 # reads the observed-frame products in output, applies z from the catalog, measures deblended EWs,
@@ -20,6 +21,40 @@ TAU_K = 1.4973e-15          # tau0 = TAU_K * N * f * lam / b
 LIN_K = 8.853e-21           # linear CoG W/lam = LIN_K * N f lam
 AOD_K = 3.7679e14           # N = AOD_K/(f lam) * int tau dv (Savage&Sembach 1991; was 1.13e17 = 300x too high)
 ANCHOR_TAU = 3.0            # CoG anchor: need >=1 detected Fe II line below this tau0 (linear/transition part) or N floats
+
+# --- single source of truth for ISM-column adoption eligibility -------------------------------------
+# whether an epoch's Fe II CoG column can represent the FOREGROUND ISM (vs the SN photosphere). used by
+# BOTH the per-epoch cog.csv flag and the adopted-summary (finalize_and_write) so the two never disagree.
+ADOPT_MIN_FE_SNR, ADOPT_MAX_LOGN_ERR, ADOPT_MAX_LOGN = 3.0, 0.3, 16.0
+ADOPT_RESOLVED_SNR = {"LMC-SN1987A-STIS-2"}
+
+def _num(x):
+    try:
+        v = float(x)
+        return v if np.isfinite(v) else None
+    except (TypeError, ValueError):
+        return None
+
+def adopt_eligible(sn, anchored, fe_snr, b, b_err, logN, logN_err, cat, curated_sns):
+    # returns (eligible, reason). the reason is written into the per-epoch product so a reader sees WHY an
+    # epoch is excluded (e.g. type_Ia_photosphere) instead of silently trusting a contaminated raw column.
+    if not anchored:
+        return False, "not_anchored"            # every Fe II line saturated -> N floats = photosphere signature
+    if sn in ADOPT_RESOLVED_SNR:
+        return False, "resolved_snr"
+    if "IA" in (cat.get(sn.upper(), {}).get("tns_type") or "").upper().replace(" ", ""):
+        return False, "type_Ia_photosphere"     # broad SN Fe II photosphere fakes a huge fake ISM column
+    fs, bb, be, ln, le = _num(fe_snr), _num(b), _num(b_err), _num(logN), _num(logN_err)
+    if fs is None or fs < ADOPT_MIN_FE_SNR:
+        return False, "low_fe_snr"
+    if be is None or bb is None or be >= bb:
+        return False, "b_unconstrained"
+    if le is None or le <= 0 or le > ADOPT_MAX_LOGN_ERR:
+        return False, "imprecise"
+    if ln is not None and ln > ADOPT_MAX_LOGN and sn.upper() not in curated_sns:
+        return False, "implausible_highN"
+    return True, "ok"
+
 NUV_GRATINGS = ("G230LB", "G230L", "G230M", "G230MB")   # where the Fe II / Mg II forest lives
 FUV_GRATINGS = ("G130M", "G160M")                       # RESOLVED COS FUV -> apparent optical depth (G140L R~2000 does not resolve narrow ISM, excluded)
 FUV_LINES = os.path.join(ROOT, "linelists", "ism_lines_fuv.csv")
@@ -68,6 +103,13 @@ def load_nhi():
                     pass
     return m
 
+
+_NHI_CACHE = None
+def _nhi_map():
+    global _NHI_CACHE
+    if _NHI_CACHE is None:
+        _NHI_CACHE = load_nhi()
+    return _NHI_CACHE
 
 
 def load_catalog():
@@ -172,8 +214,9 @@ def analyze_fuv(w, f, e, fuv_lines, vwin=150.0):
 
 
 
-def despike(f, size=5, nsig=6.0):
-    # clip isolated UPWARD spikes only (hot px / CR); absorption-safe
+def _despike_up(f, size=5, nsig=6.0):
+    # clip isolated UPWARD spikes only (hot px / CR); absorption-safe. local to ism (distinct from coadd.despike,
+    # which is the positive+DQ-aware product net).
     f = np.asarray(f, float).copy()
     med = median_filter(f, size=size)
     resid = f - med
@@ -370,7 +413,7 @@ def analyze(w, f, e, ism, n_mc=200, clean_spikes=True):
     ok = np.isfinite(f) & (f > 0)
     w, f, e = w[ok], f[ok], e[ok]
     if clean_spikes:
-        f = despike(f)
+        f = _despike_up(f)
     inr = lines_in(ism, w)
     if len(inr) < 4:
         return None
@@ -463,8 +506,9 @@ def _write_diag(sn, grating, ph, w, f, inr, deb, b, logN_fe, Ncol, outdir, fits=
         ax.errorbar(TAU_K * 10 ** (Ncol[ion][0] if ion in Ncol else logN_fe) * fo * lm / b,
                     y, yerr=[ye, ye], fmt=">" if is_lim else "o", ms=5, capsize=3,
                     color=ion_colors.get(ion, "gray"), label=ion + (" (lim)" if is_lim else ""))
-    ax.set_xlabel("optical depth tau0"); ax.set_ylabel("W/lambda")
-    ax.grid(True, which="both", alpha=0.2)
+    ax.set_xlabel(r"optical depth $\tau_0$"); ax.set_ylabel(r"$W/\lambda$")
+    ax.grid(True, which="major", alpha=0.45, lw=0.7)
+    ax.grid(True, which="minor", alpha=0.2, lw=0.4)
     ax.set_title(f"{sn}  {grating}  day{ph:.0f}  b={b:.0f}  logN(FeII)={logN_fe:.2f}", fontsize=8)
     ax.legend(fontsize=7, loc="upper left")
     fig.tight_layout()
@@ -489,13 +533,25 @@ def phase_of(path, cat=None):
     return np.nan
 
 
-def _write_ism_csv(sn, g, ph, r, ismdir):
+def _write_ism_csv(sn, g, ph, r, ismdir, cat=None, curated_sns=None):
     # per-ion columns (+ logN error) and a rich per-line table: EW, the photon/continuum/total error budget,
     # detection flag, optical depth, saturation. this is the B4 rich output (was queued, now wired).
+    # the per-ion table also carries adopted_eligible/exclude_reason so a reader never mistakes a raw
+    # photospheric Fe II column for a foreground ISM measurement (only the eligible rows feed the adopted value).
+    cat = cat if cat is not None else load_catalog()
+    curated_sns = curated_sns if curated_sns is not None else load_curated_sns()
+    elig, reason = adopt_eligible(sn, bool(r["anchored"]), r["fe_snr"], r["b"], r["b_err"],
+                                  r["logN_fe"], r["logN_fe_err"], cat, curated_sns)
     with open(os.path.join(ismdir, f"{sn}_{g}_day{ph:.0f}_cog.csv"), "w", newline="") as fh:
-        wri = csv.writer(fh); wri.writerow(["ion", "logN", "logN_err", "n_lines", "limit"])
+        wri = csv.writer(fh); wri.writerow(["ion", "logN", "logN_err", "n_lines", "limit", "adopted_eligible", "exclude_reason"])
         for ion, (ln, nl, lim, lnerr) in r["Ncol"].items():
-            wri.writerow([ion, f"{ln:.3f}", f"{lnerr:.3f}" if np.isfinite(lnerr) else "", nl, ">" if lim else ""])
+            # eligibility is a Fe II-anchor property; carry it on the Fe II row (blank for the other ions).
+            ec = ("yes" if elig else "no") if ion == "Fe II" else ""
+            rc = ("" if elig else reason) if ion == "Fe II" else ""
+            wri.writerow([ion, f"{ln:.3f}", f"{lnerr:.3f}" if np.isfinite(lnerr) else "", nl, ">" if lim else "", ec, rc])
+        hi = _nhi_map().get(sn.upper())          # sightline N(HI) from damped Lya (same every epoch); the H the cog output was always supposed to carry
+        if hi:
+            wri.writerow(["H I", f"{hi[0]:.3f}", "", "", "", "", ""])
     deb, cerr, b = r["deb"], r["cerr"], r["b"]
     ioncol = {ion: v[0] for ion, v in r["Ncol"].items()}
     with open(os.path.join(ismdir, f"{sn}_{g}_day{ph:.0f}_lines.csv"), "w", newline="") as fh:
@@ -527,8 +583,6 @@ def finalize_and_write(summ, cat):
     # value/error. N(HI) + [Fe/H]_gas are joined from the single N(HI) source of truth (curated ism_columns.csv, else
     # automated lya_nhi_summary.csv). this runs on the per-epoch rows only, so it can be re-applied without the
     # (slow) CoG rerun via `--finalize`.
-    MIN_FE_SNR, MAX_LOGN_ERR, MAX_LOGN = 3.0, 0.3, 16.0
-    RESOLVED_SNR = {"LMC-SN1987A-STIS-2"}
     curated_sns = load_curated_sns()
     nhi_map = load_nhi()
     new_cols = ["logN_FeII_adopted", "logN_FeII_adopted_err", "b_adopted", "n_epochs_adopted",
@@ -536,20 +590,10 @@ def finalize_and_write(summ, cat):
     gated = {}
     for row in summ:
         sn = row["sn"]
-        if row["anchored"] != "yes" or sn in RESOLVED_SNR:
-            continue
-        if "IA" in (cat.get(sn.upper(), {}).get("tns_type") or "").upper().replace(" ", ""):
-            continue                                # never adopt a Type Ia (iron-photosphere fake column)
-        if row["fe_snr"] < MIN_FE_SNR:
-            continue
-        be, le = row["b_err"], row["logN_FeII_err"]
-        if be == "" or be >= row["b"]:              # a b uncertainty >= b means the fit is unconstrained
-            continue
-        if le == "" or le <= 0 or le > MAX_LOGN_ERR:    # precision guard: reject imprecise / degenerate columns
-            continue
-        if row["logN_FeII"] > MAX_LOGN and sn.upper() not in curated_sns:   # plausibility guard
-            continue
-        gated.setdefault(sn, []).append(row)
+        elig, _ = adopt_eligible(sn, row["anchored"] == "yes", row["fe_snr"], row["b"],
+                                 row["b_err"], row["logN_FeII"], row["logN_FeII_err"], cat, curated_sns)
+        if elig:
+            gated.setdefault(sn, []).append(row)
     for row in summ:                                # default the new columns blank
         row["adopted"] = ""
         for c in new_cols:
@@ -599,10 +643,17 @@ def run_catalog(n_mc=150, min_fe=3):
     # loop over every NUV per-grating product, write per-epoch cog csv + a master summary
     cat = load_catalog()
     ism = load_lines()
+    curated_sns = load_curated_sns()
     summ = []
     sne = sorted(d for d in os.listdir(OUT) if os.path.isdir(os.path.join(OUT, d)) and d.upper() in cat)
     for sn in sne:
         z = float(cat[sn.upper()]["z"])
+        ismdir = os.path.join(OUT, sn, "absorption")
+        for old in glob.glob(os.path.join(ismdir, f"{sn}_*_day*_cog.csv")) + \
+                   glob.glob(os.path.join(ismdir, f"{sn}_*_day*_lines.csv")) + \
+                   glob.glob(os.path.join(ismdir, f"{sn}_*_day*_cog.png")) + \
+                   glob.glob(os.path.join(ismdir, f"{sn}_*_day*_cont.png")):
+            os.remove(old)                       # drop stale-phase orphans so only current epochs ship
         prods = []
         for g in NUV_GRATINGS:
             prods += glob.glob(f"{OUT}/{sn}/**/{g}/{sn}_*_{g}_native.txt", recursive=True)
@@ -618,7 +669,7 @@ def run_catalog(n_mc=150, min_fe=3):
             ph = phase_of(p, cat)
             ismdir = os.path.join(OUT, sn, "absorption")
             os.makedirs(ismdir, exist_ok=True)
-            _write_ism_csv(sn, g, ph, r, ismdir)
+            _write_ism_csv(sn, g, ph, r, ismdir, cat, curated_sns)
             try:
                 _write_diag(sn, g, ph, r["w_used"], r["f_used"], r["inr"], r["deb"], r["b"], r["logN_fe"], r["Ncol"], ismdir, r["fits"])
             except Exception as ex:
@@ -659,6 +710,35 @@ def _nuv_feii_lookup():
     return m
 
 
+def _fuv_diag_plot(sn, g, ph, res, outdir):
+    # scrutiny plot behind the FUV AOD columns: normalized flux vs velocity for every measured line,
+    # with the +-vwin integration window shaded so the continuum + core choice is visible.
+    items = sorted(res.items(), key=lambda kv: kv[0][1])
+    n = len(items)
+    if n == 0:
+        return None
+    ncol = min(3, n); nrow = int(np.ceil(n / ncol))
+    fig, axes = plt.subplots(nrow, ncol, figsize=(3.6*ncol, 2.4*nrow), squeeze=False)
+    for ax, ((ion, lam), d) in zip(axes.ravel(), items):
+        v, fc, cont = d["v"], d["f"], d["cont"]
+        norm = fc / np.where(cont > 0, cont, np.nan)
+        ax.axhline(1.0, color='0.6', ls=':', lw=0.8); ax.axvline(0.0, color='0.6', ls=':', lw=0.8)
+        ax.plot(v, norm, 'k', lw=0.9, drawstyle='steps-mid')
+        ax.axvspan(-150, 150, color='gold', alpha=0.08)
+        tag = d["flag"] or '='
+        ax.set_title(f"{ion} {lam:.0f}  {tag}logN={d['logN']:.2f} ({d['status']}, {d['sig']:.0f}$\\sigma$)", fontsize=7)
+        ax.set_xlim(-400, 400); ax.set_ylim(-0.1, 1.6)
+        ax.set_xlabel(r'$v$ [km s$^{-1}$]', fontsize=7); ax.set_ylabel(r'$I/I_0$', fontsize=7)
+        ax.tick_params(labelsize=6)
+    for ax in axes.ravel()[n:]:
+        ax.set_visible(False)
+    fig.suptitle(f'{sn} {g} d{ph:.0f} FUV AOD', fontsize=9)
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f'{sn}_{g}_day{ph:.0f}_aod.png')
+    fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
+    return out
+
+
 def run_fuv(vwin=150.0):
     # loop every resolved COS FUV product, measure the FUV ISM lines by AOD, and cross-check Fe II 1608 (AOD)
     # against the NUV Fe II CoG for the same sightline (same ion, independent method + spectrograph).
@@ -690,6 +770,19 @@ def run_fuv(vwin=150.0):
                     wri.writerow([ion, f"{lam:.3f}", f"{d['logN']:.3f}",
                                   f"{d['logN_err']:.3f}" if np.isfinite(d["logN_err"]) else "", d["status"], d["flag"],
                                   f"{d['sig']:.1f}", "yes" if d["blend"] else "", f"{d['tau_int']:.2f}", d["npix"]])
+            png = _fuv_diag_plot(sn, g, ph, res, ismdir)
+            # per-SN JSON so the FUV AOD columns are surfaced next to the emission/absorption products
+            jlines = [{"ion": ion, "lam": round(lam, 3), "logN_aod": round(d["logN"], 3),
+                       "logN_aod_err": round(d["logN_err"], 3) if np.isfinite(d["logN_err"]) else None,
+                       "status": d["status"], "flag": d["flag"], "sig": round(d["sig"], 1),
+                       "blend": bool(d["blend"])} for (ion, lam), d in sorted(res.items(), key=lambda kv: kv[0][1])]
+            jrec = {"sn": sn.upper(), "grating": g, "phase": round(ph, 1),
+                    "generated": datetime.date.today().isoformat(), "method": "apparent optical depth (Savage&Sembach 1991), host rest frame",
+                    "lines": jlines}
+            if png:
+                jrec["diag_plot"] = os.path.relpath(png, OUT).replace("\\", "/")
+            with open(os.path.join(OUT, sn, f"{sn}_fuv_aod.json"), "w") as fh:
+                json.dump(jrec, fh, indent=2)
             for (ion, lam), d in sorted(res.items(), key=lambda kv: kv[0][1]):
                 rows.append({"sn": sn, "grating": g, "phase": round(ph, 1), "ion": ion, "lam": round(lam, 3),
                              "logN_aod": round(d["logN"], 3),
@@ -729,7 +822,13 @@ if __name__ == "__main__":
     elif a.fuv:
         run_fuv()
     elif a.sn:
-        cat = load_catalog(); ism = load_lines(); z = float(cat[a.sn.upper()]["z"])
+        cat = load_catalog(); ism = load_lines(); z = float(cat[a.sn.upper()]["z"]); curated_sns = load_curated_sns()
+        ismdir = os.path.join(OUT, a.sn, "absorption")
+        for old in glob.glob(os.path.join(ismdir, f"{a.sn}_*_day*_cog.csv")) + \
+                   glob.glob(os.path.join(ismdir, f"{a.sn}_*_day*_lines.csv")) + \
+                   glob.glob(os.path.join(ismdir, f"{a.sn}_*_day*_cog.png")) + \
+                   glob.glob(os.path.join(ismdir, f"{a.sn}_*_day*_cont.png")):
+            os.remove(old)                       # drop stale-phase orphans so only current epochs ship
         for g in NUV_GRATINGS:
             for p in sorted(glob.glob(f"{OUT}/{a.sn}/**/{g}/{a.sn}_*_{g}_native.txt", recursive=True)):
                 r = analyze(*load_spec(p, z), ism, n_mc=a.nmc)
@@ -738,7 +837,7 @@ if __name__ == "__main__":
                     print(f"{a.sn} {g} day{ph:.0f}: b={r['b']:.1f} logN(FeII)={r['logN_fe']:.2f} feSNR={r['fe_snr']:.1f}")
                     ismdir = os.path.join(OUT, a.sn, "absorption")
                     os.makedirs(ismdir, exist_ok=True)
-                    _write_ism_csv(a.sn, g, ph, r, ismdir)
+                    _write_ism_csv(a.sn, g, ph, r, ismdir, cat, curated_sns)
                     # write diagnostic plots (reuse the actual despiked flux + fits)
                     try:
                         _write_diag(a.sn, g, ph, r["w_used"], r["f_used"], r["inr"], r["deb"], r["b"], r["logN_fe"], r["Ncol"], ismdir, r["fits"])

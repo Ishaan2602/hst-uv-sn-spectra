@@ -8,49 +8,133 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd36010",
+      "grating": "G430L",
+      "exptime": 2100.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2011-08-15_day12": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd37010",
+      "grating": "G430L",
+      "exptime": 2220.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2011-08-19_day15": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd38010",
+      "grating": "G430L",
+      "exptime": 2220.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2011-08-23_day20": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd39010",
+      "grating": "G430L",
+      "exptime": 2220.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2011-08-27_day24": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd40010",
+      "grating": "G430L",
+      "exptime": 2220.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "MAMA/2011-08-12_day8": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd41010",
+      "grating": "G230L",
+      "exptime": 8077.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2011-08-19_day15": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd42010",
+      "grating": "G230L",
+      "exptime": 5198.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

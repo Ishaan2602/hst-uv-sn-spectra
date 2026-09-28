@@ -1,0 +1,59 @@
+{
+  "sn": "SN2012CG",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2012CG/epochs/2012-06-04_day18_native.txt",
+        "SN2012CG/epochs/2012-06-18_day32_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2012CG/epochs/2012-06-04_day18_resel.txt",
+        "SN2012CG/epochs/2012-06-18_day32_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2012CG/SN2012CG_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "SN2012CG/absorption/SN2012CG_G230LB_day18_cog.csv",
+        "SN2012CG/absorption/SN2012CG_G230LB_day32_cog.csv"
+      ],
+      "line_csv": [
+        "SN2012CG/absorption/SN2012CG_G230LB_day18_lines.csv",
+        "SN2012CG/absorption/SN2012CG_G230LB_day32_lines.csv"
+      ],
+      "plots": [
+        "SN2012CG/absorption/SN2012CG_G230LB_day18_cog.png",
+        "SN2012CG/absorption/SN2012CG_G230LB_day18_cont.png",
+        "SN2012CG/absorption/SN2012CG_G230LB_day32_cog.png",
+        "SN2012CG/absorption/SN2012CG_G230LB_day32_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2012CG/SN2012CG_manifest.json",
+      "stis": "SN2012CG/SN2012CG_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2012CG/SN2012CG_timeseries.png"
+  }
+}

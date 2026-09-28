@@ -1,0 +1,62 @@
+{
+  "sn": "SN2025TIS",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2025TIS/epochs/2025-08-10_day3_native.txt",
+        "SN2025TIS/epochs/2025-08-11_day4_native.txt",
+        "SN2025TIS/epochs/2025-08-12_day5_native.txt",
+        "SN2025TIS/epochs/2025-08-19_day12_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2025TIS/epochs/2025-08-10_day3_resel.txt",
+        "SN2025TIS/epochs/2025-08-11_day4_resel.txt",
+        "SN2025TIS/epochs/2025-08-12_day5_resel.txt",
+        "SN2025TIS/epochs/2025-08-19_day12_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2025TIS/SN2025TIS_emission.json",
+      "plots": [
+        "SN2025TIS/emission/SN2025TIS_G230L_day12_mgii_diag.png",
+        "SN2025TIS/emission/SN2025TIS_G230L_day3_mgii_diag.png",
+        "SN2025TIS/emission/SN2025TIS_G230L_day4_mgii_diag.png",
+        "SN2025TIS/emission/SN2025TIS_G230L_day5_mgii_diag.png",
+        "SN2025TIS/emission/SN2025TIS_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN2025TIS/SN2025TIS_absorption.json",
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "SN2025TIS/SN2025TIS_lya_nhi.json",
+      "plots": [
+        "SN2025TIS/absorption/SN2025TIS_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2025TIS/SN2025TIS_manifest.json",
+      "stis": "SN2025TIS/SN2025TIS_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2025TIS/SN2025TIS_timeseries.png"
+  }
+}

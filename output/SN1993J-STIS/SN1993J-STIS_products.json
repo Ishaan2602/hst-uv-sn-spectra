@@ -1,0 +1,74 @@
+{
+  "sn": "SN1993J-STIS",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN1993J-STIS/epochs/1998-02-21_day1792_native.txt",
+        "SN1993J-STIS/epochs/1998-04-17_day1846_native.txt",
+        "SN1993J-STIS/epochs/2000-04-18_day2578_native.txt",
+        "SN1993J-STIS/epochs/2000-04-24_day2584_native.txt",
+        "SN1993J-STIS/epochs/2012-03-31_day6943_native.txt",
+        "SN1993J-STIS/epochs/2012-04-06_day6950_native.txt",
+        "SN1993J-STIS/epochs/2012-04-11_day6955_native.txt"
+      ],
+      "epoch_resel": [
+        "SN1993J-STIS/epochs/1998-02-21_day1792_resel.txt",
+        "SN1993J-STIS/epochs/1998-04-17_day1846_resel.txt",
+        "SN1993J-STIS/epochs/2000-04-18_day2578_resel.txt",
+        "SN1993J-STIS/epochs/2000-04-24_day2584_resel.txt",
+        "SN1993J-STIS/epochs/2012-03-31_day6943_resel.txt",
+        "SN1993J-STIS/epochs/2012-04-06_day6950_resel.txt",
+        "SN1993J-STIS/epochs/2012-04-11_day6955_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN1993J-STIS/SN1993J-STIS_emission.json",
+      "plots": [
+        "SN1993J-STIS/emission/SN1993J-STIS_G140L_day1846_lya_diag.png",
+        "SN1993J-STIS/emission/SN1993J-STIS_G140L_day2578_lya_diag.png",
+        "SN1993J-STIS/emission/SN1993J-STIS_G140L_day6943_lya_diag.png",
+        "SN1993J-STIS/emission/SN1993J-STIS_G230L_day1792_mgii_diag.png",
+        "SN1993J-STIS/emission/SN1993J-STIS_G230L_day2584_mgii_diag.png",
+        "SN1993J-STIS/emission/SN1993J-STIS_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "SN1993J-STIS/absorption/SN1993J-STIS_G230L_day1792_cog.csv"
+      ],
+      "line_csv": [
+        "SN1993J-STIS/absorption/SN1993J-STIS_G230L_day1792_lines.csv"
+      ],
+      "plots": [
+        "SN1993J-STIS/absorption/SN1993J-STIS_G230L_day1792_cog.png",
+        "SN1993J-STIS/absorption/SN1993J-STIS_G230L_day1792_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "SN1993J-STIS/absorption/SN1993J-STIS_G140L_day6943_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN1993J-STIS/SN1993J-STIS_manifest.json",
+      "stis": "SN1993J-STIS/SN1993J-STIS_stis_manifest.json",
+      "cos": "SN1993J-STIS/SN1993J-STIS_cos_manifest.json"
+    },
+    "timeseries_plot": "SN1993J-STIS/SN1993J-STIS_timeseries.png"
+  }
+}

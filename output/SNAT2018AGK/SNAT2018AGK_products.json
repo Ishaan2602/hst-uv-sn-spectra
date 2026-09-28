@@ -1,0 +1,48 @@
+{
+  "sn": "SNAT2018AGK",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SNAT2018AGK/epochs/2018-03-19_day9_native.txt",
+        "SNAT2018AGK/epochs/2018-03-24_day14_native.txt"
+      ],
+      "epoch_resel": [
+        "SNAT2018AGK/epochs/2018-03-19_day9_resel.txt",
+        "SNAT2018AGK/epochs/2018-03-24_day14_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SNAT2018AGK/SNAT2018AGK_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SNAT2018AGK/SNAT2018AGK_manifest.json",
+      "stis": "SNAT2018AGK/SNAT2018AGK_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SNAT2018AGK/SNAT2018AGK_timeseries.png"
+  }
+}

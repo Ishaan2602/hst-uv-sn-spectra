@@ -1,14 +1,15 @@
 {
   "sn": "SN-2005IP",
   "sn_type": "SN IIn",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.007,
     "ebv_mw": 0.0469,
     "host_ebv": 0.0,
     "host_ebv_src": "Smith+2009 / Fox+2020 (total 0.047 = MW 0.047; negligible host)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
@@ -26,8 +27,8 @@
     "mg2": [
       {
         "phase": 3065.0,
-        "flux": 29.8,
-        "flux_err": 3.2,
+        "flux": 29.1,
+        "flux_err": 3.0,
         "flux_err_photon": 0.7,
         "instr": "G230L",
         "flux_reliable": true,
@@ -35,7 +36,7 @@
         "edge_flux_frac": 0.08,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": 33.1,
+        "coherence": 32.9,
         "v_phot_kms": null,
         "best_model": "gaussian",
         "shape_note": "skew beat gaussian by dBIC<6: kept the simpler model; lowest-BIC model kwok barred (pegged)",
@@ -43,61 +44,61 @@
           "gaussian": {
             "params": [
               0.0,
-              -348.36,
-              846.66
+              -349.9,
+              840.26
             ],
             "k": 3,
-            "bic": -7242.1,
-            "aicc": -7249.6,
-            "redchi2": 1.14,
+            "bic": -7248.1,
+            "aicc": -7255.6,
+            "redchi2": 4.52,
             "pegged": []
           },
           "lorentzian": {
             "params": [
               0.0,
-              -392.24,
-              821.13
+              -394.73,
+              811.04
             ],
             "k": 3,
-            "bic": -7241.1,
-            "aicc": -7248.6,
-            "redchi2": 1.15,
+            "bic": -7242.0,
+            "aicc": -7249.5,
+            "redchi2": 4.81,
             "pegged": []
           },
           "skew": {
             "params": [
               0.0,
-              -1090.53,
-              1195.6,
-              1.79
+              -1084.85,
+              1183.69,
+              1.78
             ],
             "k": 4,
-            "bic": -7243.3,
-            "aicc": -7253.2,
-            "redchi2": 1.09,
+            "bic": -7249.5,
+            "aicc": -7259.4,
+            "redchi2": 4.3,
             "pegged": []
           },
           "kwok": {
             "params": [
               0.0,
-              -1035.78,
+              -1052.37,
               3000.0,
-              -2438.42,
-              2768.64
+              -2470.63,
+              2817.89
             ],
             "k": 5,
-            "bic": -7248.6,
-            "aicc": -7260.8,
-            "redchi2": 0.99,
+            "bic": -7254.1,
+            "aicc": -7266.3,
+            "redchi2": 3.96,
             "pegged": [
               "fwhm@lo"
             ],
-            "inner_v": -6243
+            "inner_v": -6341
           }
         },
         "v_blue99": -13595,
         "v_red99": 8794,
-        "spill_frac": 1.051
+        "spill_frac": 1.028
       },
       {
         "phase": 4369.0,
@@ -178,8 +179,8 @@
     "lya": [
       {
         "phase": 3065.0,
-        "flux": 6.7,
-        "flux_err": 3.8,
+        "flux": 6.6,
+        "flux_err": 3.7,
         "flux_err_photon": 0.4,
         "instr": "G140L",
         "flux_reliable": false,
@@ -195,63 +196,63 @@
           "gaussian": {
             "params": [
               0.0,
-              -1070.46,
-              1243.6
+              -1079.9,
+              1225.85
             ],
             "k": 3,
             "bic": -7610.9,
-            "aicc": -7618.7,
-            "redchi2": 2.14,
+            "aicc": -7618.6,
+            "redchi2": 2.15,
             "pegged": []
           },
           "lorentzian": {
             "params": [
               0.0,
-              -997.95,
-              666.84
+              -997.01,
+              662.09
             ],
             "k": 3,
             "bic": -7626.2,
             "aicc": -7633.9,
-            "redchi2": 1.85,
+            "redchi2": 1.86,
             "pegged": []
           },
           "skew": {
             "params": [
               0.0,
-              -2371.97,
-              2258.0,
-              3.03
+              -2368.89,
+              2250.41,
+              3.02
             ],
             "k": 4,
-            "bic": -7616.0,
-            "aicc": -7626.3,
-            "redchi2": 1.97,
+            "bic": -7615.9,
+            "aicc": -7626.1,
+            "redchi2": 1.98,
             "pegged": []
           },
           "kwok": {
             "params": [
               0.0,
-              744.61,
-              4086.63,
-              2402.69,
-              4119.91
+              731.74,
+              4074.58,
+              2412.61,
+              4116.97
             ],
             "k": 5,
-            "bic": -7623.4,
-            "aicc": -7636.1,
-            "redchi2": 1.77,
+            "bic": -7623.3,
+            "aicc": -7636.0,
+            "redchi2": 1.78,
             "pegged": [],
             "inner_v": -973
           }
         },
         "v_blue99": -1544,
         "v_red99": 7023,
-        "spill_frac": 1.835
+        "spill_frac": 1.821
       },
       {
         "phase": 4369.0,
-        "flux": 4.8,
+        "flux": 5.1,
         "flux_err": 0.6,
         "flux_err_photon": 0.6,
         "instr": "G140L",
@@ -265,9 +266,9 @@
         "best_model": null,
         "shape_note": null,
         "models": null,
-        "v_blue99": -3522,
-        "v_red99": 7771,
-        "spill_frac": 1.241
+        "v_blue99": -3376,
+        "v_red99": 7775,
+        "spill_frac": 1.196
       }
     ]
   }

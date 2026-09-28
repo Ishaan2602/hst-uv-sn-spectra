@@ -11,7 +11,19 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd01010",
+      "grating": "G430L",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2010-10-20_day9": {
    "gratings": [
@@ -19,7 +31,40 @@
     "G230LB"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "obnd02010",
+      "grating": "G430L",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd05010",
+      "grating": "G230LB",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd05020",
+      "grating": "G230LB",
+      "exptime": 2745.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd05030",
+      "grating": "G230LB",
+      "exptime": 2745.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2010-10-26_day14": {
    "gratings": [
@@ -27,14 +72,59 @@
     "G230LB"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "obnd03010",
+      "grating": "G430L",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd06010",
+      "grating": "G230LB",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd06020",
+      "grating": "G230LB",
+      "exptime": 2745.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obnd06030",
+      "grating": "G230LB",
+      "exptime": 2745.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2010-10-31_day20": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "obnd04010",
+      "grating": "G430L",
+      "exptime": 2175.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   }
  },
  "n_epochs": 4

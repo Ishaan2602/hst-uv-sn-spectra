@@ -1,14 +1,15 @@
 {
   "sn": "AT2021J",
   "sn_type": "SN Ia",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.002445,
     "ebv_mw": 0.0196,
     "host_ebv": 0.0,
     "host_ebv_src": "none (MW-only)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",

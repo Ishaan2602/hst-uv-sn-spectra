@@ -197,6 +197,17 @@
     "purpose": "default calcos batch for the whole COS catalog: stage rawtags -> bestrefs -> calcos -> x1dsum; runs in WSL surf_uv",
     "run": "python reduce_cos_batch.py <base_dir> [N_limit]  (N_limit for smoke tests)"
   },
+  "rerun_all.py": {
+    "purpose": "unified pipeline driver: STIS/COS reduction (WSL surf_uv) then analysis products (Windows 3.14); all logs to output/logs/",
+    "run": "python3.exe scripts/rerun_all.py  [--skip-reduction | --reduction-only | --workers N | --only SN1,SN2 | --cos-only]",
+    "flags": [
+      {"name": "--skip-reduction", "desc": "run analysis products only (spectra already rebuilt)"},
+      {"name": "--reduction-only", "desc": "run only the STIS/COS reduction; skip analysis products"},
+      {"name": "--workers N",      "desc": "parallel reduction workers (default 4)"},
+      {"name": "--only SN1,SN2",   "desc": "targeted rerun of specific SNe"},
+      {"name": "--cos-only",       "desc": "rebuild only COS products + build_products in the reduction step"}
+    ]
+  },
   "run_full_catalog.py": {
     "purpose": "top-level orchestrator: per-SN download -> STIS reduce -> COS products -> build products; parallelized, resumable",
     "run": "python run_full_catalog.py [--workers 4] [--outroot output] [--cos-only] [--presync]",

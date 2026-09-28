@@ -1,0 +1,64 @@
+{
+  "sn": "PSNJ0338",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PSNJ0338/epochs/2011-12-11_day9_native.txt",
+        "PSNJ0338/epochs/2011-12-15_day14_native.txt",
+        "PSNJ0338/epochs/2011-12-20_day19_native.txt",
+        "PSNJ0338/epochs/2011-12-24_day23_native.txt",
+        "PSNJ0338/epochs/2011-12-28_day26_native.txt",
+        "PSNJ0338/epochs/2012-01-01_day30_native.txt",
+        "PSNJ0338/epochs/2012-01-09_day38_native.txt"
+      ],
+      "epoch_resel": [
+        "PSNJ0338/epochs/2011-12-11_day9_resel.txt",
+        "PSNJ0338/epochs/2011-12-15_day14_resel.txt",
+        "PSNJ0338/epochs/2011-12-20_day19_resel.txt",
+        "PSNJ0338/epochs/2011-12-24_day23_resel.txt",
+        "PSNJ0338/epochs/2011-12-28_day26_resel.txt",
+        "PSNJ0338/epochs/2012-01-01_day30_resel.txt",
+        "PSNJ0338/epochs/2012-01-09_day38_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PSNJ0338/PSNJ0338_emission.json",
+      "plots": [
+        "PSNJ0338/emission/PSNJ0338_G230L_day23_mgii_diag.png",
+        "PSNJ0338/emission/PSNJ0338_G230L_day26_mgii_diag.png",
+        "PSNJ0338/emission/PSNJ0338_G230L_day30_mgii_diag.png",
+        "PSNJ0338/emission/PSNJ0338_G230L_day38_mgii_diag.png",
+        "PSNJ0338/emission/PSNJ0338_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PSNJ0338/PSNJ0338_manifest.json",
+      "stis": "PSNJ0338/PSNJ0338_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PSNJ0338/PSNJ0338_timeseries.png"
+  }
+}

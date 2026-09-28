@@ -1,0 +1,65 @@
+{
+  "sn": "SN2018BSZ",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2018BSZ/epochs/2018-06-25_day40_native.txt",
+        "SN2018BSZ/epochs/2018-07-20_day64_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2018BSZ/epochs/2018-06-25_day40_resel.txt",
+        "SN2018BSZ/epochs/2018-07-20_day64_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2018BSZ/SN2018BSZ_emission.json",
+      "plots": [
+        "SN2018BSZ/emission/SN2018BSZ_G230L_day40_mgii_diag.png",
+        "SN2018BSZ/emission/SN2018BSZ_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN2018BSZ/SN2018BSZ_absorption.json",
+      "cog_csv": [
+        "SN2018BSZ/absorption/SN2018BSZ_G230L_day40_cog.csv"
+      ],
+      "line_csv": [
+        "SN2018BSZ/absorption/SN2018BSZ_G230L_day40_lines.csv"
+      ],
+      "plots": [
+        "SN2018BSZ/absorption/SN2018BSZ_G230L_day40_cog.png",
+        "SN2018BSZ/absorption/SN2018BSZ_G230L_day40_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "SN2018BSZ/absorption/SN2018BSZ_G140L_day40_aod.csv",
+        "SN2018BSZ/absorption/SN2018BSZ_G140L_day64_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "SN2018BSZ/SN2018BSZ_lya_nhi.json",
+      "plots": [
+        "SN2018BSZ/absorption/SN2018BSZ_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2018BSZ/SN2018BSZ_manifest.json",
+      "stis": "SN2018BSZ/SN2018BSZ_stis_manifest.json",
+      "cos": "SN2018BSZ/SN2018BSZ_cos_manifest.json"
+    },
+    "timeseries_plot": "SN2018BSZ/SN2018BSZ_timeseries.png"
+  }
+}

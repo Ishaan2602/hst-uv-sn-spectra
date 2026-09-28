@@ -14,7 +14,26 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "of7t03010",
+      "grating": "G230L",
+      "exptime": 1859.2,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "of7t03020",
+      "grating": "G230L",
+      "exptime": 2615.2,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "FUV/2024-10-16_day20": {
    "gratings": [

@@ -1,0 +1,69 @@
+{
+  "sn": "PTF12GZK",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PTF12GZK/epochs/2012-08-06_day14_native.txt",
+        "PTF12GZK/epochs/2012-08-06_native.txt",
+        "PTF12GZK/epochs/2012-08-07_day14_native.txt",
+        "PTF12GZK/epochs/2012-08-07_native.txt",
+        "PTF12GZK/epochs/2012-08-10_day18_native.txt",
+        "PTF12GZK/epochs/2012-08-10_native.txt",
+        "PTF12GZK/epochs/2012-08-11_day18_native.txt",
+        "PTF12GZK/epochs/2012-08-11_native.txt",
+        "PTF12GZK/epochs/2012-08-15_day23_native.txt",
+        "PTF12GZK/epochs/2012-08-15_native.txt"
+      ],
+      "epoch_resel": [
+        "PTF12GZK/epochs/2012-08-06_day14_resel.txt",
+        "PTF12GZK/epochs/2012-08-06_resel.txt",
+        "PTF12GZK/epochs/2012-08-07_day14_resel.txt",
+        "PTF12GZK/epochs/2012-08-07_resel.txt",
+        "PTF12GZK/epochs/2012-08-10_day18_resel.txt",
+        "PTF12GZK/epochs/2012-08-10_resel.txt",
+        "PTF12GZK/epochs/2012-08-11_day18_resel.txt",
+        "PTF12GZK/epochs/2012-08-11_resel.txt",
+        "PTF12GZK/epochs/2012-08-15_day23_resel.txt",
+        "PTF12GZK/epochs/2012-08-15_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PTF12GZK/PTF12GZK_emission.json",
+      "plots": [
+        "PTF12GZK/emission/PTF12GZK_G230L_day14_mgii_diag.png",
+        "PTF12GZK/emission/PTF12GZK_G230L_day18_mgii_diag.png",
+        "PTF12GZK/emission/PTF12GZK_G230L_day23_mgii_diag.png",
+        "PTF12GZK/emission/PTF12GZK_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PTF12GZK/PTF12GZK_manifest.json",
+      "stis": "PTF12GZK/PTF12GZK_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PTF12GZK/PTF12GZK_timeseries.png"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "sn": "AT-2023TSV",
   "sn_type": "",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "provenance": {
     "z": 0.028,
     "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
@@ -16,8 +16,8 @@
   "absorption": {
     "note": "foreground MW+host ISM screen, blended at low-res",
     "N_HI": {
-      "logN": 20.008,
-      "logN_HI_syst_vabs": 0.244,
+      "logN": 20.019,
+      "logN_HI_syst_vabs": 0.254,
       "method": "automated damped Lya",
       "source": "automated"
     }

@@ -14,7 +14,19 @@
     "G230LB"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "oetz03010",
+      "grating": "G230LB",
+      "exptime": 2180.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "FUV/2022-04-11_day159": {
    "gratings": [

@@ -3,14 +3,14 @@
  "z": 0.087,
  "instrument": "COS",
  "epochs": {
-  "FUV/2015-04-27": {
+  "FUV/2015-04-27_day39": {
    "gratings": [
     "G140L"
    ],
    "detector": "FUV",
    "neg_continuum": false
   },
-  "FUV/2015-04-28": {
+  "FUV/2015-04-28_day41": {
    "gratings": [
     "G140L"
    ],

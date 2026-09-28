@@ -1,0 +1,61 @@
+{
+  "sn": "TESS-SN",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "fuv_aod"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "TESS-SN/epochs/2020-04-03_day3_native.txt",
+        "TESS-SN/epochs/2020-04-04_day4_native.txt",
+        "TESS-SN/epochs/2020-04-11_day11_native.txt",
+        "TESS-SN/epochs/2020-04-17_day17_native.txt"
+      ],
+      "epoch_resel": [
+        "TESS-SN/epochs/2020-04-03_day3_resel.txt",
+        "TESS-SN/epochs/2020-04-04_day4_resel.txt",
+        "TESS-SN/epochs/2020-04-11_day11_resel.txt",
+        "TESS-SN/epochs/2020-04-17_day17_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "TESS-SN/TESS-SN_emission.json",
+      "plots": [
+        "TESS-SN/emission/TESS-SN_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": "TESS-SN/TESS-SN_fuv_aod.json",
+      "aod_csv": [
+        "TESS-SN/absorption/TESS-SN_G130M_day5_aod.csv",
+        "TESS-SN/absorption/TESS-SN_G160M_day5_aod.csv"
+      ],
+      "plots": [
+        "TESS-SN/absorption/TESS-SN_G130M_day5_aod.png",
+        "TESS-SN/absorption/TESS-SN_G160M_day5_aod.png"
+      ]
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "TESS-SN/TESS-SN_manifest.json",
+      "stis": "TESS-SN/TESS-SN_stis_manifest.json",
+      "cos": "TESS-SN/TESS-SN_cos_manifest.json"
+    },
+    "timeseries_plot": "TESS-SN/TESS-SN_timeseries.png"
+  }
+}

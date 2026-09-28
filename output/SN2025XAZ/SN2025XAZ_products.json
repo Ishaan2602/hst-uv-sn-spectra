@@ -1,0 +1,46 @@
+{
+  "sn": "SN2025XAZ",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2025XAZ/epochs/2025-09-11_day5_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2025XAZ/epochs/2025-09-11_day5_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2025XAZ/SN2025XAZ_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2025XAZ/SN2025XAZ_manifest.json",
+      "stis": "SN2025XAZ/SN2025XAZ_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2025XAZ/SN2025XAZ_timeseries.png"
+  }
+}

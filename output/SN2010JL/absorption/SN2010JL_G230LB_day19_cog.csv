@@ -1,6 +1,6 @@
-ion,logN,logN_err,n_lines,limit
-Al III,16.978,2.762,1,>
-Cr II,14.742,0.317,1,
-Fe II,15.869,0.528,4,
-Mg I,12.777,0.260,1,
-Mg II,15.136,0.607,2,>
+ion,logN,logN_err,n_lines,limit,adopted_eligible,exclude_reason
+Al III,17.756,2.789,1,>,,
+Cr II,14.828,0.526,1,,,
+Fe II,16.064,0.757,4,,no,not_anchored
+Mg I,12.569,0.269,1,,,
+Mg II,16.638,0.751,2,>,,

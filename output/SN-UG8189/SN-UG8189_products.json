@@ -1,0 +1,50 @@
+{
+  "sn": "SN-UG8189",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN-UG8189/epochs/2012-04-09_day13_native.txt",
+        "SN-UG8189/epochs/2012-04-13_day18_native.txt"
+      ],
+      "epoch_resel": [
+        "SN-UG8189/epochs/2012-04-09_day13_resel.txt",
+        "SN-UG8189/epochs/2012-04-13_day18_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN-UG8189/SN-UG8189_emission.json",
+      "plots": [
+        "SN-UG8189/emission/SN-UG8189_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN-UG8189/SN-UG8189_manifest.json",
+      "stis": "SN-UG8189/SN-UG8189_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN-UG8189/SN-UG8189_timeseries.png"
+  }
+}

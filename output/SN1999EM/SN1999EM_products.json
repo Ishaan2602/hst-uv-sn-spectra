@@ -1,0 +1,68 @@
+{
+  "sn": "SN1999EM",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN1999EM/epochs/1999-11-05_day8_native.txt",
+        "SN1999EM/epochs/1999-11-07_day10_native.txt",
+        "SN1999EM/epochs/1999-11-12_day15_native.txt",
+        "SN1999EM/epochs/2000-01-24_day87_native.txt"
+      ],
+      "epoch_resel": [
+        "SN1999EM/epochs/1999-11-05_day8_resel.txt",
+        "SN1999EM/epochs/1999-11-07_day10_resel.txt",
+        "SN1999EM/epochs/1999-11-12_day15_resel.txt",
+        "SN1999EM/epochs/2000-01-24_day87_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN1999EM/SN1999EM_emission.json",
+      "plots": [
+        "SN1999EM/emission/SN1999EM_G140L_day87_lya_diag.png",
+        "SN1999EM/emission/SN1999EM_G230L_day87_mgii_diag.png",
+        "SN1999EM/emission/SN1999EM_G230L_day8_mgii_diag.png",
+        "SN1999EM/emission/SN1999EM_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN1999EM/SN1999EM_absorption.json",
+      "cog_csv": [
+        "SN1999EM/absorption/SN1999EM_G230L_day8_cog.csv"
+      ],
+      "line_csv": [
+        "SN1999EM/absorption/SN1999EM_G230L_day8_lines.csv"
+      ],
+      "plots": [
+        "SN1999EM/absorption/SN1999EM_G230L_day8_cog.png",
+        "SN1999EM/absorption/SN1999EM_G230L_day8_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "SN1999EM/SN1999EM_lya_nhi.json",
+      "plots": [
+        "SN1999EM/absorption/SN1999EM_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN1999EM/SN1999EM_manifest.json",
+      "stis": "SN1999EM/SN1999EM_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN1999EM/SN1999EM_timeseries.png"
+  }
+}

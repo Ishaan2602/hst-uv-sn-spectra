@@ -8,7 +8,19 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "o6gl35010",
+      "grating": "G430L",
+      "exptime": 200.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "MAMA/2001-10-27_day25": {
    "gratings": [
@@ -16,28 +28,111 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "o6gl35020",
+      "grating": "G140L",
+      "exptime": 1630.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o6gl35030",
+      "grating": "G140L",
+      "exptime": 2692.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o6gl35040",
+      "grating": "G230L",
+      "exptime": 2692.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2001-11-02_day31": {
    "gratings": [
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "o6gl37010",
+      "grating": "G430L",
+      "exptime": 300.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "MAMA/2001-11-02_day31": {
    "gratings": [
     "G140L"
    ],
    "detector": "MAMA",
-   "neg_continuum": true
+   "neg_continuum": true,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "o6gl37020",
+      "grating": "G140L",
+      "exptime": 1690.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o6gl37030",
+      "grating": "G140L",
+      "exptime": 2852.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o6gl37040",
+      "grating": "G140L",
+      "exptime": 2852.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2001-11-03_day32": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "o6gl38010",
+      "grating": "G230L",
+      "exptime": 2322.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o6gl38020",
+      "grating": "G230L",
+      "exptime": 2852.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

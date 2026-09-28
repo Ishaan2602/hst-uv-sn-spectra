@@ -1,4 +1,4 @@
-ion,logN,logN_err,n_lines,limit
-Fe II,14.696,0.059,5,
-Mg I,12.916,0.126,1,
-Mg II,15.435,0.090,2,>
+ion,logN,logN_err,n_lines,limit,adopted_eligible,exclude_reason
+Fe II,14.686,0.063,5,,no,type_Ia_photosphere
+Mg I,12.914,0.115,1,,,
+Mg II,15.405,0.091,2,>,,

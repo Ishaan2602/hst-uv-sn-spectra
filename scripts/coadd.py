@@ -22,10 +22,14 @@ OVERLAP = {'G430L': (2900, 3150), 'G430M': (2900, 3150),
 GAP_K = 5.0
 
 
-def clean_wf(w, f, e=None, dq=None):
-    # dq: drop ONLY genuinely-bad px (512 bad-ref, 256 satur, 4 bad-det). KEEP bit 16 "high dark":
-    # it flags ~half the ccd in broad coherent swaths and on a bright source the value is fine -
-    # dropping it gutted real structure (the Mg II 2800 two-teeth). finite + nonzero; sort + dedup.
+def clean_wf(w, f, e=None, dq=None, protect=False):
+    # dq: drop genuinely-bad px (512 bad-ref, 256 satur/CR, 4 bad-det). bit 16 "high dark" is normally KEPT
+    # (dropping it wholesale gutted real structure like the Mg II 2800 two-teeth) -- EXCEPT where a bit-16
+    # pixel is also a sharp positive flux outlier: that is a hot pixel dumping charge, the dominant source of
+    # the shipped-product spikes (62% carry bit 16). also drop the rarer UNFLAGGED (dq==0) 1-2 px positive
+    # spike HERE at the native grid, before the coadd's flux-conserving resample smears it to 3-4 px. the
+    # unflagged drop is skipped when `protect` is set (IIn/Ibn/remnant have real narrow emission a 1d clip
+    # cannot tell from a cr). finite + nonzero; sort + dedup.
     w = np.asarray(w, float); f = np.asarray(f, float)
     m = np.isfinite(w) & np.isfinite(f) & (f != 0)
     if dq is not None:
@@ -33,10 +37,34 @@ def clean_wf(w, f, e=None, dq=None):
         m &= (dq & 512 != 512) & (dq & 256 != 256) & (dq & 4 != 4)
     w, f = w[m], f[m]
     e = np.asarray(e, float)[m] if e is not None else None
+    dqm = dq[m] if dq is not None else None
     if len(w) == 0:
         return w, f, e
     o = np.argsort(w); w, f = w[o], f[o]
     if e is not None: e = e[o]
+    if dqm is not None: dqm = dqm[o]
+    if dqm is not None and len(f) > 20:
+        from scipy.ndimage import median_filter
+        med = median_filter(f, 9)
+        exc = f - med
+        rsig = np.maximum(1.4826 * median_filter(np.abs(exc), 101), 1e-30)
+        _DEFECT = 16 | 32 | 1024 | 8192                  # high-dark, large/small blemish, CR-rejected-in-combine
+        drop = ((dqm & _DEFECT) != 0) & (exc > 6.0 * rsig)  # a flagged defect that is ALSO a spike -> drop; normal-flux flagged px stay
+        if not protect:
+            cand = (dqm == 0) & (exc > 8.0 * rsig)        # unflagged sharp positive spike
+            i = 0
+            while i < len(f):                             # SINGLE px only: a real line spans >=2 px at the native grid,
+                if cand[i]:                                # so a lone dq==0 8-sigma pixel is a cr/hot px, never a real line
+                    j = i
+                    while j < len(f) and cand[j]:
+                        j += 1
+                    if (j - i) <= 1:
+                        drop[i:j] = True
+                    i = j
+                else:
+                    i += 1
+        if drop.any():
+            k = ~drop; w, f = w[k], f[k]; e = e[k] if e is not None else None
     keep = np.concatenate([[True], np.diff(w) > 0])
     return w[keep], f[keep], (e[keep] if e is not None else None)
 
@@ -77,6 +105,42 @@ def ivar_combine(fluxes, errors, clip_k=4.0):
         comb = np.where(den > 0, num / den, np.nan)
         cerr = np.where(den > 0, np.sqrt(1.0 / den), np.nan)
     return comb, cerr
+
+
+def despike(f, protect=False, k=6.0, base=9, madwin=101, maxw=3, niter=3):
+    # UPWARD-ONLY (absorption-safe) narrow cosmic/hot-pixel spike removal on a FINAL coadded 1d flux array.
+    # the across-exposure ivar clip only fires for >=3 exposures, but 71% of ccd legs are single-exposure ->
+    # those spikes survive to the shipped product. this is the 1d safety net (the 2d LA-Cosmic clean is the
+    # primary defense). clips only POSITIVE excursions (cosmic rays are positive; never touch the real ISM
+    # absorption troughs) that are narrow (<=maxw px; fcr smears a 1px cr to 2-3px) and beat k*local-scatter.
+    # `protect` (IIn / Ibn / remnant: real narrow EMISSION lines a 1d clip can't tell from a cr) disables it
+    # entirely -- those rely on the 2d/exposure clean. returns (cleaned_flux, n_replaced).
+    f = np.asarray(f, float).copy()
+    if protect or len(f) < 2 * base:
+        return f, 0
+    from scipy.ndimage import median_filter
+    bad_all = np.zeros(len(f), bool)
+    for _ in range(niter):
+        med = median_filter(f, base)
+        resid = f - med
+        rsig = np.maximum(1.4826 * median_filter(np.abs(resid), madwin), 1e-30)
+        cand = resid > k * rsig
+        bad = np.zeros(len(f), bool)
+        i = 0
+        while i < len(f):
+            if cand[i]:
+                j = i
+                while j < len(f) and cand[j]:
+                    j += 1
+                if (j - i) <= maxw:
+                    bad[i:j] = True
+                i = j
+            else:
+                i += 1
+        if not bad.any():
+            break
+        f[bad] = med[bad]; bad_all |= bad
+    return f, int(bad_all.sum())
 
 
 # per-grating trim boundaries (option A, OFF by default): cut each grating just before its throughput
@@ -211,12 +275,12 @@ def resample_fcr(w, f, grid, e=None):
     return fo, eo
 
 
-def _clean_specs(specs):
+def _clean_specs(specs, protect=False):
     # clean + prep each exposure (dq/finite/sort/dedup) and give every leg a std-dev error (median
     # |flux| placeholder where the x1d had none) so the ivar combine always has weights.
     cleaned = []
     for w, f, e, dq in specs:
-        cw, cf, ce = clean_wf(w, f, e, dq)
+        cw, cf, ce = clean_wf(w, f, e, dq, protect=protect)
         if len(cw) >= 2:
             if ce is None:
                 ce = np.full_like(cf, np.nanmedian(np.abs(cf)) or 1.0)
@@ -244,10 +308,10 @@ def _coadd_on_step(cleaned, step):
     return grid, comb, cerr
 
 
-def coadd_native(specs, grating=None):
+def coadd_native(specs, grating=None, protect=False):
     # native (raw) per-grating coadd: FCR each exposure onto a 1-native-px grid, ivar combine. the
     # priority product (raw/native over rebinning). specs = [(w,f,e,dq), ...] observed-frame.
-    cleaned = _clean_specs(specs)
+    cleaned = _clean_specs(specs, protect)
     if not cleaned:
         return np.array([]), np.array([]), np.array([])
     d = _native_disp(cleaned)
@@ -256,11 +320,11 @@ def coadd_native(specs, grating=None):
     return _coadd_on_step(cleaned, d)
 
 
-def coadd_resel(specs, grating, cos=False):
+def coadd_resel(specs, grating, cos=False, protect=False):
     # per-grating coadd at the resel. COS (cos=True) uses the handbook resel (6px FUV / 3px NUV) from
     # COS_RESEL; STIS uses 2 native px (near-Nyquist). the grating names G230L/G140L exist on BOTH
     # instruments, so only trust COS_RESEL when the caller says it's cos - else always 2x native.
-    cleaned = _clean_specs(specs)
+    cleaned = _clean_specs(specs, protect)
     if not cleaned:
         return np.array([]), np.array([]), np.array([])
     step = resel_step(grating) if cos else None

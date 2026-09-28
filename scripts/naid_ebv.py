@@ -1,9 +1,13 @@
-import os, csv, re, time
+import os, csv, re, time, json, datetime
 import numpy as np
 from scipy.integrate import trapezoid
 from io import StringIO
 from wiserep_api.spectra import get_target_response, get_response as _wiserep_get
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 
 # Na I D EW from WISeREP ground-based spectra -> Stritzinger+2018 E(B-V).
 # measures the HOST component: MW Na I D is at z=0, host component is at SN redshift.
@@ -13,7 +17,7 @@ import pandas as pd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from paths import CATALOG as CAT, HOST_EBV, CATDIR
+from paths import CATALOG as CAT, HOST_EBV, CATDIR, OUT
 NAID_CACHE = os.path.join(CATDIR, ".naid_cache")
 NAID_SUMMARY = os.path.join(CATDIR, "naid_ebv_summary.csv")
 
@@ -116,17 +120,22 @@ def covers_naid(wvl, z, margin=20.0):
     return wvl[0] < lam_d2 - margin and wvl[-1] > lam_d1 + margin
 
 
-def measure_naid_ew(wvl, flx, z, cont_hw=60.0, int_hw=12.0):
+def measure_naid_ew(wvl, flx, z, cont_hw=60.0, int_hw=None):
     """
     measure HOST Na I D blended EW.
     - wvl/flx in observed frame; z = SN redshift so host D2/D1 sit at D_REST*(1+z)
     - cont_hw: half-width of each continuum window [A]
-    - int_hw: half-width of integration window around each doublet line [A]
-    returns dict: ew_a, ew_err, status, r_est, mw_sep_a, [flags]
+    - int_hw: half-width of integration window [A]; None = auto from resolution (2*FWHM, 2-12 A)
+    returns dict: ew_a, ew_err, status, r_est, int_hw, mw_sep_a, [flags]
     """
     lam_d2 = D2_REST * (1 + z)
     lam_d1 = D1_REST * (1 + z)
     mw_sep = lam_d2 - D2_REST    # how far MW D2 is from host D2 [A]
+
+    r_est = int(estimate_resolution(wvl))
+    if int_hw is None:
+        fwhm_a = lam_d2 / r_est if r_est > 0 else 10.0
+        int_hw = float(np.clip(2.0 * fwhm_a, 2.0, 12.0))
 
     # integration window covers D2 and D1 of the host
     w_lo = lam_d2 - int_hw
@@ -143,11 +152,10 @@ def measure_naid_ew(wvl, flx, z, cont_hw=60.0, int_hw=12.0):
     mb = (wvl >= b_lo) & (wvl <= b_hi)
     mr = (wvl >= r_lo) & (wvl <= r_hi)
     mw = (wvl >= w_lo) & (wvl <= w_hi)
-    r_est = int(estimate_resolution(wvl))
 
     if mb.sum() < 5 or mr.sum() < 5 or mw.sum() < 5:
         return {'status': 'bad_coverage', 'ew_a': np.nan, 'ew_err': np.nan,
-                'r_est': r_est, 'mw_sep_a': mw_sep}
+                'r_est': r_est, 'int_hw': int_hw, 'mw_sep_a': mw_sep}
 
     c = np.polyfit(np.concatenate([wvl[mb], wvl[mr]]),
                    np.concatenate([flx[mb], flx[mr]]), 1)
@@ -171,13 +179,13 @@ def measure_naid_ew(wvl, flx, z, cont_hw=60.0, int_hw=12.0):
         status = 'detected'
 
     flags = []
-    if mw_sep < 20:
+    if D1_REST > w_lo:              # MW D1 sits inside the host integration window
         flags.append('mw_close')
     if r_est < 1000:
         flags.append('low_res')   # below minimum for narrow ISM feature measurement
 
     return {'status': status + ('+' + ','.join(flags) if flags else ''),
-            'ew_a': ew, 'ew_err': ew_err, 'r_est': r_est,
+            'ew_a': ew, 'ew_err': ew_err, 'r_est': r_est, 'int_hw': int_hw,
             'mw_sep_a': mw_sep, 'cont_rms': cont_rms}
 
 
@@ -186,6 +194,49 @@ def ebv_from_ew(ew_a, ew_err_a=np.nan):
     ebv = STRITZ_SLOPE / RV * ew_a
     ebv_err = STRITZ_SLOPE / RV * ew_err_a if np.isfinite(ew_err_a) else np.nan
     return ebv, ebv_err
+
+
+def _naid_diag_plot(name, wvl, flx, z, meas, outdir):
+    # scrutiny plot behind the Na I D E(B-V): normalized flux with host D1/D2, MW rest positions,
+    # the EW integration window, and the continuum windows all marked.
+    lam_d2 = D2_REST * (1 + z); lam_d1 = D1_REST * (1 + z)
+    int_hw = meas.get("int_hw") or 6.0
+    w_lo, w_hi = lam_d2 - int_hw, lam_d1 + int_hw
+    b_hi = D2_REST - 8.0; b_lo = b_hi - 60.0; r_lo = w_hi + 5.0; r_hi = r_lo + 60.0
+    mb = (wvl >= b_lo) & (wvl <= b_hi); mr = (wvl >= r_lo) & (wvl <= r_hi)
+    if mb.sum() < 3 or mr.sum() < 3:
+        return None
+    c = np.polyfit(np.concatenate([wvl[mb], wvl[mr]]), np.concatenate([flx[mb], flx[mr]]), 1)
+    norm = flx / np.polyval(c, wvl)
+    sel = (wvl >= b_lo - 5) & (wvl <= r_hi + 5)
+    if sel.sum() < 5:
+        return None
+    ewv = meas.get("ew_a", np.nan); ebvv, _ = ebv_from_ew(ewv, meas.get("ew_err", np.nan))
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(wvl[sel], norm[sel], 'k', lw=0.9, drawstyle='steps-mid')
+    ax.axhline(1.0, color='0.6', ls=':', lw=0.8)
+    ax.axvspan(w_lo, w_hi, color='gold', alpha=0.12, label='EW integration')
+    ax.axvspan(b_lo, b_hi, color='tab:blue', alpha=0.07)
+    ax.axvspan(r_lo, r_hi, color='tab:blue', alpha=0.07, label='continuum')
+    ax.axvline(lam_d2, color='crimson', ls='--', lw=1.0); ax.axvline(lam_d1, color='crimson', ls='--', lw=1.0)
+    ax.axvline(D2_REST, color='0.5', ls=':', lw=0.8); ax.axvline(D1_REST, color='0.5', ls=':', lw=0.8)
+    ax.text(lam_d2, 1.06, 'host D2/D1', fontsize=7, ha='center', color='crimson')
+    ax.text(D2_REST, 1.06, 'MW rest', fontsize=7, ha='center', color='0.4')
+    ax.set_title(f"{name} Na I D  EW={ewv:.2f} A  E(B-V)={ebvv:.3f}  ({meas.get('status','')})", fontsize=9)
+    ax.set_xlabel(r'obs $\lambda$ [$\AA$]'); ax.set_ylabel(r'$I/I_0$')
+    ax.set_xlim(b_lo - 5, r_hi + 5); ax.set_ylim(-0.1, 1.3); ax.legend(fontsize=7)
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f'{name}_naid_ew.png')
+    fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
+    return out
+
+
+def _resolve_outdir(name):
+    for cand in (name, name.upper().replace(' ', '')):
+        d = os.path.join(OUT, cand)
+        if os.path.isdir(d):
+            return d
+    return None
 
 
 def best_spectrum_for_naid(spectra_list, z, min_r=600):
@@ -227,9 +278,29 @@ def survey_source(iau_name, z):
     ew_err = meas['ew_err']
     ebv, ebv_err = ebv_from_ew(ew, ew_err) if np.isfinite(ew) else (np.nan, np.nan)
 
+    # per-SN product + EW scrutiny plot when this SN has an HST output dir (where reddening actually matters)
+    outdir = _resolve_outdir(iau_name)
+    diag_rel = None
+    if outdir is not None:
+        diag = _naid_diag_plot(iau_name, best['wvl'], best['flx'], z, meas, os.path.join(outdir, 'reddening'))
+        diag_rel = os.path.relpath(diag, OUT).replace('\\', '/') if diag else None
+        jrec = {"sn": iau_name, "z": z, "status": meas['status'],
+                "ew_a": None if not np.isfinite(ew) else round(ew, 3),
+                "ew_err": None if not np.isfinite(ew_err) else round(ew_err, 3),
+                "ebv": None if not np.isfinite(ebv) else round(ebv, 4),
+                "ebv_err": None if not np.isfinite(ebv_err) else round(ebv_err, 4),
+                "r_est": meas['r_est'], "tel_inst": best['tel_inst'],
+                "method": "Na I D EW -> Stritzinger+2018 A_V=0.78*EW, E(B-V)=A_V/3.1",
+                "generated": datetime.date.today().isoformat()}
+        if diag_rel:
+            jrec["diag_plot"] = diag_rel
+        with open(os.path.join(outdir, f"{os.path.basename(outdir)}_naid_ebv.json"), "w") as fh:
+            json.dump(jrec, fh, indent=2)
+
     return {'iau_name': iau_name, 'z': z, 'status': meas['status'],
             'ew_a': ew, 'ew_err': ew_err, 'ebv': ebv, 'ebv_err': ebv_err,
-            'r_est': meas['r_est'], 'mw_sep_a': meas['mw_sep_a'],
+            'r_est': meas['r_est'], 'int_hw': meas.get('int_hw', np.nan),
+            'mw_sep_a': meas['mw_sep_a'],
             'fname': best['fname'], 'tel_inst': best['tel_inst'],
             'n_spectra': len(spectra_list)}
 
@@ -252,7 +323,9 @@ def load_catalog_targets():
                 continue
             if z < 0.003 or z > 0.15:
                 continue
-            if 'Ia' in otype and 'CSM' not in otype:
+            # check both otype and classification (case-insensitive); otype is often 'SN*' even for confirmed Ia
+            type_str = (otype + ' ' + row.get('classification', '')).upper()
+            if ('TYPE IA' in type_str or 'SN IA' in type_str) and 'CSM' not in type_str:
                 continue
             targets.append((name, z, otype))
     return targets
@@ -292,6 +365,68 @@ def run_survey(targets=None, outfile=NAID_SUMMARY, verbose=True):
     return results
 
 
+def _patch_host_ebv(summary_csv, write=False):
+    """fill-only merge of clean Na I D detections into reference/host_ebv.csv. never overwrites a curated
+    row (name already present is skipped). dry-run by default: prints the diff and writes only if write=True."""
+    # read existing curated values
+    existing = {}
+    rows_existing = []
+    with open(HOST_EBV) as f:
+        rdr = csv.DictReader(r for r in f if not r.startswith('#'))
+        for row in rdr:
+            existing[row['name']] = row
+            rows_existing.append(row)
+
+    additions = []
+    with open(summary_csv) as f:
+        for row in csv.DictReader(f):
+            name = row['iau_name']
+            st = row['status']
+            if name in existing:                         # fill-only: never touch a curated literature value
+                continue
+            if st == 'detected':
+                ebv = float(row['ebv']); ebv_err = float(row['ebv_err'])
+                src = f'NaID_Stritz18 EW={float(row["ew_a"]):.3f}A R~{row["r_est"]} {row["tel_inst"]}'
+            elif st == 'upper':
+                ebv, ebv_err = 0.0, 0.0                   # no Na I D detected -> assume zero host reddening
+                src = f'NaID_upper R~{row["r_est"]} {row["tel_inst"]}'
+            else:
+                continue
+            additions.append({'name': name, 'host_ebv': f'{ebv:.4f}',
+                              'host_ebv_err': f'{ebv_err:.4f}', 'host_ebv_src': src})
+
+    if not additions:
+        print('no clean Na I D detections to add (all covered SNe are already curated).')
+        return
+
+    # dry-run diff
+    print(f'\n{"DRY RUN -- " if not write else ""}{len(additions)} fill-only additions to {os.path.basename(HOST_EBV)}:')
+    for a in additions:
+        print(f'  + {a["name"]:16s} host_ebv={a["host_ebv"]} +-{a["host_ebv_err"]}  [{a["host_ebv_src"]}]')
+    if not write:
+        print('\nno curated row is touched. re-run with --write to apply.')
+        return
+
+    rows_existing.extend(additions)
+    header_lines = []
+    with open(HOST_EBV) as f:
+        for line in f:
+            if line.startswith('#'):
+                header_lines.append(line.rstrip())
+            else:
+                break
+
+    with open(HOST_EBV, 'w', newline='') as f:
+        for h in header_lines:
+            f.write(h + '\n')
+        keys = list(rows_existing[0].keys())
+        w = csv.DictWriter(f, fieldnames=keys, extrasaction='ignore')
+        w.writeheader()
+        w.writerows(rows_existing)
+
+    print(f'\npatched {HOST_EBV}: added {len(additions)} sources from Na I D survey (curated rows untouched).')
+
+
 if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser()
@@ -300,7 +435,9 @@ if __name__ == '__main__':
     ap.add_argument('--survey', action='store_true')
     ap.add_argument('--max-n', type=int, default=None)
     ap.add_argument('--patch-ebv', action='store_true',
-                    help='add clean detections (no flags) from naid_ebv_summary.csv to host_ebv.csv')
+                    help='fill-only merge of clean detections from naid_ebv_summary.csv into host_ebv.csv (dry-run)')
+    ap.add_argument('--write', action='store_true',
+                    help='with --patch-ebv, actually write the additions (default is dry-run diff only)')
     args = ap.parse_args()
 
     if args.test:
@@ -317,60 +454,4 @@ if __name__ == '__main__':
         if not os.path.exists(NAID_SUMMARY):
             print('run --survey first')
         else:
-            _patch_host_ebv(NAID_SUMMARY)
-
-
-def _patch_host_ebv(summary_csv):
-    """add clean Na I D detections (status=detected, no flags) to reference/host_ebv.csv."""
-    # read existing curated values
-    existing = {}
-    rows_existing = []
-    with open(HOST_EBV) as f:
-        rdr = csv.DictReader(r for r in f if not r.startswith('#'))
-        for row in rdr:
-            existing[row['name']] = row
-            rows_existing.append(row)
-
-    added = 0
-    with open(summary_csv) as f:
-        for row in csv.DictReader(f):
-            name = row['iau_name']
-            st = row['status']
-            # only clean detections without any flags
-            if st != 'detected':
-                continue
-            if name in existing:
-                continue
-            ebv = float(row['ebv'])
-            ebv_err = float(row['ebv_err'])
-            rows_existing.append({
-                'name': name, 'host_ebv': f'{ebv:.4f}',
-                'host_ebv_err': f'{ebv_err:.4f}',
-                'host_ebv_src': f'NaID_Stritz18 EW={float(row["ew_a"]):.3f}A R~{row["r_est"]} {row["tel_inst"]}',
-            })
-            existing[name] = rows_existing[-1]
-            added += 1
-
-    if added == 0:
-        print('no clean detections to add')
-        return
-
-    # write back (preserve comment header)
-    header_lines = []
-    with open(HOST_EBV) as f:
-        for line in f:
-            if line.startswith('#'):
-                header_lines.append(line.rstrip())
-            else:
-                break
-
-    with open(HOST_EBV, 'w', newline='') as f:
-        for h in header_lines:
-            f.write(h + '\n')
-        # infer fieldnames from first non-comment row
-        keys = list(rows_existing[0].keys())
-        w = csv.DictWriter(f, fieldnames=keys, extrasaction='ignore')
-        w.writeheader()
-        w.writerows(rows_existing)
-
-    print(f'patched {HOST_EBV}: added {added} sources from Na I D survey')
+            _patch_host_ebv(NAID_SUMMARY, write=args.write)

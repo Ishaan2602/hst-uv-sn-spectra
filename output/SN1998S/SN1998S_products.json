@@ -1,0 +1,85 @@
+{
+  "sn": "SN1998S",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN1998S/epochs/1998-03-16_day14_native.txt",
+        "SN1998S/epochs/1998-03-30_day29_native.txt",
+        "SN1998S/epochs/1998-04-04_day34_native.txt",
+        "SN1998S/epochs/1998-04-11_day40_native.txt",
+        "SN1998S/epochs/1998-04-12_day41_native.txt",
+        "SN1998S/epochs/1998-05-13_day73_native.txt",
+        "SN1998S/epochs/1998-10-26_day238_native.txt",
+        "SN1998S/epochs/1999-06-30_day485_native.txt",
+        "SN1998S/epochs/1999-07-03_day488_native.txt"
+      ],
+      "epoch_resel": [
+        "SN1998S/epochs/1998-03-16_day14_resel.txt",
+        "SN1998S/epochs/1998-03-30_day29_resel.txt",
+        "SN1998S/epochs/1998-04-04_day34_resel.txt",
+        "SN1998S/epochs/1998-04-11_day40_resel.txt",
+        "SN1998S/epochs/1998-04-12_day41_resel.txt",
+        "SN1998S/epochs/1998-05-13_day73_resel.txt",
+        "SN1998S/epochs/1998-10-26_day238_resel.txt",
+        "SN1998S/epochs/1999-06-30_day485_resel.txt",
+        "SN1998S/epochs/1999-07-03_day488_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN1998S/SN1998S_emission.json",
+      "plots": [
+        "SN1998S/emission/SN1998S_G140L_day238_lya_diag.png",
+        "SN1998S/emission/SN1998S_G140L_day485_lya_diag.png",
+        "SN1998S/emission/SN1998S_G140L_day73_lya_diag.png",
+        "SN1998S/emission/SN1998S_G230L_day238_mgii_diag.png",
+        "SN1998S/emission/SN1998S_G230L_day488_mgii_diag.png",
+        "SN1998S/emission/SN1998S_G230L_day73_mgii_diag.png",
+        "SN1998S/emission/SN1998S_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN1998S/SN1998S_absorption.json",
+      "cog_csv": [
+        "SN1998S/absorption/SN1998S_G230L_day14_cog.csv",
+        "SN1998S/absorption/SN1998S_G230L_day29_cog.csv"
+      ],
+      "line_csv": [
+        "SN1998S/absorption/SN1998S_G230L_day14_lines.csv",
+        "SN1998S/absorption/SN1998S_G230L_day29_lines.csv"
+      ],
+      "plots": [
+        "SN1998S/absorption/SN1998S_G230L_day14_cog.png",
+        "SN1998S/absorption/SN1998S_G230L_day14_cont.png",
+        "SN1998S/absorption/SN1998S_G230L_day29_cog.png",
+        "SN1998S/absorption/SN1998S_G230L_day29_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "SN1998S/SN1998S_lya_nhi.json",
+      "plots": [
+        "SN1998S/absorption/SN1998S_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN1998S/SN1998S_manifest.json",
+      "stis": "SN1998S/SN1998S_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN1998S/SN1998S_timeseries.png"
+  }
+}

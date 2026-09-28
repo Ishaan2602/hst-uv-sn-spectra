@@ -1,0 +1,62 @@
+{
+  "sn": "SN2002AP",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2002AP/epochs/2002-02-01_day4_native.txt",
+        "SN2002AP/epochs/2002-02-11_day14_native.txt",
+        "SN2002AP/epochs/2002-02-13_day16_native.txt",
+        "SN2002AP/epochs/2002-08-25_day209_native.txt",
+        "SN2002AP/epochs/2002-08-28_day211_native.txt",
+        "SN2002AP/epochs/2003-01-06_day343_native.txt",
+        "SN2002AP/epochs/2003-01-09_day346_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2002AP/epochs/2002-02-01_day4_resel.txt",
+        "SN2002AP/epochs/2002-02-11_day14_resel.txt",
+        "SN2002AP/epochs/2002-02-13_day16_resel.txt",
+        "SN2002AP/epochs/2002-08-25_day209_resel.txt",
+        "SN2002AP/epochs/2002-08-28_day211_resel.txt",
+        "SN2002AP/epochs/2003-01-06_day343_resel.txt",
+        "SN2002AP/epochs/2003-01-09_day346_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2002AP/SN2002AP_emission.json",
+      "plots": [
+        "SN2002AP/emission/SN2002AP_G230LB_day4_mgii_diag.png",
+        "SN2002AP/emission/SN2002AP_G230L_day211_mgii_diag.png",
+        "SN2002AP/emission/SN2002AP_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2002AP/SN2002AP_manifest.json",
+      "stis": "SN2002AP/SN2002AP_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2002AP/SN2002AP_timeseries.png"
+  }
+}

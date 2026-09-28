@@ -1,13 +1,17 @@
 {
   "sn": "AT-2023TSV",
   "sn_type": "",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "grating": "G140L",
   "phase": 8.0,
-  "logN_HI": 20.008,
-  "logN_HI_syst_vabs": 0.244,
-  "backlight_flux_e15": 0.372,
-  "rms_resid": 0.2668,
-  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
-  "note": "automated; curated ism_columns.csv values override this when present"
+  "logN_HI": 20.019,
+  "logN_HI_err": 0.292,
+  "logN_HI_syst_vabs": 0.254,
+  "logN_HI_syst_window": 0.145,
+  "emission_contam": false,
+  "backlight_flux_e15": 0.373,
+  "rms_resid": 0.2677,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); err=hypot(vabs+-300, continuum-window)",
+  "note": "automated; curated ism_columns.csv overrides. IIn (emission_contam) unreliable: Lya emission contaminates the continuum.",
+  "diag_plot": "AT-2023TSV/absorption/AT-2023TSV_lya_nhi_fit.png"
 }

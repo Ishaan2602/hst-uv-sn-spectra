@@ -1,13 +1,17 @@
 {
   "sn": "SN2026AYT",
   "sn_type": "SN II",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "grating": "G140L",
   "phase": 6.0,
-  "logN_HI": 21.412,
-  "logN_HI_syst_vabs": 0.135,
+  "logN_HI": 21.414,
+  "logN_HI_err": 0.247,
+  "logN_HI_syst_vabs": 0.138,
+  "logN_HI_syst_window": 0.205,
+  "emission_contam": false,
   "backlight_flux_e15": 2.635,
-  "rms_resid": 0.1172,
-  "method": "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
-  "note": "automated; curated ism_columns.csv values override this when present"
+  "rms_resid": 0.1177,
+  "method": "continuum-backlight damped Lya; vabs=0 (host frame); err=hypot(vabs+-300, continuum-window)",
+  "note": "automated; curated ism_columns.csv overrides. IIn (emission_contam) unreliable: Lya emission contaminates the continuum.",
+  "diag_plot": "SN2026AYT/absorption/SN2026AYT_lya_nhi_fit.png"
 }

@@ -1,0 +1,60 @@
+{
+  "sn": "SN2009IP",
+  "grating": "G160M",
+  "phase": 1167.0,
+  "generated": "2026-09-28",
+  "method": "apparent optical depth (Savage&Sembach 1991), host rest frame",
+  "lines": [
+    {
+      "ion": "Si II",
+      "lam": 1526.707,
+      "logN_aod": 14.115,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -6.8,
+      "blend": false
+    },
+    {
+      "ion": "Fe II",
+      "lam": 1608.451,
+      "logN_aod": 14.295,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -44.8,
+      "blend": false
+    },
+    {
+      "ion": "Fe II",
+      "lam": 1611.2,
+      "logN_aod": 15.893,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -31.2,
+      "blend": false
+    },
+    {
+      "ion": "Al II",
+      "lam": 1670.787,
+      "logN_aod": 12.898,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -23.4,
+      "blend": false
+    },
+    {
+      "ion": "Ni II",
+      "lam": 1751.91,
+      "logN_aod": 14.597,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -27.5,
+      "blend": false
+    }
+  ],
+  "diag_plot": "SN2009IP/absorption/SN2009IP_G160M_day1167_aod.png"
+}

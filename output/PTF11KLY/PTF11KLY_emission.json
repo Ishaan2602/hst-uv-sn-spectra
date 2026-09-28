@@ -1,14 +1,15 @@
 {
   "sn": "PTF11KLY",
   "sn_type": "SN Ia",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.000804,
     "ebv_mw": 0.0089,
     "host_ebv": 0.014,
     "host_ebv_src": "Patat+2013 A&A 549 A62 (SN2011fe; Na I D EW)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
@@ -26,7 +27,7 @@
     "mg2": [
       {
         "phase": 38.0,
-        "flux": 32.2,
+        "flux": 28.4,
         "flux_err": 113.7,
         "flux_err_photon": 3.1,
         "instr": "G230L",
@@ -35,7 +36,7 @@
         "edge_flux_frac": 1.02,
         "pcygni": true,
         "pcygni_reason": "photospheric",
-        "coherence": 27.1,
+        "coherence": 31.0,
         "v_phot_kms": -14984,
         "best_model": null,
         "shape_note": null,
@@ -46,7 +47,7 @@
       },
       {
         "phase": 44.0,
-        "flux": 63.1,
+        "flux": 61.5,
         "flux_err": 80.0,
         "flux_err_photon": 2.5,
         "instr": "G230L",
@@ -55,18 +56,18 @@
         "edge_flux_frac": 1.07,
         "pcygni": true,
         "pcygni_reason": "photospheric",
-        "coherence": 26.1,
-        "v_phot_kms": -14514,
+        "coherence": 28.3,
+        "v_phot_kms": -14513,
         "best_model": null,
         "shape_note": null,
         "models": null,
-        "v_blue99": -10705,
-        "v_red99": -9877,
+        "v_blue99": -10703,
+        "v_red99": -10041,
         "spill_frac": null
       },
       {
         "phase": 58.0,
-        "flux": 52.4,
+        "flux": 51.6,
         "flux_err": 53.4,
         "flux_err_photon": 1.4,
         "instr": "G230L",
@@ -75,14 +76,14 @@
         "edge_flux_frac": 1.12,
         "pcygni": true,
         "pcygni_reason": "photospheric",
-        "coherence": 32.1,
-        "v_phot_kms": -14075,
+        "coherence": 34.7,
+        "v_phot_kms": -13412,
         "best_model": null,
         "shape_note": null,
         "models": null,
-        "v_blue99": -10597,
-        "v_red99": -9106,
-        "spill_frac": 0.03
+        "v_blue99": -10596,
+        "v_red99": -9271,
+        "spill_frac": 0.017
       },
       {
         "phase": 394.0,
@@ -100,9 +101,9 @@
         "best_model": null,
         "shape_note": null,
         "models": null,
-        "v_blue99": -6080,
-        "v_red99": 8991,
-        "spill_frac": 0.962
+        "v_blue99": -6079,
+        "v_red99": 8992,
+        "spill_frac": 0.96
       },
       {
         "phase": 395.0,
@@ -123,37 +124,37 @@
           "gaussian": {
             "params": [
               0.0,
-              741.77,
-              7132.69
+              772.86,
+              7157.89
             ],
             "k": 3,
-            "bic": -7378.6,
-            "aicc": -7386.0,
+            "bic": -7378.3,
+            "aicc": -7385.7,
             "redchi2": 1.29,
             "pegged": []
           },
           "lorentzian": {
             "params": [
               0.0,
-              1545.82,
-              10453.14
+              1593.94,
+              10490.35
             ],
             "k": 3,
-            "bic": -7377.7,
-            "aicc": -7385.1,
+            "bic": -7377.5,
+            "aicc": -7384.9,
             "redchi2": 1.3,
             "pegged": []
           },
           "skew": {
             "params": [
               0.0,
-              -6752.83,
+              -6751.45,
               12000.0,
-              9.1
+              9.09
             ],
             "k": 4,
-            "bic": -7377.1,
-            "aicc": -7386.9,
+            "bic": -7376.8,
+            "aicc": -7386.6,
             "redchi2": 1.26,
             "pegged": [
               "sig@hi"
@@ -162,21 +163,21 @@
           "kwok": {
             "params": [
               0.0,
-              -917.21,
-              7623.06,
-              -260.07,
-              5369.53
+              -903.72,
+              7556.25,
+              -285.04,
+              5382.17
             ],
             "k": 5,
-            "bic": -7375.3,
-            "aicc": -7387.4,
+            "bic": -7375.1,
+            "aicc": -7387.3,
             "redchi2": 1.24,
             "pegged": [],
-            "inner_v": -6547
+            "inner_v": -6571
           }
         },
-        "v_blue99": -6573,
-        "v_red99": 8995,
+        "v_blue99": -6572,
+        "v_red99": 8996,
         "spill_frac": 0.958
       }
     ],

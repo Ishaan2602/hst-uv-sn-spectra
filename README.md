@@ -40,25 +40,40 @@ Filename suffix `_resel` = 2-pixel (resolution element) binning.
 ```
 output/
   {SN}/
+    {SN}_products.json                         # index of every product available for this SN (read this first)
     {SN}_manifest.json                         # epoch list, instruments, n_epochs
     {SN}_{stis,cos}_manifest.json              # per-instrument manifests
     {SN}_scaling.csv                           # inter-grating flux scale factors
-    {SN}_emission.json                         # emission line measurements
-    {SN}_absorption.json                       # absorption line measurements
-    STIS/
-      CCD/{date_dayN}/
-        {GRATING}/
-          {root}_1d.txt                        # single-exposure extracted spectrum
-          {SN}_{date}_{GRATING}_native.txt     # grating coadd, native sampling
-          {SN}_{date}_{GRATING}_resel.txt      # grating coadd, resel sampling
-        {SN}_{date}_epochcoadd_native.txt      # all-grating epoch coadd, native
-        {SN}_{date}_epochcoadd_resel.txt       # all-grating epoch coadd, resel
-      MAMA/...                                 # same layout, MAMA detector
-    COS/...                                    # same layout
+    {SN}_emission.json                         # Mg II 2800 + Ly-a 1216 line fluxes + shape models
+    {SN}_absorption.json                       # curated ISM absorption columns / metallicity
+    {SN}_fuv_aod.json                          # resolved COS FUV apparent-optical-depth ISM columns
+    {SN}_lya_nhi.json                          # N(HI) from the damped Ly-a fit
+    {SN}_naid_ebv.json                         # Na I D host reddening E(B-V) (survey SNe)
+    {SN}_timeseries.png                        # UV time-series waterfall
+    epochs/
+      {SN}_{date}_dayN_native.txt              # per-epoch coadd, native sampling
+      {SN}_{date}_dayN_resel.txt               # per-epoch coadd, resel sampling
+    emission/
+      {SN}_{grating}_dayN_{mgii,lya}_diag.png  # per-epoch emission-line fit diagnostics
+      {SN}_emission_summary.png
+    absorption/
+      {SN}_{grating}_dayN_cog.csv              # per-ion ISM columns; the Fe II row carries
+      {SN}_{grating}_dayN_lines.csv            #   adopted_eligible + exclude_reason so a photospheric
+      {SN}_{grating}_dayN_{cog,cont}.png       #   fit is never mistaken for a foreground ISM column
+      {SN}_{grating}_dayN_aod.{csv,png}        # FUV apparent-optical-depth (COS G130M/G160M)
+      {SN}_lya_nhi_fit.png                     # damped Ly-a N(HI) fit diagnostic
+    reddening/
+      {SN}_naid_ew.png                         # Na I D equivalent-width fit diagnostic
+    STIS/  COS/                                # raw per-grating reduction tree (1d, native, resel, epochcoadd)
 ```
 
+`{SN}_products.json` lists which analysis threads produced a product for the SN and the path to each
+file - read it to discover what is available instead of learning the naming grammar. All product files
+key off the SN directory name.
+
 Analysis summary tables live in `catalog/` alongside the main target table:
-`emission_summary.csv`, `absorption_summary.csv`, `ism_cog_summary.csv`, `lya_nhi_summary.csv`.
+`emission_summary.csv`, `absorption_summary.csv`, `ism_cog_summary.csv`, `lya_nhi_summary.csv`,
+`fuv_aod_summary.csv`, `naid_ebv_summary.csv`.
 
 Each epoch coadd also ships as a `.fits` alongside the `.txt`, and per-SN
 diagnostic plots (`.png`: extraction traces, coadds, time series, line fits) sit

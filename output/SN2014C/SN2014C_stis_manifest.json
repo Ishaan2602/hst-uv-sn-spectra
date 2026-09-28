@@ -9,7 +9,75 @@
     "G230LB"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": true,
+   "provenance": {
+    "n_exposures": 9,
+    "exposures": [
+     {
+      "root": "ocvc02010",
+      "grating": "G430L",
+      "exptime": 503.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02020",
+      "grating": "G430L",
+      "exptime": 503.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02030",
+      "grating": "G430L",
+      "exptime": 503.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02040",
+      "grating": "G430L",
+      "exptime": 503.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02050",
+      "grating": "G230LB",
+      "exptime": 538.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02060",
+      "grating": "G230LB",
+      "exptime": 538.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02070",
+      "grating": "G230LB",
+      "exptime": 538.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02080",
+      "grating": "G230LB",
+      "exptime": 538.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     },
+     {
+      "root": "ocvc02090",
+      "grating": "G230LB",
+      "exptime": 538.0,
+      "crsplit": 1,
+      "cleaning": "lacosmic"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

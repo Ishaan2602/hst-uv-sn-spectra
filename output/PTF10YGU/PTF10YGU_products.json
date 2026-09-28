@@ -1,0 +1,52 @@
+{
+  "sn": "PTF10YGU",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PTF10YGU/epochs/2010-10-15_day4_native.txt",
+        "PTF10YGU/epochs/2010-10-20_day9_native.txt",
+        "PTF10YGU/epochs/2010-10-26_day14_native.txt",
+        "PTF10YGU/epochs/2010-10-31_day20_native.txt"
+      ],
+      "epoch_resel": [
+        "PTF10YGU/epochs/2010-10-15_day4_resel.txt",
+        "PTF10YGU/epochs/2010-10-20_day9_resel.txt",
+        "PTF10YGU/epochs/2010-10-26_day14_resel.txt",
+        "PTF10YGU/epochs/2010-10-31_day20_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PTF10YGU/PTF10YGU_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PTF10YGU/PTF10YGU_manifest.json",
+      "stis": "PTF10YGU/PTF10YGU_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PTF10YGU/PTF10YGU_timeseries.png"
+  }
+}

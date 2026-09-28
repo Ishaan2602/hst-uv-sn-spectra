@@ -1,0 +1,48 @@
+{
+  "sn": "SN-MRK1309",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN-MRK1309/epochs/2014-03-19_day7_native.txt",
+        "SN-MRK1309/epochs/2014-03-25_day13_native.txt"
+      ],
+      "epoch_resel": [
+        "SN-MRK1309/epochs/2014-03-19_day7_resel.txt",
+        "SN-MRK1309/epochs/2014-03-25_day13_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN-MRK1309/SN-MRK1309_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN-MRK1309/SN-MRK1309_manifest.json",
+      "stis": "SN-MRK1309/SN-MRK1309_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN-MRK1309/SN-MRK1309_timeseries.png"
+  }
+}

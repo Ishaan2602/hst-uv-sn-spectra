@@ -61,3 +61,8 @@ scripts/archive/
 
 # run logs in the canonical tree -- console dumps, not data products
 output/**/*.log
+
+# pipeline rerun logs dumped to WORK root before logs/ existed
+pipeline_rerun*.log
+
+SN2024gg-HA-20240416_ap1.flm

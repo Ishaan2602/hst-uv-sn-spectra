@@ -1,0 +1,98 @@
+{
+  "sn": "SN2010JL",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "fuv_aod"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2010JL/epochs/2010-11-11_day9_native.txt",
+        "SN2010JL/epochs/2010-11-22_day19_native.txt",
+        "SN2010JL/epochs/2011-01-23_day82_native.txt",
+        "SN2010JL/epochs/2012-05-03_day548_native.txt",
+        "SN2010JL/epochs/2012-06-20_day595_native.txt",
+        "SN2010JL/epochs/2014-03-11_day1225_native.txt",
+        "SN2010JL/epochs/2015-04-09_day1618_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2010JL/epochs/2010-11-11_day9_resel.txt",
+        "SN2010JL/epochs/2010-11-22_day19_resel.txt",
+        "SN2010JL/epochs/2011-01-23_day82_resel.txt",
+        "SN2010JL/epochs/2012-05-03_day548_resel.txt",
+        "SN2010JL/epochs/2012-06-20_day595_resel.txt",
+        "SN2010JL/epochs/2014-03-11_day1225_resel.txt",
+        "SN2010JL/epochs/2015-04-09_day1618_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2010JL/SN2010JL_emission.json",
+      "plots": [
+        "SN2010JL/emission/SN2010JL_G130M_day19_lya_diag.png",
+        "SN2010JL/emission/SN2010JL_G130M_day595_lya_diag.png",
+        "SN2010JL/emission/SN2010JL_G130M_day82_lya_diag.png",
+        "SN2010JL/emission/SN2010JL_G230LB_day19_mgii_diag.png",
+        "SN2010JL/emission/SN2010JL_G230LB_day82_mgii_diag.png",
+        "SN2010JL/emission/SN2010JL_G230LB_day9_mgii_diag.png",
+        "SN2010JL/emission/SN2010JL_G230L_day548_mgii_diag.png",
+        "SN2010JL/emission/SN2010JL_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "SN2010JL/SN2010JL_absorption.json",
+      "cog_csv": [
+        "SN2010JL/absorption/SN2010JL_G230LB_day19_cog.csv",
+        "SN2010JL/absorption/SN2010JL_G230LB_day82_cog.csv",
+        "SN2010JL/absorption/SN2010JL_G230LB_day9_cog.csv"
+      ],
+      "line_csv": [
+        "SN2010JL/absorption/SN2010JL_G230LB_day19_lines.csv",
+        "SN2010JL/absorption/SN2010JL_G230LB_day82_lines.csv",
+        "SN2010JL/absorption/SN2010JL_G230LB_day9_lines.csv"
+      ],
+      "plots": [
+        "SN2010JL/absorption/SN2010JL_G230LB_day19_cog.png",
+        "SN2010JL/absorption/SN2010JL_G230LB_day19_cont.png",
+        "SN2010JL/absorption/SN2010JL_G230LB_day82_cog.png",
+        "SN2010JL/absorption/SN2010JL_G230LB_day82_cont.png",
+        "SN2010JL/absorption/SN2010JL_G230LB_day9_cog.png",
+        "SN2010JL/absorption/SN2010JL_G230LB_day9_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": "SN2010JL/SN2010JL_fuv_aod.json",
+      "aod_csv": [
+        "SN2010JL/absorption/SN2010JL_G130M_day19_aod.csv",
+        "SN2010JL/absorption/SN2010JL_G130M_day595_aod.csv",
+        "SN2010JL/absorption/SN2010JL_G130M_day82_aod.csv",
+        "SN2010JL/absorption/SN2010JL_G160M_day19_aod.csv",
+        "SN2010JL/absorption/SN2010JL_G160M_day595_aod.csv",
+        "SN2010JL/absorption/SN2010JL_G160M_day82_aod.csv"
+      ],
+      "plots": [
+        "SN2010JL/absorption/SN2010JL_G130M_day19_aod.png",
+        "SN2010JL/absorption/SN2010JL_G130M_day595_aod.png",
+        "SN2010JL/absorption/SN2010JL_G130M_day82_aod.png",
+        "SN2010JL/absorption/SN2010JL_G160M_day19_aod.png",
+        "SN2010JL/absorption/SN2010JL_G160M_day595_aod.png",
+        "SN2010JL/absorption/SN2010JL_G160M_day82_aod.png"
+      ]
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2010JL/SN2010JL_manifest.json",
+      "stis": "SN2010JL/SN2010JL_stis_manifest.json",
+      "cos": "SN2010JL/SN2010JL_cos_manifest.json"
+    },
+    "timeseries_plot": "SN2010JL/SN2010JL_timeseries.png"
+  }
+}

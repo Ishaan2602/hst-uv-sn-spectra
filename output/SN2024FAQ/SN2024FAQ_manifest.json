@@ -13,7 +13,40 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "of8br1010",
+      "grating": "G230LB",
+      "exptime": 1924.8,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8br1020",
+      "grating": "G230LB",
+      "exptime": 1860.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8br1030",
+      "grating": "G430L",
+      "exptime": 1065.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "of8br1040",
+      "grating": "G750L",
+      "exptime": 1060.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   }
  },
  "n_epochs": 1

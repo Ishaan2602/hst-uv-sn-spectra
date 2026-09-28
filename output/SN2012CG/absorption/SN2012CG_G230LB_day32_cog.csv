@@ -1,5 +1,5 @@
-ion,logN,logN_err,n_lines,limit
-Fe II,15.764,2.486,3,>
-Mg I,13.684,0.231,1,>
-Mg II,16.441,0.342,2,>
-Mn II,14.527,0.840,1,>
+ion,logN,logN_err,n_lines,limit,adopted_eligible,exclude_reason
+Fe II,16.603,2.543,3,>,no,not_anchored
+Mg I,14.129,0.390,1,>,,
+Mg II,18.185,0.558,2,>,,
+Mn II,15.031,1.277,1,>,,

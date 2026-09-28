@@ -5,6 +5,7 @@ from astropy.time import Time
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 
 # build the cos data tree from the already-run default calcos products in data/cos_catalog/reduced/.
 # per SN: group x1dsum by detector (FUV/NUV) + date + grating, apply the artifact masks, write

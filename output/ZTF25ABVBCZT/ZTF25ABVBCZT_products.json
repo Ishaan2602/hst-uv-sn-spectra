@@ -1,0 +1,48 @@
+{
+  "sn": "ZTF25ABVBCZT",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "ZTF25ABVBCZT/epochs/2025-10-10_day9_native.txt"
+      ],
+      "epoch_resel": [
+        "ZTF25ABVBCZT/epochs/2025-10-10_day9_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "ZTF25ABVBCZT/ZTF25ABVBCZT_emission.json",
+      "plots": [
+        "ZTF25ABVBCZT/emission/ZTF25ABVBCZT_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "ZTF25ABVBCZT/ZTF25ABVBCZT_manifest.json",
+      "stis": "ZTF25ABVBCZT/ZTF25ABVBCZT_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "ZTF25ABVBCZT/ZTF25ABVBCZT_timeseries.png"
+  }
+}

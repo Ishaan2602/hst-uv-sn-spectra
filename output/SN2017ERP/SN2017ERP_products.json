@@ -1,0 +1,52 @@
+{
+  "sn": "SN2017ERP",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2017ERP/epochs/2017-06-29_day16_native.txt",
+        "SN2017ERP/epochs/2017-07-02_day19_native.txt",
+        "SN2017ERP/epochs/2017-07-07_day24_native.txt",
+        "SN2017ERP/epochs/2017-07-12_day28_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2017ERP/epochs/2017-06-29_day16_resel.txt",
+        "SN2017ERP/epochs/2017-07-02_day19_resel.txt",
+        "SN2017ERP/epochs/2017-07-07_day24_resel.txt",
+        "SN2017ERP/epochs/2017-07-12_day28_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2017ERP/SN2017ERP_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2017ERP/SN2017ERP_manifest.json",
+      "stis": "SN2017ERP/SN2017ERP_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2017ERP/SN2017ERP_timeseries.png"
+  }
+}

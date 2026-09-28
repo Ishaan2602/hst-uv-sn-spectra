@@ -1,0 +1,66 @@
+{
+  "sn": "M82-SN",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "M82-SN/epochs/2014-01-26_day6_native.txt",
+        "M82-SN/epochs/2014-01-28_day7_native.txt",
+        "M82-SN/epochs/2014-01-30_day9_native.txt",
+        "M82-SN/epochs/2014-02-01_day12_native.txt",
+        "M82-SN/epochs/2014-02-04_day15_native.txt",
+        "M82-SN/epochs/2014-02-08_day18_native.txt",
+        "M82-SN/epochs/2014-02-10_day20_native.txt",
+        "M82-SN/epochs/2014-02-13_day23_native.txt",
+        "M82-SN/epochs/2014-02-16_day26_native.txt",
+        "M82-SN/epochs/2014-02-25_day36_native.txt",
+        "M82-SN/epochs/2014-02-26_day36_native.txt"
+      ],
+      "epoch_resel": [
+        "M82-SN/epochs/2014-01-26_day6_resel.txt",
+        "M82-SN/epochs/2014-01-28_day7_resel.txt",
+        "M82-SN/epochs/2014-01-30_day9_resel.txt",
+        "M82-SN/epochs/2014-02-01_day12_resel.txt",
+        "M82-SN/epochs/2014-02-04_day15_resel.txt",
+        "M82-SN/epochs/2014-02-08_day18_resel.txt",
+        "M82-SN/epochs/2014-02-10_day20_resel.txt",
+        "M82-SN/epochs/2014-02-13_day23_resel.txt",
+        "M82-SN/epochs/2014-02-16_day26_resel.txt",
+        "M82-SN/epochs/2014-02-25_day36_resel.txt",
+        "M82-SN/epochs/2014-02-26_day36_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "M82-SN/M82-SN_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "M82-SN/M82-SN_manifest.json",
+      "stis": "M82-SN/M82-SN_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "M82-SN/M82-SN_timeseries.png"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "sn": "AT2021DOV",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "AT2021DOV/epochs/2021-03-13_day20_native.txt"
+      ],
+      "epoch_resel": [
+        "AT2021DOV/epochs/2021-03-13_day20_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "AT2021DOV/AT2021DOV_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "AT2021DOV/AT2021DOV_manifest.json",
+      "stis": "AT2021DOV/AT2021DOV_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "AT2021DOV/AT2021DOV_timeseries.png"
+  }
+}

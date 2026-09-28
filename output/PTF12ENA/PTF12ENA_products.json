@@ -1,0 +1,57 @@
+{
+  "sn": "PTF12ENA",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PTF12ENA/epochs/2012-06-04_day13_native.txt",
+        "PTF12ENA/epochs/2012-06-17_day26_native.txt"
+      ],
+      "epoch_resel": [
+        "PTF12ENA/epochs/2012-06-04_day13_resel.txt",
+        "PTF12ENA/epochs/2012-06-17_day26_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PTF12ENA/PTF12ENA_emission.json",
+      "plots": [
+        "PTF12ENA/emission/PTF12ENA_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "PTF12ENA/absorption/PTF12ENA_G230LB_day26_cog.csv"
+      ],
+      "line_csv": [
+        "PTF12ENA/absorption/PTF12ENA_G230LB_day26_lines.csv"
+      ],
+      "plots": [
+        "PTF12ENA/absorption/PTF12ENA_G230LB_day26_cog.png",
+        "PTF12ENA/absorption/PTF12ENA_G230LB_day26_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PTF12ENA/PTF12ENA_manifest.json",
+      "stis": "PTF12ENA/PTF12ENA_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PTF12ENA/PTF12ENA_timeseries.png"
+  }
+}

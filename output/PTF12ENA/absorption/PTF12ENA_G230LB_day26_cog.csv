@@ -1,0 +1,4 @@
+ion,logN,logN_err,n_lines,limit,adopted_eligible,exclude_reason
+Fe II,15.687,1.156,3,,no,type_Ia_photosphere
+Mg II,14.561,0.528,1,,,
+Zn II,15.504,0.726,1,>,,

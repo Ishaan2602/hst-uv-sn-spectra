@@ -1,0 +1,54 @@
+{
+  "sn": "SN2011BY",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2011BY/epochs/2011-04-30_day4_native.txt",
+        "SN2011BY/epochs/2011-05-05_day9_native.txt",
+        "SN2011BY/epochs/2011-05-09_day13_native.txt",
+        "SN2011BY/epochs/2011-05-13_day18_native.txt",
+        "SN2011BY/epochs/2011-05-18_day22_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2011BY/epochs/2011-04-30_day4_resel.txt",
+        "SN2011BY/epochs/2011-05-05_day9_resel.txt",
+        "SN2011BY/epochs/2011-05-09_day13_resel.txt",
+        "SN2011BY/epochs/2011-05-13_day18_resel.txt",
+        "SN2011BY/epochs/2011-05-18_day22_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2011BY/SN2011BY_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2011BY/SN2011BY_manifest.json",
+      "stis": "SN2011BY/SN2011BY_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2011BY/SN2011BY_timeseries.png"
+  }
+}

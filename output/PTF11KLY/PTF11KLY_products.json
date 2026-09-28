@@ -1,0 +1,121 @@
+{
+  "sn": "PTF11KLY",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PTF11KLY/epochs/2011-08-28_day4_native.txt",
+        "PTF11KLY/epochs/2011-08-31_day7_native.txt",
+        "PTF11KLY/epochs/2011-09-03_day10_native.txt",
+        "PTF11KLY/epochs/2011-09-07_day14_native.txt",
+        "PTF11KLY/epochs/2011-09-10_day17_native.txt",
+        "PTF11KLY/epochs/2011-09-13_day21_native.txt",
+        "PTF11KLY/epochs/2011-09-19_day27_native.txt",
+        "PTF11KLY/epochs/2011-10-01_day38_native.txt",
+        "PTF11KLY/epochs/2011-10-07_day44_native.txt",
+        "PTF11KLY/epochs/2011-10-21_day58_native.txt",
+        "PTF11KLY/epochs/2012-09-20_day394_native.txt",
+        "PTF11KLY/epochs/2012-09-21_day395_native.txt",
+        "PTF11KLY/epochs/2012-09-22_day395_native.txt"
+      ],
+      "epoch_resel": [
+        "PTF11KLY/epochs/2011-08-28_day4_resel.txt",
+        "PTF11KLY/epochs/2011-08-31_day7_resel.txt",
+        "PTF11KLY/epochs/2011-09-03_day10_resel.txt",
+        "PTF11KLY/epochs/2011-09-07_day14_resel.txt",
+        "PTF11KLY/epochs/2011-09-10_day17_resel.txt",
+        "PTF11KLY/epochs/2011-09-13_day21_resel.txt",
+        "PTF11KLY/epochs/2011-09-19_day27_resel.txt",
+        "PTF11KLY/epochs/2011-10-01_day38_resel.txt",
+        "PTF11KLY/epochs/2011-10-07_day44_resel.txt",
+        "PTF11KLY/epochs/2011-10-21_day58_resel.txt",
+        "PTF11KLY/epochs/2012-09-20_day394_resel.txt",
+        "PTF11KLY/epochs/2012-09-21_day395_resel.txt",
+        "PTF11KLY/epochs/2012-09-22_day395_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PTF11KLY/PTF11KLY_emission.json",
+      "plots": [
+        "PTF11KLY/emission/PTF11KLY_G230L_day38_mgii_diag.png",
+        "PTF11KLY/emission/PTF11KLY_G230L_day394_mgii_diag.png",
+        "PTF11KLY/emission/PTF11KLY_G230L_day395_mgii_diag.png",
+        "PTF11KLY/emission/PTF11KLY_G230L_day44_mgii_diag.png",
+        "PTF11KLY/emission/PTF11KLY_G230L_day58_mgii_diag.png",
+        "PTF11KLY/emission/PTF11KLY_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "PTF11KLY/PTF11KLY_absorption.json",
+      "cog_csv": [
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day10_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day14_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day17_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day27_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day27_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day38_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day44_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day4_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day58_cog.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day7_cog.csv"
+      ],
+      "line_csv": [
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day10_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day14_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day17_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day27_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day27_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day38_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day44_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day4_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day58_lines.csv",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day7_lines.csv"
+      ],
+      "plots": [
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day10_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day10_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day14_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day14_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day17_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day17_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day27_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230LB_day27_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day27_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day27_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day38_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day38_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day44_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day44_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day4_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day4_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day58_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day58_cont.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day7_cog.png",
+        "PTF11KLY/absorption/PTF11KLY_G230L_day7_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PTF11KLY/PTF11KLY_manifest.json",
+      "stis": "PTF11KLY/PTF11KLY_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PTF11KLY/PTF11KLY_timeseries.png"
+  }
+}

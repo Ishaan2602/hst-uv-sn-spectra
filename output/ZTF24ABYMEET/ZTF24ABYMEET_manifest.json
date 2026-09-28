@@ -1,0 +1,53 @@
+{
+ "sn": "ZTF24ABYMEET",
+ "instruments": {
+  "STIS": {
+   "z": 0.0263
+  }
+ },
+ "epochs": {
+  "CCD/2025-05-09_day152": {
+   "gratings": [
+    "G230LB",
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "ofgd01010",
+      "grating": "G230LB",
+      "exptime": 1950.0,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ofgd01020",
+      "grating": "G230LB",
+      "exptime": 1794.9,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ofgd01030",
+      "grating": "G430L",
+      "exptime": 1069.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ofgd01040",
+      "grating": "G750L",
+      "exptime": 1068.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
+  }
+ },
+ "n_epochs": 1
+}

@@ -12,7 +12,40 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "obxb99010",
+      "grating": "G230LB",
+      "exptime": 2388.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obxb99020",
+      "grating": "G230LB",
+      "exptime": 1976.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obxb99030",
+      "grating": "G430L",
+      "exptime": 276.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "obxb99040",
+      "grating": "G430L",
+      "exptime": 276.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   }
  },
  "n_epochs": 1

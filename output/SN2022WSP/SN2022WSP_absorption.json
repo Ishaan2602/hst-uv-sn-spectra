@@ -1,7 +1,7 @@
 {
   "sn": "SN2022WSP",
   "sn_type": "SN II",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "provenance": {
     "z": 0.007318,
     "method": "EW -> curve-of-growth metal columns; automated pipeline (ism.py), adopted epoch",
@@ -11,44 +11,50 @@
     "adopted_epoch": {
       "grating": "G230L",
       "phase": 9.0,
-      "fe_snr": 11.6,
-      "n_fe": 5
+      "fe_snr": 11.2,
+      "n_fe": 6
     }
   },
   "absorption": {
     "note": "foreground MW+host ISM screen, blended at low-res",
-    "b_kms": 49.1,
-    "b_err": 2.9,
+    "b_kms": 48.4,
+    "b_err": 2.3,
     "anchored": true,
     "columns": {
       "Cr II": {
-        "logN": 14.31,
-        "logN_err": 0.207,
+        "logN": 14.314,
+        "logN_err": 0.199,
         "n_lines": 2,
         "limit": false
       },
       "Fe II": {
-        "logN": 15.11,
-        "logN_err": 0.076,
-        "n_lines": 5,
+        "logN": 15.133,
+        "logN_err": 0.103,
+        "n_lines": 6,
         "limit": false
       },
       "Mg I": {
-        "logN": 13.274,
-        "logN_err": 0.061,
+        "logN": 13.284,
+        "logN_err": 0.062,
         "n_lines": 1,
         "limit": false
       },
       "Mg II": {
-        "logN": 15.383,
-        "logN_err": 0.146,
+        "logN": 15.447,
+        "logN_err": 0.152,
         "n_lines": 2,
         "limit": true
       },
       "Mn II": {
-        "logN": 13.194,
-        "logN_err": 0.653,
+        "logN": 13.213,
+        "logN_err": 0.152,
         "n_lines": 3,
+        "limit": false
+      },
+      "Zn II": {
+        "logN": 13.434,
+        "logN_err": 1.095,
+        "n_lines": 1,
         "limit": false
       }
     }

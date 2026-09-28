@@ -1,0 +1,46 @@
+{
+  "sn": "SN2024BCH",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2024BCH/epochs/2024-02-08_day10_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2024BCH/epochs/2024-02-08_day10_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2024BCH/SN2024BCH_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2024BCH/SN2024BCH_manifest.json",
+      "stis": "SN2024BCH/SN2024BCH_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2024BCH/SN2024BCH_timeseries.png"
+  }
+}

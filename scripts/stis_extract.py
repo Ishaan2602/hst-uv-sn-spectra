@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')   # headless, we only save pngs
 import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 from astropy.io import fits
 
 # per-grating extrsize. stis ccd psf broadens toward the red (charge diffusion + optical psf),
@@ -173,7 +174,7 @@ _STIS_CR_DQ_BIT = 256
 
 def lacosmic_flt(flt_path, out_path, sigclip=4.5, objlim=15.0, niter=4):
     """
-    run LA-Cosmic on a STIS CCD _flt.fits; write _lacr.fits with CRs OR'd into DQ as bit 1024.
+    run LA-Cosmic on a STIS CCD _flt.fits; write _lacr.fits with CRs OR'd into DQ as bit 256.
     returns (n_cr_flagged, out_path).
     only called for CRSPLIT=1 CCD frames where ocrreject never ran -- the _crj.fits preferred path
     already handles CRSPLIT>1.

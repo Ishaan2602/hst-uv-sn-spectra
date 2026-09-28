@@ -28,6 +28,7 @@ from specutils.analysis import line_flux
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 import time
 
 def _savefig(fig, path, dpi=110):
@@ -64,13 +65,15 @@ ebvof = lambda sn: _catf(sn, "ebv")                      # MW foreground only
 
 # host reddening comes from the AUTHORITATIVE reference file, NOT the catalog mirror (which goes stale when
 # catalog_clean.py isn't re-run after a host_ebv.csv edit - that bug shipped host=0 for AT2022ACKO/LMC once).
-from paths import host_ebv_map
+from paths import host_ebv_map, host_rv_map
 _HOST = host_ebv_map()
+_HOST_RV = host_rv_map()
 for _sn, (_hv, _he, _src) in _HOST.items():             # loud check: warn if the catalog mirror has drifted
     _cv = cat.get(_sn, {}).get("host_ebv")
     if _cv not in (None, "") and abs(float(_cv) - _hv) > 1e-6:
         print(f"  WARN host_ebv drift: {_sn} reference={_hv} catalog={_cv} (run catalog host-sync)")
 hostof = lambda sn: _HOST.get(sn.upper(), (0.0, None, None))[0]
+hostrvof = lambda sn: _HOST_RV.get(sn.upper(), 3.1)
 hostsrc = lambda sn: (_HOST.get(sn.upper()) or (0.0, None, "none (MW-only)"))[2] or "none (MW-only)"
 tnstype = lambda sn: cat[sn.upper()].get("tns_type") or ""
 
@@ -84,7 +87,7 @@ def _build_nhi():
         with open(LYA_NHI_SUMMARY) as fh:
             for r in csv.DictReader(fh):
                 try:
-                    lN = float(r["logN_HI"]); er = float(r.get("logN_HI_syst_vabs") or 0.0) or 0.3
+                    lN = float(r["logN_HI"]); er = float(r.get("logN_HI_err") or r.get("logN_HI_syst_vabs") or 0.0) or 0.3
                 except (ValueError, KeyError, TypeError):
                     continue
                 m[r["sn"].upper()] = (lN, er, "lya_nhi_summary (automated damped-Lya fit)")
@@ -104,14 +107,22 @@ nhiof = lambda sn: _NHI.get(sn.upper())                        # (logN, logN_err
 
 # --- emission machinery (ported verbatim from emission_investigation2.ipynb) ------------------------
 _f19 = F19(Rv=3.1)
-def _dered1(wave_A, ebv):
+_F19_CACHE = {3.1: _f19}
+def _f19_for(rv):
+    rv = float(np.clip(rv, 2.0, 6.0))       # F19 is defined for Rv in [2.0, 6.0]
+    if rv not in _F19_CACHE:
+        _F19_CACHE[rv] = F19(Rv=rv)
+    return _F19_CACHE[rv]
+def _dered1(wave_A, ebv, rv=3.1):
     fac = np.ones_like(wave_A, float)
     if ebv > 0:
+        law = _f19_for(rv)
         m = (wave_A > 1150) & (wave_A < 33333)
-        fac[m] = 1.0 / _f19.extinguish(wave_A[m] * u.AA, Ebv=ebv)
+        fac[m] = 1.0 / law.extinguish(wave_A[m] * u.AA, Ebv=ebv)
     return fac
-def deredden(wrest_A, z, mw_ebv, host_ebv=0.0):
-    return _dered1(wrest_A * (1 + z), mw_ebv) * _dered1(wrest_A, host_ebv)   # MW at obs wvl + host at rest
+def deredden(wrest_A, z, mw_ebv, host_ebv=0.0, host_rv=3.1):
+    # MW foreground stays Rv=3.1 (standard for the Galactic screen); host screen uses its curated Rv.
+    return _dered1(wrest_A * (1 + z), mw_ebv) * _dered1(wrest_A, host_ebv, host_rv)
 
 
 def load_spec(path, z):
@@ -735,6 +746,7 @@ def _emis_summary(sn, mg2, lya, mg2_prof, lya_prof, plotdir):
 
 def compute_emission(sn):
     z, mw, host = zof(sn), ebvof(sn), hostof(sn)
+    host_rv = hostrvof(sn)
     mg2, lya, seen = [], [], set()
     mg2_prof, lya_prof = [], []                 # (phase, v, fc) over the line window, for the peak-norm montage
     plotdir = os.path.join(OUT, sn, "emission")
@@ -749,7 +761,7 @@ def compute_emission(sn):
         if instr in ECHELLE_GRATINGS:
             continue                            # echelle is an ISM/absorption product, not an emission one (see provenance)
         w, f, e = load_spec(pf, z)
-        fac = deredden(w, z, mw, host); f = f * fac; e = e * fac       # deredden the errors too
+        fac = deredden(w, z, mw, host, host_rv); f = f * fac; e = e * fac       # deredden the errors too
         ok = np.isfinite(f); w, f, e = w[ok], f[ok], e[ok]
         if len(w) < 50:
             continue
@@ -803,7 +815,8 @@ def build_emission(sn):
         "flags": flags,
         "provenance": {
             "z": zof(sn), "ebv_mw": ebvof(sn), "host_ebv": hostof(sn), "host_ebv_src": hostsrc(sn),
-            "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+            "host_rv": hostrvof(sn),
+            "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
             "flux_units": "1e-15 erg s-1 cm-2",
             "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
             "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",

@@ -1,0 +1,53 @@
+{
+  "sn": "PSN2037+6607",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "PSN2037+6607/epochs/2015-04-04_day12_native.txt",
+        "PSN2037+6607/epochs/2015-04-11_day19_native.txt",
+        "PSN2037+6607/epochs/2015-04-20_day28_native.txt"
+      ],
+      "epoch_resel": [
+        "PSN2037+6607/epochs/2015-04-04_day12_resel.txt",
+        "PSN2037+6607/epochs/2015-04-11_day19_resel.txt",
+        "PSN2037+6607/epochs/2015-04-20_day28_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "PSN2037+6607/PSN2037+6607_emission.json",
+      "plots": [
+        "PSN2037+6607/emission/PSN2037+6607_G230L_day12_mgii_diag.png",
+        "PSN2037+6607/emission/PSN2037+6607_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "PSN2037+6607/PSN2037+6607_manifest.json",
+      "stis": "PSN2037+6607/PSN2037+6607_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "PSN2037+6607/PSN2037+6607_timeseries.png"
+  }
+}

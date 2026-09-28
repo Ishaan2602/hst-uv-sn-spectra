@@ -1,0 +1,95 @@
+{
+  "sn": "ASASSN14LP",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "ASASSN14LP/epochs/2014-12-15_day6_native.txt",
+        "ASASSN14LP/epochs/2014-12-15_native.txt",
+        "ASASSN14LP/epochs/2014-12-17_day9_native.txt",
+        "ASASSN14LP/epochs/2014-12-17_native.txt",
+        "ASASSN14LP/epochs/2014-12-19_day11_native.txt",
+        "ASASSN14LP/epochs/2014-12-19_native.txt",
+        "ASASSN14LP/epochs/2014-12-22_day14_native.txt",
+        "ASASSN14LP/epochs/2014-12-22_native.txt",
+        "ASASSN14LP/epochs/2014-12-24_day16_native.txt",
+        "ASASSN14LP/epochs/2014-12-24_native.txt",
+        "ASASSN14LP/epochs/2014-12-26_day18_native.txt",
+        "ASASSN14LP/epochs/2014-12-26_native.txt",
+        "ASASSN14LP/epochs/2014-12-29_day20_native.txt",
+        "ASASSN14LP/epochs/2014-12-29_native.txt",
+        "ASASSN14LP/epochs/2015-01-01_day23_native.txt",
+        "ASASSN14LP/epochs/2015-01-01_native.txt",
+        "ASASSN14LP/epochs/2015-01-04_day26_native.txt",
+        "ASASSN14LP/epochs/2015-01-04_native.txt",
+        "ASASSN14LP/epochs/2015-01-11_day33_native.txt",
+        "ASASSN14LP/epochs/2015-01-11_native.txt"
+      ],
+      "epoch_resel": [
+        "ASASSN14LP/epochs/2014-12-15_day6_resel.txt",
+        "ASASSN14LP/epochs/2014-12-15_resel.txt",
+        "ASASSN14LP/epochs/2014-12-17_day9_resel.txt",
+        "ASASSN14LP/epochs/2014-12-17_resel.txt",
+        "ASASSN14LP/epochs/2014-12-19_day11_resel.txt",
+        "ASASSN14LP/epochs/2014-12-19_resel.txt",
+        "ASASSN14LP/epochs/2014-12-22_day14_resel.txt",
+        "ASASSN14LP/epochs/2014-12-22_resel.txt",
+        "ASASSN14LP/epochs/2014-12-24_day16_resel.txt",
+        "ASASSN14LP/epochs/2014-12-24_resel.txt",
+        "ASASSN14LP/epochs/2014-12-26_day18_resel.txt",
+        "ASASSN14LP/epochs/2014-12-26_resel.txt",
+        "ASASSN14LP/epochs/2014-12-29_day20_resel.txt",
+        "ASASSN14LP/epochs/2014-12-29_resel.txt",
+        "ASASSN14LP/epochs/2015-01-01_day23_resel.txt",
+        "ASASSN14LP/epochs/2015-01-01_resel.txt",
+        "ASASSN14LP/epochs/2015-01-04_day26_resel.txt",
+        "ASASSN14LP/epochs/2015-01-04_resel.txt",
+        "ASASSN14LP/epochs/2015-01-11_day33_resel.txt",
+        "ASASSN14LP/epochs/2015-01-11_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "ASASSN14LP/ASASSN14LP_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day20_cog.csv",
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day6_cog.csv"
+      ],
+      "line_csv": [
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day20_lines.csv",
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day6_lines.csv"
+      ],
+      "plots": [
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day20_cog.png",
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day20_cont.png",
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day6_cog.png",
+        "ASASSN14LP/absorption/ASASSN14LP_G230L_day6_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "ASASSN14LP/ASASSN14LP_manifest.json",
+      "stis": "ASASSN14LP/ASASSN14LP_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "ASASSN14LP/ASASSN14LP_timeseries.png"
+  }
+}

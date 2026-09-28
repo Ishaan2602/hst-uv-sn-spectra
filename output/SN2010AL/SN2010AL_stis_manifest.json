@@ -9,7 +9,33 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "ob7s01010",
+      "grating": "G230LB",
+      "exptime": 2150.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s01020",
+      "grating": "G230LB",
+      "exptime": 1800.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s01030",
+      "grating": "G430L",
+      "exptime": 500.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "CCD/2010-04-07_day26": {
    "gratings": [
@@ -17,14 +43,52 @@
     "G430L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "ob7s02010",
+      "grating": "G230LB",
+      "exptime": 2150.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s02020",
+      "grating": "G230LB",
+      "exptime": 1800.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s02030",
+      "grating": "G430L",
+      "exptime": 500.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   },
   "MAMA/2010-04-07_day26": {
    "gratings": [
     "G140L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "ob7s02040",
+      "grating": "G140L",
+      "exptime": 2400.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2010-05-10_day58": {
    "gratings": [
@@ -33,7 +97,54 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 6,
+    "exposures": [
+     {
+      "root": "ob7s03020",
+      "grating": "G230LB",
+      "exptime": 2100.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s03030",
+      "grating": "G230LB",
+      "exptime": 1400.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s03040",
+      "grating": "G230LB",
+      "exptime": 1300.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s03050",
+      "grating": "G430L",
+      "exptime": 900.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s03060",
+      "grating": "G430L",
+      "exptime": 900.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ob7s03070",
+      "grating": "G750L",
+      "exptime": 700.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

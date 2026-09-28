@@ -11,7 +11,54 @@
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 6,
+    "exposures": [
+     {
+      "root": "oemz01010",
+      "grating": "G230L",
+      "exptime": 2286.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz01020",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz01030",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz01040",
+      "grating": "G230L",
+      "exptime": 2025.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz01050",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz01060",
+      "grating": "G230L",
+      "exptime": 953.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2022-10-12_day10": {
    "gratings": [
@@ -19,14 +66,80 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oemz01070",
+      "grating": "G430L",
+      "exptime": 800.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "oemz01080",
+      "grating": "G750L",
+      "exptime": 400.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   },
   "MAMA/2022-10-22_day19": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 6,
+    "exposures": [
+     {
+      "root": "oemz03010",
+      "grating": "G230L",
+      "exptime": 2286.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz03020",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz03030",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz03040",
+      "grating": "G230L",
+      "exptime": 2025.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz03050",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz03060",
+      "grating": "G230L",
+      "exptime": 953.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2022-10-22_day20": {
    "gratings": [
@@ -34,14 +147,66 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oemz03070",
+      "grating": "G430L",
+      "exptime": 800.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "oemz03080",
+      "grating": "G750L",
+      "exptime": 400.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   },
   "MAMA/2023-01-10_day100": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": true
+   "neg_continuum": true,
+   "provenance": {
+    "n_exposures": 4,
+    "exposures": [
+     {
+      "root": "oemz22010",
+      "grating": "G230L",
+      "exptime": 2286.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz22020",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz22030",
+      "grating": "G230L",
+      "exptime": 2736.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "oemz22040",
+      "grating": "G230L",
+      "exptime": 2025.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "CCD/2023-01-10_day100": {
    "gratings": [
@@ -49,7 +214,26 @@
     "G750L"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oemz22050",
+      "grating": "G430L",
+      "exptime": 1585.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "oemz22060",
+      "grating": "G750L",
+      "exptime": 792.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
   }
  },
  "n_epochs": 3

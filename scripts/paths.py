@@ -58,3 +58,39 @@ def host_ebv_map():
             except (KeyError, ValueError):
                 pass
     return out
+
+
+def narrow_line_object(sn):
+    # shared protect flag: IIn/Ibn/remnant (and SN1987A) have real narrow emission lines a 1d despike would
+    # eat, so the unflagged-spike clean is skipped for them. single source used by both the reduction
+    # (reduce_stis_batch._protect_sn) and the product build (build_products._narrow_line_object) so the two
+    # stages can never disagree on which SNe to protect.
+    import csv
+    try:
+        with open(CATALOG) as fh:
+            for row in csv.DictReader(fh):
+                if row.get("name", "").upper() == sn.upper():
+                    t = (str(row.get("tns_type", "")) + " " + str(row.get("classification", ""))).upper().replace(" ", "")
+                    return ("IIN" in t) or ("IBN" in t) or ("REMNANT" in t) or ("1987A" in sn.upper()) or \
+                        str(row.get("is_remnant", "")).strip().lower() in ("true", "1")
+    except Exception:
+        pass
+    return False
+
+
+def host_rv_map():
+    # per-SN host extinction R_V, curated from the SN's paper the same way host_ebv is. blank -> 3.1 (MW-like
+    # default). only set a non-3.1 value where the literature explicitly argues one for the host screen.
+    import csv
+    out = {}
+    if not os.path.exists(HOST_EBV):
+        return out
+    with open(HOST_EBV) as fh:
+        for row in csv.DictReader(ln for ln in fh if not ln.lstrip().startswith("#")):
+            rv = row.get("host_rv")
+            if rv not in (None, ""):
+                try:
+                    out[row["name"].upper()] = float(rv)
+                except ValueError:
+                    pass
+    return out

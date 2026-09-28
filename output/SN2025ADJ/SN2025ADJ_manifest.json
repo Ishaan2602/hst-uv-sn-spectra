@@ -13,7 +13,33 @@
     "G230LB"
    ],
    "detector": "CCD",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "ofhg02010",
+      "grating": "G430L",
+      "exptime": 932.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "ofhg02020",
+      "grating": "G750L",
+      "exptime": 860.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     },
+     {
+      "root": "ofhg02040",
+      "grating": "G230LB",
+      "exptime": 2229.9,
+      "crsplit": 3,
+      "cleaning": "ocrreject"
+     }
+    ]
+   }
   }
  },
  "n_epochs": 1

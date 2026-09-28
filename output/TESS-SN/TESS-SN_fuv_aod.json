@@ -1,0 +1,20 @@
+{
+  "sn": "TESS-SN",
+  "grating": "G160M",
+  "phase": 5.0,
+  "generated": "2026-09-28",
+  "method": "apparent optical depth (Savage&Sembach 1991), host rest frame",
+  "lines": [
+    {
+      "ion": "Fe II",
+      "lam": 1611.2,
+      "logN_aod": 15.649,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -252.0,
+      "blend": false
+    }
+  ],
+  "diag_plot": "TESS-SN/absorption/TESS-SN_G160M_day5_aod.png"
+}

@@ -1,15 +1,15 @@
 sn,sn_type,z,data_tier,b_kms,b_err,logN_FeII,logN_FeII_err,n_columns,fe_snr,adopted_grating,adopted_phase,logN_HI,Zn_H,Fe_Zn
-AT-2023TSV,,0.028,nhi_auto_only,,,,,0,,,,20.008,,
+AT-2023TSV,,0.028,nhi_auto_only,,,,,0,,,,20.019,,
 AT2022ACKO,SN II,0.0053,curated_only,57.3,,14.6,2.0,1,,,,21.26,,
-AT2023IUC,SN Ibn,0.07676,nhi_auto_only,,,,,0,,,,22.348,,
+AT2023IUC,SN Ibn,0.07676,nhi_auto_only,,,,,0,,,,22.355,,
 AT2024WPP,SN,0.08678,nhi_auto_only,,,,,0,,,,20.769,,
 GAIA16APD,SLSN-I,0.1013,nhi_auto_only,,,,,0,,,,20.447,,
 SN1998S,SN IIn,0.002729,cog_plus_metallicity,67.1,3.8,15.47,0.11,3,6.6,G230L,29.0,20.33,,
-SN1999EM,SN II,0.002,nhi_auto_only,,,,,0,,,,20.615,,
-SN2017EGM,SLSN-I,0.031,cog_plus_metallicity,65.8,2.3,14.84,0.04,2,16.3,G230L,30.0,19.7,,
+SN1999EM,SN II,0.002,nhi_auto_only,,,,,0,,,,20.963,,
+SN2017EGM,SLSN-I,0.031,cog_plus_metallicity,65.8,2.3,14.84,0.04,2,16.2,G230L,30.0,19.7,,
 SN2018BSZ,SN II,0.027,nhi_auto_only,,,,,0,,,,20.713,,
-SN2022WSP,SN II,0.007318,cog_automated,49.1,2.9,15.11,0.076,5,11.6,G230L,9.0,,,
-SN2023IXF,SN II,0.00087,cog_plus_metallicity,63.0,1.4,15.16,0.1,4,45.6,G230LB,14.0,20.83,-0.09,-1.08
-SN2025TIS,SN II,0.0050934863682419,nhi_auto_only,,,,,0,,,,20.953,,
-SN2026AYT,SN II,0.0036,nhi_auto_only,,,,,0,,,,21.412,,
+SN2022WSP,SN II,0.007318,cog_automated,48.4,2.3,15.133,0.103,6,11.2,G230L,9.0,,,
+SN2023IXF,SN II,0.00087,cog_plus_metallicity,63.0,2.2,15.16,0.1,4,22.1,G230LB,20.0,20.83,-0.09,-1.08
+SN2025TIS,SN II,0.0050934863682419,nhi_auto_only,,,,,0,,,,20.949,,
+SN2026AYT,SN II,0.0036,nhi_auto_only,,,,,0,,,,21.414,,
 ZTF21AAKILYD,SN Icn,0.084,nhi_auto_only,,,,,0,,,,19.224,,

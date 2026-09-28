@@ -1,0 +1,65 @@
+{
+  "sn": "SN2022HRS-HV",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2022HRS-HV/epochs/2022-04-22_day6_native.txt",
+        "SN2022HRS-HV/epochs/2022-04-26_day9_native.txt",
+        "SN2022HRS-HV/epochs/2022-04-27_day11_native.txt",
+        "SN2022HRS-HV/epochs/2022-05-02_day15_native.txt",
+        "SN2022HRS-HV/epochs/2022-05-07_day21_native.txt",
+        "SN2022HRS-HV/epochs/2022-05-15_day29_native.txt",
+        "SN2022HRS-HV/epochs/2022-05-23_day37_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2022HRS-HV/epochs/2022-04-22_day6_resel.txt",
+        "SN2022HRS-HV/epochs/2022-04-26_day9_resel.txt",
+        "SN2022HRS-HV/epochs/2022-04-27_day11_resel.txt",
+        "SN2022HRS-HV/epochs/2022-05-02_day15_resel.txt",
+        "SN2022HRS-HV/epochs/2022-05-07_day21_resel.txt",
+        "SN2022HRS-HV/epochs/2022-05-15_day29_resel.txt",
+        "SN2022HRS-HV/epochs/2022-05-23_day37_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2022HRS-HV/SN2022HRS-HV_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "SN2022HRS-HV/absorption/SN2022HRS-HV_G230L_day21_cog.csv"
+      ],
+      "line_csv": [
+        "SN2022HRS-HV/absorption/SN2022HRS-HV_G230L_day21_lines.csv"
+      ],
+      "plots": [
+        "SN2022HRS-HV/absorption/SN2022HRS-HV_G230L_day21_cog.png",
+        "SN2022HRS-HV/absorption/SN2022HRS-HV_G230L_day21_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2022HRS-HV/SN2022HRS-HV_manifest.json",
+      "stis": "SN2022HRS-HV/SN2022HRS-HV_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2022HRS-HV/SN2022HRS-HV_timeseries.png"
+  }
+}

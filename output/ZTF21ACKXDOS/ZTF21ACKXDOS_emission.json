@@ -1,14 +1,15 @@
 {
   "sn": "ZTF21ACKXDOS",
   "sn_type": "SLSN-II",
-  "generated": "2026-09-08",
+  "generated": "2026-09-28",
   "flags": [],
   "provenance": {
     "z": 0.018,
     "ebv_mw": 0.0298,
     "host_ebv": 0.0,
     "host_ebv_src": "none (MW-only)",
-    "dered": "F19 Rv=3.1, MW at observed wvl + host at rest",
+    "host_rv": 3.1,
+    "dered": "F19; MW Rv=3.1 at observed wvl + host Rv=host_rv at rest",
     "flux_units": "1e-15 erg s-1 cm-2",
     "emission_method": "continuum-subtracted emission-line flux (specutils line_flux over the line window)",
     "emission_content": "Mg II 2800 and Ly-a 1216 fluxes are reported for detected epochs. Broad late-time shell emission and near-maximum photospheric P-Cygni peaks can both appear here, so interpret each epoch with sn_type, phase, best_model, and pcygni.",
@@ -27,7 +28,7 @@
       {
         "phase": 159.0,
         "flux": 83.4,
-        "flux_err": 8.1,
+        "flux_err": 8.0,
         "flux_err_photon": 1.5,
         "instr": "G230LB",
         "flux_reliable": true,
@@ -35,7 +36,7 @@
         "edge_flux_frac": 0.09,
         "pcygni": false,
         "pcygni_reason": null,
-        "coherence": 8.8,
+        "coherence": 8.9,
         "v_phot_kms": null,
         "best_model": "gaussian",
         "shape_note": "skew beat gaussian by dBIC<6: kept the simpler model",
@@ -43,59 +44,59 @@
           "gaussian": {
             "params": [
               0.0,
-              -4268.56,
-              2542.59
+              -4268.62,
+              2542.69
             ],
             "k": 3,
-            "bic": -7955.2,
-            "aicc": -7963.1,
-            "redchi2": 0.55,
+            "bic": -7955.9,
+            "aicc": -7963.8,
+            "redchi2": 0.54,
             "pegged": []
           },
           "lorentzian": {
             "params": [
               0.0,
-              -4298.4,
-              2670.16
+              -4298.51,
+              2670.42
             ],
             "k": 3,
-            "bic": -7954.3,
-            "aicc": -7962.2,
+            "bic": -7955.0,
+            "aicc": -7962.9,
             "redchi2": 0.55,
             "pegged": []
           },
           "skew": {
             "params": [
               0.0,
-              -7000.4,
-              4373.59,
+              -7000.42,
+              4373.61,
               3.11
             ],
             "k": 4,
-            "bic": -7961.1,
-            "aicc": -7971.6,
+            "bic": -7961.8,
+            "aicc": -7972.3,
             "redchi2": 0.5,
             "pegged": []
           },
           "kwok": {
             "params": [
               0.0,
-              -3225.33,
-              7446.73,
-              3704.11,
-              4020.28
+              -3222.14,
+              7449.24,
+              3700.24,
+              4023.25
             ],
             "k": 5,
-            "bic": -7952.4,
-            "aicc": -7965.3,
+            "bic": -7953.1,
+            "aicc": -7966.0,
             "redchi2": 0.52,
             "pegged": [],
-            "inner_v": -3542
+            "inner_v": -3545
           }
         },
-        "v_blue99": -12836,
-        "v_red99": 2043,
-        "spill_frac": 0.959
+        "v_blue99": -12834,
+        "v_red99": 2046,
+        "spill_frac": 0.958
       }
     ],
     "lya": []

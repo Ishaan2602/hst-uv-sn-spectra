@@ -1,0 +1,56 @@
+{
+  "sn": "GAIA16APD",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "GAIA16APD/epochs/2016-06-02_day16_native.txt",
+        "GAIA16APD/epochs/2016-06-14_day28_native.txt",
+        "GAIA16APD/epochs/2016-06-30_day44_native.txt"
+      ],
+      "epoch_resel": [
+        "GAIA16APD/epochs/2016-06-02_day16_resel.txt",
+        "GAIA16APD/epochs/2016-06-14_day28_resel.txt",
+        "GAIA16APD/epochs/2016-06-30_day44_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "GAIA16APD/GAIA16APD_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": "GAIA16APD/GAIA16APD_absorption.json",
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "GAIA16APD/absorption/GAIA16APD_G140L_day16_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "GAIA16APD/GAIA16APD_lya_nhi.json",
+      "plots": [
+        "GAIA16APD/absorption/GAIA16APD_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "GAIA16APD/GAIA16APD_manifest.json",
+      "stis": "GAIA16APD/GAIA16APD_stis_manifest.json",
+      "cos": "GAIA16APD/GAIA16APD_cos_manifest.json"
+    },
+    "timeseries_plot": "GAIA16APD/GAIA16APD_timeseries.png"
+  }
+}

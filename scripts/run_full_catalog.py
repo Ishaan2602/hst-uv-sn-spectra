@@ -61,7 +61,9 @@ def run_sn_worker(row_dict, redo=False, out=OUT, cos_only=False):
     has_cos = len(cos_dirs_for(name)) > 0
     base = os.path.join(DATA, name)
 
-    logpath = os.path.join(out, f'_run_sn_{name}.log')
+    logdir = os.path.join(out, 'logs')
+    os.makedirs(logdir, exist_ok=True)
+    logpath = os.path.join(logdir, f'_run_sn_{name}.log')
     with open(logpath, 'w') as log:
         log.write(f'\n===== {name}  z={z}  STIS={has_stis} COS={has_cos} =====\n')
 
@@ -160,7 +162,9 @@ def main():
     n_total = len(rows)
 
     os.makedirs(a.outroot, exist_ok=True)
-    logf = open(os.path.join(a.outroot, 'run_full_catalog.log'), 'a')
+    logdir = os.path.join(a.outroot, 'logs')
+    os.makedirs(logdir, exist_ok=True)
+    logf = open(os.path.join(logdir, 'run_full_catalog.log'), 'a')
     logf.write(f'\n#### run start {time.ctime()}  {n_total} SNe  workers={a.workers} ####\n')
     logf.flush()
 

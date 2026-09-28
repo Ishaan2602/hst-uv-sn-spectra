@@ -8,28 +8,174 @@
     "G140L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 6,
+    "exposures": [
+     {
+      "root": "o48z30010",
+      "grating": "G140L",
+      "exptime": 3600.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z30020",
+      "grating": "G140L",
+      "exptime": 3600.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z30030",
+      "grating": "G140L",
+      "exptime": 3600.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z30040",
+      "grating": "G140L",
+      "exptime": 3600.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z30050",
+      "grating": "G140L",
+      "exptime": 3600.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z30060",
+      "grating": "G140L",
+      "exptime": 2200.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/1998-02-21_day1792": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "o48z35010",
+      "grating": "G230L",
+      "exptime": 3000.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z35020",
+      "grating": "G230L",
+      "exptime": 3000.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o48z35030",
+      "grating": "G230L",
+      "exptime": 3300.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2000-04-18_day2578": {
    "gratings": [
     "G140L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 6,
+    "exposures": [
+     {
+      "root": "o5i230010",
+      "grating": "G140L",
+      "exptime": 3400.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i230020",
+      "grating": "G140L",
+      "exptime": 3400.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i230030",
+      "grating": "G140L",
+      "exptime": 3400.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i230040",
+      "grating": "G140L",
+      "exptime": 3400.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i230050",
+      "grating": "G140L",
+      "exptime": 3120.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i230060",
+      "grating": "G140L",
+      "exptime": 2820.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   },
   "MAMA/2000-04-24_day2584": {
    "gratings": [
     "G230L"
    ],
    "detector": "MAMA",
-   "neg_continuum": false
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 3,
+    "exposures": [
+     {
+      "root": "o5i235010",
+      "grating": "G230L",
+      "exptime": 3000.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i235020",
+      "grating": "G230L",
+      "exptime": 3000.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     },
+     {
+      "root": "o5i235030",
+      "grating": "G230L",
+      "exptime": 3300.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
   }
  },
  "failed_exposures": []

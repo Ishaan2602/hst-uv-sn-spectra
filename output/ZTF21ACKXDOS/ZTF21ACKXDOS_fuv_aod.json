@@ -1,0 +1,50 @@
+{
+  "sn": "ZTF21ACKXDOS",
+  "grating": "G160M",
+  "phase": 159.0,
+  "generated": "2026-09-28",
+  "method": "apparent optical depth (Savage&Sembach 1991), host rest frame",
+  "lines": [
+    {
+      "ion": "Si II",
+      "lam": 1526.707,
+      "logN_aod": 14.226,
+      "logN_aod_err": 0.9,
+      "status": "saturated",
+      "flag": ">",
+      "sig": 3.7,
+      "blend": false
+    },
+    {
+      "ion": "Fe II",
+      "lam": 1608.451,
+      "logN_aod": 14.445,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -2.0,
+      "blend": false
+    },
+    {
+      "ion": "Fe II",
+      "lam": 1611.2,
+      "logN_aod": 16.075,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": -3.3,
+      "blend": false
+    },
+    {
+      "ion": "Al II",
+      "lam": 1670.787,
+      "logN_aod": 12.923,
+      "logN_aod_err": null,
+      "status": "upper",
+      "flag": "<",
+      "sig": 0.2,
+      "blend": false
+    }
+  ],
+  "diag_plot": "ZTF21ACKXDOS/absorption/ZTF21ACKXDOS_G160M_day159_aod.png"
+}

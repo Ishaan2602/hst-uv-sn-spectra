@@ -1,0 +1,56 @@
+{
+  "sn": "AT-2023TSV",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "AT-2023TSV/epochs/2023-10-04_day8_native.txt",
+        "AT-2023TSV/epochs/2023-10-11_day15_native.txt"
+      ],
+      "epoch_resel": [
+        "AT-2023TSV/epochs/2023-10-04_day8_resel.txt",
+        "AT-2023TSV/epochs/2023-10-11_day15_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "AT-2023TSV/AT-2023TSV_emission.json",
+      "plots": [
+        "AT-2023TSV/emission/AT-2023TSV_G230L_day15_mgii_diag.png",
+        "AT-2023TSV/emission/AT-2023TSV_G230L_day8_mgii_diag.png",
+        "AT-2023TSV/emission/AT-2023TSV_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": "AT-2023TSV/AT-2023TSV_absorption.json",
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "AT-2023TSV/AT-2023TSV_lya_nhi.json",
+      "plots": [
+        "AT-2023TSV/absorption/AT-2023TSV_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "AT-2023TSV/AT-2023TSV_manifest.json",
+      "stis": "AT-2023TSV/AT-2023TSV_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "AT-2023TSV/AT-2023TSV_timeseries.png"
+  }
+}

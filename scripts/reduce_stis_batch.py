@@ -132,7 +132,8 @@ for f in sorted(glob.glob(f'{a.base}/mastDownload/HST/*/*_crj.fits') +
         continue
     seen[root] = {'root': root, 'inp': f, 'grat': str(h.get('OPT_ELEM', '?')).upper(),
                   'det': detector_of(h), 'mjd': float(h.get('TEXPSTRT', 0) or h.get('EXPSTART', 0) or 0),
-                  'exptime': float(h.get('TEXPTIME', 0) or 0)}
+                  'exptime': float(h.get('TEXPTIME', 0) or 0),
+                  'crsplit': int(h.get('CRSPLIT', 1) or 1), 'nrptexp': int(h.get('NRPTEXP', 1) or 1)}
 exps = list(seen.values())
 # drop failed guide-star-acq / aborted exposures (texptime < 5s): they are pure noise (median good
 # exposure is ~850s). record them in the manifest so nothing is silently lost. an epoch whose
@@ -277,6 +278,7 @@ for e in exps:
 # ---- per-filter + per-epoch coadds ----
 import matplotlib
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 
 def _ylim(f):
     # clipped linear y-limits: use the 1-99 pct so noisy tails don't flatten the plot.
@@ -303,6 +305,11 @@ def _save1d(base, w, f, e, title, z):
     axp.set_xlabel('rest wavelength (A)'); axp.set_ylabel('flux (uncorrected)'); axp.set_title(title)
     fig.tight_layout(); fig.savefig(f'{base}.png', dpi=110); plt.close(fig)
 
+def _protect_sn(sn):
+    # thin alias of the shared protect flag so reduction and product-build never disagree (see paths).
+    return paths.narrow_line_object(sn)
+protect_sn = _protect_sn(a.sn)
+
 for (det, ep), grats in groups.items():
   try:
     epdir = f'{a.outroot}/{a.sn}/STIS/{det}/{ep}'
@@ -311,14 +318,16 @@ for (det, ep), grats in groups.items():
         gf = gflags.get((det, ep, g), set())
         tag = f'  [{",".join(sorted(gf))}]' if gf else ''
         gp = f'{epdir}/{g}'; os.makedirs(gp, exist_ok=True)
-        nw, nf, ne = co.coadd_native(specs, g)          # raw/native 1px (the priority product)
+        nw, nf, ne = co.coadd_native(specs, g, protect=protect_sn)          # raw/native 1px (the priority product)
         if len(nw):
             _save1d(f'{gp}/{a.sn}_{ep}_{g}_native', nw, nf, ne, f'{a.sn} {ep} {g} native{tag}', a.z)
-            nat_legs.append((g, nw, nf, ne))
-        rw, rf, re = co.coadd_resel(specs, g)           # resel (2 native px, near-Nyquist)
+            if not is_echelle(g):                       # echelle stays a per-grating file; never merged (its R is destroyed on the low-res grid, giving a garbage/negative merge -- e.g. SN1999EM)
+                nat_legs.append((g, nw, nf, ne))
+        rw, rf, re = co.coadd_resel(specs, g, protect=protect_sn)           # resel (2 native px, near-Nyquist)
         if len(rw):
             _save1d(f'{gp}/{a.sn}_{ep}_{g}_resel', rw, rf, re, f'{a.sn} {ep} {g} resel{tag}', a.z)
-            res_legs.append((g, rw, rf, re))
+            if not is_echelle(g):
+                res_legs.append((g, rw, rf, re))
 
     # cross-grating epoch coadds (native + resel): each on its own union grid, NO inter-grating scaling
     # (flux cal agrees), inverse-variance combine so a grating's drooped low-throughput edge self-down-weights.
@@ -334,13 +343,32 @@ for (det, ep), grats in groups.items():
             for r in recs:
                 scaling.append({'epoch': ep, 'detector': det, 'grating': r['leg'], 'scale': r['scale']})
             fin = gmf[np.isfinite(gmf)]
-            neg = len(fin) > 20 and float(np.nanmedian(fin)) < 0   # caught nothing real -> non-detection
+            neg = len(fin) > 20 and (float(np.nanmedian(fin)) < 0 or float(np.mean(fin < 0)) > 0.45)   # non-detection: negative median OR mostly-negative continuum
         flg = sorted(epf | ({'NEG_CONTINUUM'} if neg else set()))
         tg = f'  [{",".join(flg)}]' if flg else ''
         _save1d(f'{epdir}/{a.sn}_{ep}_epochcoadd_{tier}', gw, gmf, gme, f'{a.sn} {ep} cross-grating {tier}{tg}', a.z)
     manifest['epochs'][f'{det}/{ep}'] = {'gratings': list(grats), 'detector': det, 'neg_continuum': bool(neg)}
   except Exception as e:
     print('epoch coadd error', det, ep, repr(e)[:150])
+
+# ---- per-epoch reduction provenance: exposure count + how each exposure was CR-cleaned ----
+# the cleaning is encoded in the input path: _crj = calstis ocrreject (CRSPLIT>1), _lacr = LA-Cosmic
+# flagged (CRSPLIT=1 single frame), _flt = single frame with no CR rejection. so a reader can see, per
+# epoch, exactly how many exposures went in and what defect cleaning each one got.
+def _cleaning_of(e):
+    inp = e['inp']
+    m = 'ocrreject' if inp.endswith('_crj.fits') else ('lacosmic' if inp.endswith('_lacr.fits') else 'single_flt')
+    return m + ('+defringe' if e.get('defr') else '')
+prov = {}
+for e in exps:
+    det = e['det'] if not is_echelle(e['grat']) else 'ECHELLE'
+    p = prov.setdefault(f"{det}/{e['epoch']}", {'n_exposures': 0, 'exposures': []})
+    p['n_exposures'] += 1
+    p['exposures'].append({'root': e['root'], 'grating': e['grat'], 'exptime': round(e['exptime'], 1),
+                           'crsplit': e.get('crsplit'), 'cleaning': _cleaning_of(e)})
+for key, epinfo in manifest['epochs'].items():
+    if key in prov:
+        epinfo['provenance'] = prov[key]
 
 # ---- write the stis manifest fragment ----
 sndir = f'{a.outroot}/{a.sn}'

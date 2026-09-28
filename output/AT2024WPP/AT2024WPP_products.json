@@ -1,0 +1,54 @@
+{
+  "sn": "AT2024WPP",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission",
+    "absorption_ism",
+    "lya_nhi"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "AT2024WPP/epochs/2024-10-16_day20_native.txt",
+        "AT2024WPP/epochs/2024-10-17_day21_native.txt"
+      ],
+      "epoch_resel": [
+        "AT2024WPP/epochs/2024-10-16_day20_resel.txt",
+        "AT2024WPP/epochs/2024-10-17_day21_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "AT2024WPP/AT2024WPP_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": "AT2024WPP/AT2024WPP_absorption.json",
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "AT2024WPP/absorption/AT2024WPP_G140L_day20_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": "AT2024WPP/AT2024WPP_lya_nhi.json",
+      "plots": [
+        "AT2024WPP/absorption/AT2024WPP_lya_nhi_fit.png"
+      ]
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "AT2024WPP/AT2024WPP_manifest.json",
+      "stis": "AT2024WPP/AT2024WPP_stis_manifest.json",
+      "cos": "AT2024WPP/AT2024WPP_cos_manifest.json"
+    },
+    "timeseries_plot": "AT2024WPP/AT2024WPP_timeseries.png"
+  }
+}

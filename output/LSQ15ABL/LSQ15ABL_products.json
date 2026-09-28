@@ -1,0 +1,59 @@
+{
+  "sn": "LSQ15ABL",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "LSQ15ABL/epochs/2015-04-27_day39_native.txt",
+        "LSQ15ABL/epochs/2015-04-27_native.txt",
+        "LSQ15ABL/epochs/2015-04-28_day41_native.txt",
+        "LSQ15ABL/epochs/2015-04-28_native.txt",
+        "LSQ15ABL/epochs/2015-04-29_day42_native.txt",
+        "LSQ15ABL/epochs/2015-04-29_native.txt"
+      ],
+      "epoch_resel": [
+        "LSQ15ABL/epochs/2015-04-27_day39_resel.txt",
+        "LSQ15ABL/epochs/2015-04-27_resel.txt",
+        "LSQ15ABL/epochs/2015-04-28_day41_resel.txt",
+        "LSQ15ABL/epochs/2015-04-28_resel.txt",
+        "LSQ15ABL/epochs/2015-04-29_day42_resel.txt",
+        "LSQ15ABL/epochs/2015-04-29_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "LSQ15ABL/LSQ15ABL_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [
+        "LSQ15ABL/absorption/LSQ15ABL_G140L_day39_aod.csv",
+        "LSQ15ABL/absorption/LSQ15ABL_G140L_day40_aod.csv"
+      ],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "LSQ15ABL/LSQ15ABL_manifest.json",
+      "stis": "LSQ15ABL/LSQ15ABL_stis_manifest.json",
+      "cos": "LSQ15ABL/LSQ15ABL_cos_manifest.json"
+    },
+    "timeseries_plot": "LSQ15ABL/LSQ15ABL_timeseries.png"
+  }
+}

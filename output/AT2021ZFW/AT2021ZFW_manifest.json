@@ -1,0 +1,57 @@
+{
+ "sn": "AT2021ZFW",
+ "instruments": {
+  "STIS": {
+   "z": 0.028837
+  }
+ },
+ "epochs": {
+  "MAMA/2021-10-11_day19": {
+   "gratings": [
+    "G230L"
+   ],
+   "detector": "MAMA",
+   "neg_continuum": true,
+   "provenance": {
+    "n_exposures": 1,
+    "exposures": [
+     {
+      "root": "oeax08020",
+      "grating": "G230L",
+      "exptime": 1387.0,
+      "crsplit": 1,
+      "cleaning": "single_flt"
+     }
+    ]
+   }
+  },
+  "CCD/2021-10-11_day19": {
+   "gratings": [
+    "G430L",
+    "G750L"
+   ],
+   "detector": "CCD",
+   "neg_continuum": false,
+   "provenance": {
+    "n_exposures": 2,
+    "exposures": [
+     {
+      "root": "oeax08030",
+      "grating": "G430L",
+      "exptime": 160.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject"
+     },
+     {
+      "root": "oeax08040",
+      "grating": "G750L",
+      "exptime": 160.0,
+      "crsplit": 2,
+      "cleaning": "ocrreject+defringe"
+     }
+    ]
+   }
+  }
+ },
+ "n_epochs": 1
+}

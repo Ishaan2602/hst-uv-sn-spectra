@@ -1,0 +1,50 @@
+{
+  "sn": "SN2024XRX",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2024XRX/epochs/2024-10-17_day7_native.txt",
+        "SN2024XRX/epochs/2024-10-18_day8_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2024XRX/epochs/2024-10-17_day7_resel.txt",
+        "SN2024XRX/epochs/2024-10-18_day8_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2024XRX/SN2024XRX_emission.json",
+      "plots": [
+        "SN2024XRX/emission/SN2024XRX_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2024XRX/SN2024XRX_manifest.json",
+      "stis": "SN2024XRX/SN2024XRX_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2024XRX/SN2024XRX_timeseries.png"
+  }
+}

@@ -17,6 +17,10 @@ import os, csv, glob, re, json, datetime
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.special import wofz
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import plotstyle; plotstyle.apply()
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from paths import OUT, CATALOG, LYA_NHI_SUMMARY as SUMMARY
@@ -91,13 +95,16 @@ def lya_tau(w, logN, b, vabs):
     return 1.4973e-15 * 10**logN * F_LYA * lam0 / b * np.real(wofz(x + 1j * a))
 
 
-def fit_nhi(w, f, logN0=20.5, b=25.0, vabs=0.0, wlo=1185, whi=1252):
+def fit_nhi(w, f, logN0=20.5, b=25.0, vabs=0.0, wlo=1185, whi=1252, maskcore=None):
     """
     Fit N(HI) to a photospheric-backlight Lya absorption profile.
     Returns (logN_fit, rms_resid) or (None, None) on failure. rms_resid is the RMS of the residuals on the
     O(1)-normalized flux -- an unweighted goodness-of-fit, NOT a reduced chi2 (the fit carries no error array).
+    maskcore=(lo,hi) excludes a wavelength range (the Lya emission core / N V) from the fit.
     """
     mask = (w > wlo) & (w < whi) & np.isfinite(f) & (f > 0)
+    if maskcore is not None:
+        mask &= ~((w > maskcore[0]) & (w < maskcore[1]))
     if mask.sum() < 12:
         return None, None
     wm, fm = w[mask], f[mask]
@@ -123,6 +130,36 @@ def fit_nhi(w, f, logN0=20.5, b=25.0, vabs=0.0, wlo=1185, whi=1252):
 
 
 # --- main scan ---------------------------------------------------------------------------------
+
+def _diag_plot(sn, w, f, logN, syst, ph, outdir):
+    # scrutiny plot behind every reported N(HI): data + fitted continuum + damped-Lya model + the window.
+    mask = (w > 1160) & (w < 1290) & np.isfinite(f) & (f > 0)
+    if mask.sum() < 12:
+        return None
+    wm, fm = w[mask], f[mask]; A0 = np.nanmax(fm)
+    def model(w_, c0, c1, c2, lN):
+        cont = c0 + c1*(w_ - LYA0) + c2*(w_ - LYA0)**2
+        return cont * np.exp(-lya_tau(w_, lN, 25.0, 0.0))
+    try:
+        popt, _ = curve_fit(model, wm, fm/A0, p0=[np.nanmedian(fm)/A0, 0, 0, logN],
+                            bounds=([0, -2, -2, 18], [3, 2, 2, 22.5]), maxfev=80000)
+    except Exception:
+        return None
+    cont = (popt[0] + popt[1]*(w - LYA0) + popt[2]*(w - LYA0)**2) * A0
+    full = cont * np.exp(-lya_tau(w, popt[3], 25.0, 0.0))
+    sel = (w > 1160) & (w < 1290)
+    fig, ax = plt.subplots(figsize=(9, 4))
+    ax.plot(w[sel], f[sel]*1e15, 'k', lw=0.8, label=f'{sn} G140L d{ph:.0f}')
+    ax.plot(w[sel], cont[sel]*1e15, '--', color='tab:blue', lw=1.2, label='fitted continuum')
+    ax.plot(w[sel], full[sel]*1e15, '-', color='crimson', lw=1.8, label=f'damped Lya logN={logN:.2f}+-{syst:.2f}')
+    ax.axvline(LYA0, color='0.6', ls=':'); ax.axvspan(1185, 1252, color='gold', alpha=0.06, label='fit window')
+    ax.set_xlim(1160, 1290); ax.set_ylim(-2, np.nanpercentile(fm*1e15, 99)*1.15)
+    ax.set_xlabel(r'rest $\lambda$ [$\AA$]'); ax.set_ylabel(r'$F_\lambda$ [$10^{-15}$]'); ax.legend(fontsize=7)
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f'{sn}_lya_nhi_fit.png')
+    fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
+    return out
+
 
 def run_catalog(names=None):
     sne_dirs = sorted(d for d in os.listdir(OUT) if os.path.isdir(os.path.join(OUT, d)) and d.upper() in cat)
@@ -157,7 +194,15 @@ def run_catalog(names=None):
             # syst_vabs: half-range over ±VABS_SYST_RANGE km/s
             logN_lo, _ = fit_nhi(w, f, logN0=logN, vabs=-VABS_SYST_RANGE)
             logN_hi, _ = fit_nhi(w, f, logN0=logN, vabs=+VABS_SYST_RANGE)
-            syst = 0.5 * abs((logN_lo or logN) - (logN_hi or logN))
+            syst_v = 0.5 * abs((logN_lo or logN) - (logN_hi or logN))
+            # syst_window is the DOMINANT systematic: refit on a wider window with the Lya emission core
+            # masked; the spread vs the default window is the continuum-placement uncertainty (validated at
+            # 0.2-0.6 dex, far above syst_vabs). worst for CSM-strong (IIn) epochs where Lya emission
+            # contaminates the continuum -- those are flagged emission_contam.
+            logN_w, _ = fit_nhi(w, f, logN0=logN, wlo=1160, whi=1290, maskcore=(1213, 1218))
+            syst_win = abs((logN_w if logN_w is not None else logN) - logN)
+            syst = float(np.hypot(syst_v, syst_win))
+            iin = "IIN" in _tnstype(sn_dir).upper().replace(" ", "")
             result = {
                 "sn":          sn_dir.upper(),
                 "sn_type":     _tnstype(sn_dir),
@@ -165,11 +210,14 @@ def run_catalog(names=None):
                 "grating":     "G140L",
                 "phase":       ph,
                 "logN_HI":     round(logN, 3),
-                "logN_HI_syst_vabs": round(syst, 3),
+                "logN_HI_err": round(syst, 3),
+                "logN_HI_syst_vabs": round(syst_v, 3),
+                "logN_HI_syst_window": round(syst_win, 3),
+                "emission_contam": bool(iin),
                 "backlight_flux_e15": round(bl * 1e15, 3),
                 "rms_resid":   round(rms, 4) if rms is not None else None,
-                "method":      "continuum-backlight damped Lya; vabs=0 (host frame); syst from +-300 km/s",
-                "note":        "automated; curated ism_columns.csv values override this when present",
+                "method":      "continuum-backlight damped Lya; vabs=0 (host frame); err=hypot(vabs+-300, continuum-window)",
+                "note":        "automated; curated ism_columns.csv overrides. IIn (emission_contam) unreliable: Lya emission contaminates the continuum.",
             }
             break   # take only the earliest passing epoch
 
@@ -178,16 +226,19 @@ def run_catalog(names=None):
 
         sn_out = os.path.join(OUT, sn_dir, f"{sn_dir}_lya_nhi.json")
         os.makedirs(os.path.dirname(sn_out), exist_ok=True)
+        png = _diag_plot(sn_dir.upper(), w, f, logN, syst, ph, os.path.join(OUT, sn_dir, 'absorption'))
+        if png:
+            result['diag_plot'] = os.path.relpath(png, OUT).replace('\\', '/')
         with open(sn_out, "w") as fh:
             json.dump(result, fh, indent=2)
         summ.append(result)
-        print(f"  {sn_dir:16s} d{result['phase']:5.0f}  logN={result['logN_HI']:.2f} ± {result['logN_HI_syst_vabs']:.2f}(syst)"
+        print(f"  {sn_dir:16s} d{result['phase']:5.0f}  logN={result['logN_HI']:.2f} +- {result['logN_HI_err']:.2f}"
               f"  rms={result['rms_resid']}  -> {os.path.relpath(sn_out, ROOT)}")
 
     # write catalog summary
     if summ:
-        cols = ["sn", "sn_type", "grating", "phase", "logN_HI", "logN_HI_syst_vabs",
-                "backlight_flux_e15", "rms_resid", "generated"]
+        cols = ["sn", "sn_type", "grating", "phase", "logN_HI", "logN_HI_err", "logN_HI_syst_vabs",
+                "logN_HI_syst_window", "emission_contam", "backlight_flux_e15", "rms_resid", "generated"]
         with open(SUMMARY, "w", newline="") as fh:
             wr = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")
             wr.writeheader(); wr.writerows(summ)

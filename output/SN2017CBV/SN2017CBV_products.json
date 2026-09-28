@@ -1,0 +1,59 @@
+{
+  "sn": "SN2017CBV",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "SN2017CBV/epochs/2017-03-22_day13_native.txt",
+        "SN2017CBV/epochs/2017-03-24_day15_native.txt",
+        "SN2017CBV/epochs/2017-03-26_day17_native.txt",
+        "SN2017CBV/epochs/2017-03-30_day20_native.txt"
+      ],
+      "epoch_resel": [
+        "SN2017CBV/epochs/2017-03-22_day13_resel.txt",
+        "SN2017CBV/epochs/2017-03-24_day15_resel.txt",
+        "SN2017CBV/epochs/2017-03-26_day17_resel.txt",
+        "SN2017CBV/epochs/2017-03-30_day20_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "SN2017CBV/SN2017CBV_emission.json",
+      "plots": []
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [
+        "SN2017CBV/absorption/SN2017CBV_G230L_day20_cog.csv"
+      ],
+      "line_csv": [
+        "SN2017CBV/absorption/SN2017CBV_G230L_day20_lines.csv"
+      ],
+      "plots": [
+        "SN2017CBV/absorption/SN2017CBV_G230L_day20_cog.png",
+        "SN2017CBV/absorption/SN2017CBV_G230L_day20_cont.png"
+      ]
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "SN2017CBV/SN2017CBV_manifest.json",
+      "stis": "SN2017CBV/SN2017CBV_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "SN2017CBV/SN2017CBV_timeseries.png"
+  }
+}

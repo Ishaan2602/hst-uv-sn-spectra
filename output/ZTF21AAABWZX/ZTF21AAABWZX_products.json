@@ -1,0 +1,62 @@
+{
+  "sn": "ZTF21AAABWZX",
+  "generated": "2026-09-28",
+  "available_threads": [
+    "emission"
+  ],
+  "products": {
+    "reduced_spectra": {
+      "epoch_native": [
+        "ZTF21AAABWZX/epochs/2021-07-26_day211_native.txt",
+        "ZTF21AAABWZX/epochs/2021-09-14_day261_native.txt",
+        "ZTF21AAABWZX/epochs/2022-04-05_day464_native.txt",
+        "ZTF21AAABWZX/epochs/2023-04-14_day838_native.txt",
+        "ZTF21AAABWZX/epochs/2023-07-16_day931_native.txt"
+      ],
+      "epoch_resel": [
+        "ZTF21AAABWZX/epochs/2021-07-26_day211_resel.txt",
+        "ZTF21AAABWZX/epochs/2021-09-14_day261_resel.txt",
+        "ZTF21AAABWZX/epochs/2022-04-05_day464_resel.txt",
+        "ZTF21AAABWZX/epochs/2023-04-14_day838_resel.txt",
+        "ZTF21AAABWZX/epochs/2023-07-16_day931_resel.txt"
+      ]
+    },
+    "emission": {
+      "json": "ZTF21AAABWZX/ZTF21AAABWZX_emission.json",
+      "plots": [
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G140L_day211_lya_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G140L_day261_lya_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G140L_day838_lya_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G230L_day211_mgii_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G230L_day261_mgii_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_G230L_day464_mgii_diag.png",
+        "ZTF21AAABWZX/emission/ZTF21AAABWZX_emission_summary.png"
+      ]
+    },
+    "absorption_ism": {
+      "json": null,
+      "cog_csv": [],
+      "line_csv": [],
+      "plots": []
+    },
+    "fuv_aod": {
+      "json": null,
+      "aod_csv": [],
+      "plots": []
+    },
+    "lya_nhi": {
+      "json": null,
+      "plots": []
+    },
+    "naid_reddening": {
+      "json": null,
+      "plots": []
+    },
+    "manifest": {
+      "combined": "ZTF21AAABWZX/ZTF21AAABWZX_manifest.json",
+      "stis": "ZTF21AAABWZX/ZTF21AAABWZX_stis_manifest.json",
+      "cos": null
+    },
+    "timeseries_plot": "ZTF21AAABWZX/ZTF21AAABWZX_timeseries.png"
+  }
+}
